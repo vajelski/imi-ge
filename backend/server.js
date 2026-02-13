@@ -7,6 +7,7 @@
 import 'dotenv/config';
 import express from 'express';
 import compression from 'compression';
+import rateLimit from 'express-rate-limit';
 import { GoogleAuth } from 'google-auth-library';
 import fetch from 'node-fetch';
 import fs from 'fs';
@@ -21,6 +22,15 @@ const __dirname = path.dirname(__filename);
 const app = express();
 app.use(compression());
 app.use(express.json({ limit: process?.env?.API_PAYLOAD_MAX_SIZE || "7mb" }));
+
+// Rate limit for form submissions (per IP)
+const formLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: { error: 'Too many submissions; try again later.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 // Use __dirname to reliably locate content.json relative to server.js
 const CONTENT_FILE = path.join(__dirname, 'data', 'content.json');
@@ -95,10 +105,15 @@ if (!fs.existsSync(LEADS_FILE)) {
   fs.writeFileSync(LEADS_FILE, '[]');
 }
 
-app.post('/api/leads', async (req, res) => {
+// Simple email format check
+const isValidEmail = (v) => typeof v === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
+
+app.post('/api/leads', formLimiter, async (req, res) => {
   try {
-    const { email, url, reportType, date } = req.body;
+    const { email, url, reportType, date, _hp, website } = req.body;
+    if (_hp || (typeof website === 'string' && website.trim())) return res.status(400).json({ error: 'Invalid request' });
     if (!email) return res.status(400).json({ error: 'Email required' });
+    if (!isValidEmail(email)) return res.status(400).json({ error: 'Invalid email format' });
 
     let leads = [];
     if (fs.existsSync(LEADS_FILE)) {
@@ -139,14 +154,19 @@ app.post('/api/leads', async (req, res) => {
 });
 
 // --- Contact Form API ---
-app.post('/api/contact', async (req, res) => {
+app.post('/api/contact', formLimiter, async (req, res) => {
   try {
-    const { name, company, email, interests, message } = req.body;
-
-    // Basic validation
-    if (!email || !message) {
-      return res.status(400).json({ error: 'Email and message are required' });
-    }
+    const { name, company, email, interests, message, _hp, website } = req.body;
+    if (_hp || (typeof website === 'string' && website.trim())) return res.status(400).json({ error: 'Invalid request' });
+    if (!email || !message) return res.status(400).json({ error: 'Email and message are required' });
+    if (!isValidEmail(email)) return res.status(400).json({ error: 'Invalid email format' });
+    const msg = String(message).trim();
+    if (msg.length < 10) return res.status(400).json({ error: 'Message too short' });
+    if (msg.length > 5000) return res.status(400).json({ error: 'Message too long' });
+    const nameLen = name != null ? String(name).trim().length : 0;
+    const companyLen = company != null ? String(company).trim().length : 0;
+    if (nameLen > 200) return res.status(400).json({ error: 'Name too long' });
+    if (companyLen > 200) return res.status(400).json({ error: 'Company name too long' });
 
     const subject = `New Contact Form Submission: ${name || email}`;
     const text = `
@@ -189,13 +209,21 @@ app.post('/api/analyze', async (req, res) => {
 
     console.log(`Analyzing: ${url}`);
 
+    // Helper: fetch with AbortController timeout
+    const fetchWithTimeout = (fetchUrl, options = {}, timeoutMs = 20000) => {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), timeoutMs);
+      return fetch(fetchUrl, { ...options, signal: controller.signal })
+        .finally(() => clearTimeout(timer));
+    };
+
     // Google PageSpeed Insights API
     const apiKey = process.env.GOOGLE_PAGESPEED_API_KEY || process.env.PSI_API_KEY || '';
     const apiUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&strategy=mobile&category=performance&category=accessibility&category=best-practices&category=seo${apiKey ? `&key=${apiKey}` : ''}`;
 
     let data;
     try {
-      const apiRes = await fetch(apiUrl);
+      const apiRes = await fetchWithTimeout(apiUrl, {}, 22000);
       const text = await apiRes.text();
       try {
         data = JSON.parse(text);
@@ -207,7 +235,7 @@ app.post('/api/analyze', async (req, res) => {
       if (data?.error && apiKey) {
         console.warn('API Key failed, retrying without key...', data.error?.message);
         const retryUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&strategy=mobile&category=performance&category=accessibility&category=best-practices&category=seo`;
-        const retryRes = await fetch(retryUrl);
+        const retryRes = await fetchWithTimeout(retryUrl, {}, 18000);
         const retryText = await retryRes.text();
         data = JSON.parse(retryText);
       }
@@ -218,7 +246,7 @@ app.post('/api/analyze', async (req, res) => {
       const pr = (s) => Math.floor((Math.sin(hash + s) * 10000) % 36 + 60);
       let securityScore = 0;
       try {
-        const headRes = await fetch(url, { method: 'HEAD' });
+        const headRes = await fetchWithTimeout(url, { method: 'HEAD' }, 5000);
         ['strict-transport-security', 'x-frame-options'].forEach(h => {
           if (headRes.headers.get(h)) securityScore += 25;
         });
@@ -264,7 +292,7 @@ app.post('/api/analyze', async (req, res) => {
       };
 
       try {
-        const headRes = await fetch(url, { method: 'HEAD' });
+        const headRes = await fetchWithTimeout(url, { method: 'HEAD' }, 5000);
         const headers = headRes.headers;
         Object.keys(securityHeaders).forEach(header => {
           if (headers.get(header.toLowerCase())) {
@@ -332,7 +360,7 @@ app.post('/api/analyze', async (req, res) => {
       });
     }
 
-    // Security Headers Check (Manual fetch)
+    // Security Headers Check (Manual fetch with timeout)
     let securityScore = 0;
     const securityHeaders = {
       'Strict-Transport-Security': 30,
@@ -342,7 +370,7 @@ app.post('/api/analyze', async (req, res) => {
     };
 
     try {
-      const headRes = await fetch(url, { method: 'HEAD' });
+      const headRes = await fetchWithTimeout(url, { method: 'HEAD' }, 5000);
       const headers = headRes.headers;
 
       Object.keys(securityHeaders).forEach(header => {

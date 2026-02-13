@@ -6,8 +6,17 @@ import { Link } from '@/i18n/routing';
 import { Cpu, Facebook, Twitter, Linkedin, Instagram, Sun, Moon } from 'lucide-react';
 import type { SiteSettings } from '@/lib/sanity/types';
 
+export type FooterColumn = { title: string; links: { url: string; label: string }[] };
+export type FooterBottomLink = { label: string; href: string };
+
 interface FooterProps {
   siteSettings?: SiteSettings | null;
+  /** When set, used instead of message-based columns (from CMS) */
+  footerColumns?: FooterColumn[];
+  /** Bottom bar links from CMS (e.g. Privacy, Terms) */
+  footerBottomLinks?: FooterBottomLink[];
+  /** Site name from CMS branding */
+  siteName?: string;
 }
 
 const socialIcons = [
@@ -17,9 +26,11 @@ const socialIcons = [
   { Icon: Instagram, key: 'instagram' as const },
 ];
 
-const Footer: React.FC<FooterProps> = ({ siteSettings }) => {
+const Footer: React.FC<FooterProps> = ({ siteSettings, footerColumns: footerColumnsProp, footerBottomLinks, siteName: siteNameProp }) => {
   const t = useTranslations('footer');
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  const siteName = siteNameProp ?? 'იმი.ჯი';
+  const columnsSource = footerColumnsProp ?? (t.raw('columns') as FooterColumn[] | undefined);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
@@ -44,7 +55,7 @@ const Footer: React.FC<FooterProps> = ({ siteSettings }) => {
               <div className="p-2 bg-primary/10 rounded-xl border border-primary/20 group-hover:border-primary/50 transition-colors">
                 <Cpu className="h-6 w-6 text-primary group-hover:scale-110 transition-transform" />
               </div>
-              <span className="tracking-widest group-hover:text-primary transition-colors">იმი.ჯი</span>
+              <span className="tracking-widest group-hover:text-primary transition-colors">{siteName}</span>
             </div>
             <p className="text-gray-700 dark:text-gray-300 max-w-sm leading-relaxed font-sans font-light">
               {t('description') || 'ჩვენ ვქმნით მომავლის ტექნოლოგიებს დღეს. დაგვიკავშირდით და გახადეთ თქვენი ბიზნესი უფრო ეფექტური ხელოვნური ინტელექტის დახმარებით.'}
@@ -69,47 +80,43 @@ const Footer: React.FC<FooterProps> = ({ siteSettings }) => {
           </div>
 
           <div className="col-span-1 md:col-span-7 lg:col-span-8 grid grid-cols-2 lg:grid-cols-4 gap-8">
-            {t.raw('columns') && (t.raw('columns') as any[]).map((column: any, colIdx: number) => (
-              <div key={colIdx}>
-                <h2 className="text-gray-900 dark:text-white font-heading font-bold uppercase tracking-widest mb-8 text-sm border-b border-gray-200 dark:border-white/10 pb-4 inline-block">
-                  {column.title}
-                </h2>
-                <ul className="space-y-4 text-gray-700 dark:text-gray-300 text-sm font-medium font-sans">
-                  {(column.links || []).map((link: any, linkIdx: number) => {
-                    const url = link?.url || '#';
-                    const isExternal = url.startsWith('http') || url.startsWith('mailto:') || url.startsWith('tel:');
-                    // Prevent Cloudflare email obfuscation by using dangerouslySetInnerHTML for mailto links
-                    const isMailto = url.startsWith('mailto:');
-                    return (
-                      <li key={linkIdx}>
-                        {isMailto ? (
-                          <a
-                            href={url}
-                            className="hover:text-primary transition-colors"
-                            data-cfasync="false"
-                            dangerouslySetInnerHTML={{ __html: `<!--email_off-->${link.label}<!--/email_off-->` }}
-                          />
-                        ) : isExternal ? (
-                          <a
-                            href={url}
-                            className="hover:text-primary transition-colors"
-                          >
-                            {link.label}
-                          </a>
-                        ) : (
-                          <Link
-                            href={url as any}
-                            className="hover:text-primary transition-colors"
-                          >
-                            {link.label}
-                          </Link>
-                        )}
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            ))}
+            {columnsSource?.map((column, colIdx) => {
+              const links = column.links ?? [];
+              return (
+                <div key={colIdx}>
+                  <h2 className="text-gray-900 dark:text-white font-heading font-bold uppercase tracking-widest mb-8 text-sm border-b border-gray-200 dark:border-white/10 pb-4 inline-block">
+                    {column.title}
+                  </h2>
+                  <ul className="space-y-4 text-gray-700 dark:text-gray-300 text-sm font-medium font-sans">
+                    {links.map((link, linkIdx) => {
+                      const url = link.url || '#';
+                      const isExternal = url.startsWith('http') || url.startsWith('mailto:') || url.startsWith('tel:');
+                      const isMailto = url.startsWith('mailto:');
+                      return (
+                        <li key={linkIdx}>
+                          {isMailto ? (
+                            <a
+                              href={url}
+                              className="hover:text-primary transition-colors"
+                              data-cfasync="false"
+                              dangerouslySetInnerHTML={{ __html: `<!--email_off-->${link.label}<!--/email_off-->` }}
+                            />
+                          ) : url.startsWith('http') ? (
+                            <a href={url} className="hover:text-primary transition-colors" target="_blank" rel="noopener noreferrer">
+                              {link.label}
+                            </a>
+                          ) : (
+                            <Link href={url as any} className="hover:text-primary transition-colors">
+                              {link.label}
+                            </Link>
+                          )}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              );
+            })}
           </div>
         </div>
 
@@ -117,7 +124,12 @@ const Footer: React.FC<FooterProps> = ({ siteSettings }) => {
           <p className="text-gray-600 dark:text-gray-300 text-xs font-medium tracking-wider font-sans">
             &copy; {new Date().getFullYear()} {t('copyrightText') || 'ყველა უფლება დაცულია.'}
           </p>
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-6 flex-wrap justify-center">
+            {footerBottomLinks?.map((bl, i) => (
+              <Link key={i} href={bl.href as any} className="text-xs text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">
+                {bl.label}
+              </Link>
+            ))}
             <Link
               href="/cms-preview"
               className="text-xs text-gray-600 dark:text-gray-300 hover:text-primary transition-colors"

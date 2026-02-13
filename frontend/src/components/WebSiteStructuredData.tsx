@@ -1,6 +1,12 @@
 import React from 'react';
 import { SITE_URL, SITE_NAME } from '@/lib/seo/constants';
 
+const WEBSITE_DESCRIPTION: Record<string, string> = {
+  ka: 'AI ინტეგრაცია, ვებ-დეველოპმენტი და ტექნოლოგიური კონსულტაცია საქართველოში.',
+  en: 'AI integration, web development and technology consulting in Georgia.',
+  ru: 'Интеграция AI, веб-разработка и технологический консалтинг в Грузии.',
+};
+
 interface WebSiteStructuredDataProps {
   locale: string;
 }
@@ -10,14 +16,15 @@ interface WebSiteStructuredDataProps {
  * @see https://developers.google.com/search/docs/appearance/sitelinks-searchbox
  */
 const WebSiteStructuredData: React.FC<WebSiteStructuredDataProps> = ({ locale }) => {
+  const lang = locale === 'ka' ? 'ka' : locale === 'ru' ? 'ru' : 'en';
   const data = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     '@id': `${SITE_URL}/#website`,
     url: SITE_URL,
     name: SITE_NAME,
-    description: 'AI ინტეგრაცია, ვებ-დეველოპმენტი და ტექნოლოგიური კონსულტაცია საქართველოში.',
-    inLanguage: [locale === 'ka' ? 'ka' : locale === 'ru' ? 'ru' : 'en'],
+    description: WEBSITE_DESCRIPTION[locale] ?? WEBSITE_DESCRIPTION.en,
+    inLanguage: [lang],
     publisher: {
       '@id': `${SITE_URL}/#organization`,
     },

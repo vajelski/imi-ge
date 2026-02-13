@@ -30,7 +30,7 @@ function buildMetadataFromSeo(
         ...(seo?.noindex && { robots: { index: false, follow: false } }),
         alternates: {
             canonical: `${SITE_URL}/${locale}${path}`,
-            languages: { ka: `${SITE_URL}/ka${path}`, en: `${SITE_URL}/en${path}`, ru: `${SITE_URL}/ru${path}` },
+            languages: { 'x-default': `${SITE_URL}/en${path}`, ka: `${SITE_URL}/ka${path}`, en: `${SITE_URL}/en${path}`, ru: `${SITE_URL}/ru${path}` },
         },
         openGraph: {
             title,
@@ -88,7 +88,7 @@ export async function getHomeMetadata(
         ...(seo?.noindex && { robots: { index: false, follow: false } }),
         alternates: {
             canonical: `${SITE_URL}/${locale}`,
-            languages: { ka: `${SITE_URL}/ka`, en: `${SITE_URL}/en`, ru: `${SITE_URL}/ru` },
+            languages: { 'x-default': `${SITE_URL}/en`, ka: `${SITE_URL}/ka`, en: `${SITE_URL}/en`, ru: `${SITE_URL}/ru` },
         },
         openGraph: {
             title,

@@ -2,7 +2,11 @@ import React from 'react';
 import { FileText, AlertCircle, CheckCircle2, Scale, ShieldAlert, BadgeCheck } from 'lucide-react';
 import SEO from './SEO';
 
-const TermsOfService: React.FC = () => {
+interface TermsOfServiceProps {
+  contactEmail?: string;
+}
+
+const TermsOfService: React.FC<TermsOfServiceProps> = ({ contactEmail = 'contact@imi.ge' }) => {
   return (
     <div className="pt-40 pb-24 min-h-screen bg-gray-50 dark:bg-darker transition-colors duration-300">
       <SEO title="Terms of Service — IMI.GE" description="Read our Terms of Service regarding the use of IMI.GE's AI solutions and services." />
@@ -121,7 +125,7 @@ const TermsOfService: React.FC = () => {
           <p className="text-center text-sm text-gray-500 dark:text-gray-300 mt-12 pb-8">
             ჩვენ ვიტოვებთ უფლებას ნებისმიერ დროს შევცვალოთ ეს პირობები.
             <br />
-            შეკითხვების შემთხვევაში მოგვწერეთ: <a href="mailto:hello@imi.ge" className="text-secondary hover:underline">hello@imi.ge</a>
+            შეკითხვების შემთხვევაში მოგვწერეთ: <a href={`mailto:${contactEmail}`} className="text-secondary hover:underline">{contactEmail}</a>
           </p>
 
         </div>

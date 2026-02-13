@@ -1,10 +1,11 @@
 import React from 'react';
+import { notFound } from 'next/navigation';
 import { Calendar, User, ArrowRight, Clock } from 'lucide-react';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/routing';
 import { getRouteMetadata } from '@/lib/sanity/metadata';
 import { draftMode } from 'next/headers';
-import { getBlogPosts } from '@/lib/sanity/queries';
+import { getBlogPosts, getSiteSettings } from '@/lib/sanity/queries';
 import { getLocalizedValue, type Locale } from '@/lib/sanity/types';
 
 interface BlogPageProps {
@@ -25,6 +26,9 @@ const BlogPage = async ({ params }: BlogPageProps) => {
     setRequestLocale(locale);
     const { isEnabled: preview } = await draftMode();
     const t = await getTranslations('blog');
+    const siteSettings = await getSiteSettings(preview).catch(() => null);
+    if (!preview && siteSettings?.toggles?.enableBlog === false) notFound();
+    if (!preview && siteSettings?.pageToggles?.blogEnabled === false) notFound();
 
     const sanityPosts = await getBlogPosts(preview);
 

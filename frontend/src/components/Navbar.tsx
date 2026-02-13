@@ -10,15 +10,18 @@ import type { NavigationItem } from '@/lib/sanity/types';
 
 interface NavbarProps {
   navItems?: NavigationItem[] | null;
+  /** Site name from CMS branding (default: იმი.ჯი) */
+  siteName?: string;
 }
 
 const FALLBACK_KEYS = ['home', 'about', 'services', 'portfolio', 'blog', 'demos', 'contact'] as const;
 
-const Navbar: React.FC<NavbarProps> = ({ navItems }) => {
+const Navbar: React.FC<NavbarProps> = ({ navItems, siteName: siteNameProp }) => {
   const t = useTranslations('navLinks');
   const commonT = useTranslations('auth');
   const locale = useLocale();
   const router = useRouter();
+  const siteName = siteNameProp ?? 'იმი.ჯი';
 
   const displayItems = navItems && navItems.length > 0
     ? [...navItems].sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
@@ -93,7 +96,7 @@ const Navbar: React.FC<NavbarProps> = ({ navItems }) => {
                 <Cpu className="h-6 w-6 text-primary relative z-10" />
               </div>
               <span className="font-heading font-bold text-xl tracking-widest text-gray-900 dark:text-white group-hover:text-primary transition-colors">
-                იმი.ჯი
+                {siteName}
               </span>
             </Link>
           </div>

@@ -2,7 +2,9 @@ import React from 'react';
 import { Search, BarChart, Zap, Shield } from 'lucide-react';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import AuditForm from '@/components/AuditForm';
+import ServiceStructuredData from '@/components/ServiceStructuredData';
 import { getRouteMetadata } from '@/lib/sanity/metadata';
+import { SITE_URL } from '@/lib/seo/constants';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
@@ -20,6 +22,13 @@ const AuditPage = async ({ params }: { params: Promise<{ locale: string }> }) =>
 
     return (
         <section className="pt-40 pb-24 bg-gray-50 dark:bg-darker min-h-screen relative transition-colors duration-500">
+            <ServiceStructuredData
+                name={t('hero.badge')}
+                description={t('hero.description')}
+                url={`${SITE_URL}/${locale}/services/audit`}
+                locale={locale}
+                serviceType="AI Site Audit"
+            />
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
                 {/* Header */}

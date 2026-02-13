@@ -3,6 +3,7 @@ export default {
     title: 'Blog Post',
     type: 'document',
     fields: [
+        { name: 'enabled', title: 'Enabled', type: 'boolean', initialValue: true },
         {
             name: 'slug',
             title: 'Slug',

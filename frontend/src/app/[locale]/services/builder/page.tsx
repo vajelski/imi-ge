@@ -4,6 +4,8 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { getRouteMetadata } from '@/lib/sanity/metadata';
 import { Link } from '@/i18n/routing';
 import BuilderForm from '@/components/BuilderForm';
+import ServiceStructuredData from '@/components/ServiceStructuredData';
+import { SITE_URL } from '@/lib/seo/constants';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
@@ -21,6 +23,13 @@ const BuilderPage = async ({ params }: { params: Promise<{ locale: string }> }) 
 
     return (
         <section className="pt-40 pb-24 bg-darker min-h-screen relative">
+            <ServiceStructuredData
+                name={t('hero.badge')}
+                description={t('hero.description')}
+                url={`${SITE_URL}/${locale}/services/builder`}
+                locale={locale}
+                serviceType="AI Web Builder"
+            />
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
                 {/* Header */}

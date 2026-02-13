@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { Calendar, User, ArrowLeft } from 'lucide-react';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
@@ -205,10 +206,14 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
                 <article className="animate-in fade-in slide-in-from-bottom-8 duration-700">
                     {post.imageUrl && (
                         <div className="relative rounded-[2rem] overflow-hidden mb-12 aspect-[21/9]">
-                            <img
+                            {/* next/image for LCP: WebP/AVIF, responsive sizes, priority above fold */}
+                            <Image
                                 src={post.imageUrl}
                                 alt={title}
-                                className="w-full h-full object-cover"
+                                fill
+                                className="object-cover"
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 896px"
+                                priority
                             />
                             {(category || formattedDate) && (
                                 <div className="absolute bottom-4 left-6 flex gap-4">

@@ -3,7 +3,11 @@ import { Shield, Lock, Eye, Database, FileText, Bell, Globe } from 'lucide-react
 import { Link } from '@/i18n/routing';
 import SEO from './SEO';
 
-const PrivacyPolicy: React.FC = () => {
+interface PrivacyPolicyProps {
+  contactEmail?: string;
+}
+
+const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ contactEmail = 'contact@imi.ge' }) => {
   return (
     <div className="pt-40 pb-24 min-h-screen bg-gray-50 dark:bg-darker transition-colors duration-300">
       <SEO title="Privacy Policy — IMI.GE" description="Learn how IMI.GE collects, uses, and protects your personal data." />
@@ -135,8 +139,8 @@ const PrivacyPolicy: React.FC = () => {
             <p className="text-gray-600 dark:text-gray-300 mb-6">
               დაგვიკავშირდით მონაცემთა დაცვის საკითხებზე:
             </p>
-            <a href="mailto:hello@imi.ge" className="text-primary font-bold hover:text-secondary transition-colors text-lg">
-              hello@imi.ge
+            <a href={`mailto:${contactEmail}`} className="text-primary font-bold hover:text-secondary transition-colors text-lg">
+              {contactEmail}
             </a>
           </div>
 

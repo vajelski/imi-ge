@@ -1,10 +1,17 @@
 import React from 'react';
-import { Link } from '@/i18n/routing';
+import TrackedLink from '@/components/TrackedLink';
 import { ArrowRight, Bot, Smartphone, Zap, Globe, MessageCircle, Sparkles } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 
-const Hero = async () => {
+type CTA = { label: string; href: string };
+
+const Hero = async (props: { ctaPrimary?: CTA | null; ctaSecondary?: CTA | null }) => {
   const t = await getTranslations('hero');
+  const { ctaPrimary, ctaSecondary } = props;
+  const primaryLabel = ctaPrimary?.label ?? t('ctaPrimary');
+  const primaryHref = ctaPrimary?.href ?? '/contact';
+  const secondaryLabel = ctaSecondary?.label ?? t('ctaSecondary');
+  const secondaryHref = ctaSecondary?.href ?? '/contact';
 
   return (
     <section className="relative min-h-screen flex flex-col justify-center overflow-hidden pt-48 pb-20 bg-gray-50 dark:bg-darker transition-colors duration-300">
@@ -31,25 +38,26 @@ const Hero = async () => {
           {t('description')}
         </p>
 
-        {/* Buttons */}
+        {/* Buttons — from CMS branding when set, else messages */}
         <div className="flex flex-col sm:flex-row justify-center gap-6 mb-24 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-600">
-          <Link href="/contact" className="group relative inline-flex items-center justify-center px-10 py-5 text-sm font-heading font-bold text-white bg-indigo-700 hover:bg-indigo-800 rounded-2xl overflow-hidden transition-all duration-300 shadow-2xl hover:scale-105 active:scale-95">
+          <TrackedLink href={primaryHref} eventName="click_consultation" className="group relative inline-flex items-center justify-center px-10 py-5 text-sm font-heading font-bold text-white bg-indigo-700 hover:bg-indigo-800 rounded-2xl overflow-hidden transition-all duration-300 shadow-2xl hover:scale-105 active:scale-95">
             <div className="absolute inset-0 bg-gradient-to-r from-indigo-700 to-purple-700 opacity-100 group-hover:opacity-90 transition-opacity"></div>
             <span className="relative flex items-center gap-3 tracking-wider uppercase">
-              {t('ctaPrimary')}
+              {primaryLabel}
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </span>
-          </Link>
+          </TrackedLink>
 
-          <Link
-            href="/contact"
+          <TrackedLink
+            href={secondaryHref}
+            eventName="click_consultation"
             className="group relative inline-flex items-center justify-center px-10 py-5 text-sm font-heading font-bold text-gray-900 dark:text-white bg-white/80 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl overflow-hidden transition-all duration-300 hover:bg-white dark:hover:bg-white/10 shadow-xl hover:scale-105 active:scale-95"
           >
             <span className="relative flex items-center gap-3 tracking-wider uppercase">
-              {t('ctaSecondary')}
+              {secondaryLabel}
               <MessageCircle className="w-5 h-5 text-gray-600 dark:text-gray-300 group-hover:scale-110 transition-transform" />
             </span>
-          </Link>
+          </TrackedLink>
         </div>
 
         {/* Trust Indicators */}

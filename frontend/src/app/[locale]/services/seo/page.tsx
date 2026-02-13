@@ -3,6 +3,8 @@ import { Settings, FileText, Globe, MapPin, ArrowRight, CheckCircle2, TrendingUp
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/routing';
 import { getRouteMetadata } from '@/lib/sanity/metadata';
+import ServiceStructuredData from '@/components/ServiceStructuredData';
+import { SITE_URL } from '@/lib/seo/constants';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
@@ -27,6 +29,13 @@ const SeoPage = async ({ params }: { params: Promise<{ locale: string }> }) => {
 
     return (
         <div className="min-h-screen bg-darker pt-40 pb-24">
+            <ServiceStructuredData
+                name={t('hero.badge')}
+                description={t('hero.description')}
+                url={`${SITE_URL}/${locale}/services/seo`}
+                locale={locale}
+                serviceType="SEO & Marketing"
+            />
             {/* Hero Section */}
             <section className="relative overflow-hidden mb-32">
                 <div className="absolute inset-0 bg-primary/5 rounded-[3rem] transform -rotate-3 scale-110 blur-3xl opacity-30"></div>

@@ -1,9 +1,15 @@
 import React from 'react';
+import { Metadata } from 'next';
 import { getSiteSettings, getNavigation, getPageBySlug, getRouteSeo } from '@/lib/sanity/queries';
 import { ExternalLink } from 'lucide-react';
 
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
+export const metadata: Metadata = {
+  title: 'CMS Preview',
+  robots: { index: false, follow: false },
+};
 
 export default async function CmsPreviewPage() {
     const fetchTime = new Date().toISOString()

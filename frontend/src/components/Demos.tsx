@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Bot, User, Loader2, Sparkles, Image as ImageIcon, Mic, Wand2, Eye, Upload, Volume2, StopCircle, AlertTriangle } from 'lucide-react';
 import { ChatMessage } from '../types';
-import { chatWithAssistant, generateImage, analyzeImage, chatWithVoiceAssistant } from '@/../services/geminiService';
+import { chatWithAssistant, generateImage, analyzeImage, chatWithVoiceAssistant } from '@/lib/geminiService';
 import SEO from './SEO';
 
 const Demos: React.FC = () => {

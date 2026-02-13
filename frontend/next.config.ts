@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 // Backend URL for API rewrites. Dev: 3003, Prod (start:prod): 3004
-const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:3003';
+const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:3004';
 
 const nextConfig: NextConfig = {
     trailingSlash: false, // Explicit URL policy: no trailing slashes

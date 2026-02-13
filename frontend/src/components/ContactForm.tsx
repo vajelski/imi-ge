@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Mail, Phone, MapPin, Send, Loader2, ArrowRight, CheckCircle, AlertCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { parseJsonResponse } from '@/lib/safeFetch';
+import { trackEvent } from '@/lib/analytics';
 
 const ContactForm = () => {
     const t = useTranslations('contact');
@@ -16,6 +17,7 @@ const ContactForm = () => {
     });
     const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
     const [errorMessage, setErrorMessage] = useState('');
+    const honeypotRef = useRef<HTMLInputElement>(null);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { id, value } = e.target;
@@ -41,7 +43,10 @@ const ContactForm = () => {
             const res = await fetch('/api/contact', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
+                body: JSON.stringify({
+                    ...formData,
+                    website: honeypotRef.current?.value ?? '',
+                }),
             });
 
             const data = await parseJsonResponse<{ error?: string }>(res);
@@ -51,6 +56,7 @@ const ContactForm = () => {
             }
 
             setStatus('success');
+            trackEvent('submit_contact_form');
             setFormData({ name: '', company: '', email: '', interests: [], message: '' });
             setTimeout(() => setStatus('idle'), 5000);
         } catch (error: any) {
@@ -68,6 +74,11 @@ const ContactForm = () => {
             <h3 className="text-2xl font-heading font-bold text-gray-900 dark:text-white mb-8 relative z-10">{t('formTitle')}</h3>
 
             <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
+                {/* Honeypot: leave empty; bots often fill it. Server rejects if non-empty. */}
+                <div className="absolute -left-[9999px] opacity-0 pointer-events-none" aria-hidden="true">
+                    <label htmlFor="contact-website">Website (leave blank)</label>
+                    <input ref={honeypotRef} id="contact-website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="space-y-2">
                         <label htmlFor="contact-name" className="text-xs font-heading font-bold text-gray-600 dark:text-gray-300 uppercase tracking-wider ml-1">{t('nameLabel')}</label>

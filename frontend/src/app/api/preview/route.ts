@@ -11,10 +11,16 @@ export async function GET(request: Request) {
         return new Response('Invalid token', { status: 401 })
     }
 
+    const type = searchParams.get('type') || ''
+
     if (!slug) {
         return new Response('Missing slug', { status: 400 })
     }
 
     (await draftMode()).enable()
+
+    if (type === 'blogPost') {
+        redirect(`/${locale}/blog/${slug}`)
+    }
     redirect(`/${locale}/${slug}`)
 }

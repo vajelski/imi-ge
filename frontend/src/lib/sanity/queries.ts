@@ -42,18 +42,79 @@ const pageQuery = groq`
 
 const siteSettingsQuery = groq`
   *[_type == "siteSettings"][0] {
+    "id": _id,
+    contacts {
+      primaryEmail,
+      salesEmail,
+      supportEmail,
+      primaryPhone,
+      secondaryPhone,
+      address { ka, en, ru },
+      workingHours { ka, en, ru },
+      messengers { whatsappNumber, telegramUsername, messengerUrl }
+    },
+    toggles {
+      enableBlog,
+      enablePortfolio,
+      enableDemos,
+      enablePricing,
+      enableTestimonials,
+      enableLogos,
+      enableNewsletter,
+      enableWhatsApp,
+      enableTelegram,
+      enableContactForm,
+      enableLeadCapturePopup,
+      enableCookieBanner,
+      enableAnalytics
+    },
+    pageToggles {
+      homeEnabled,
+      servicesEnabled,
+      portfolioEnabled,
+      blogEnabled,
+      aboutEnabled,
+      contactEnabled,
+      termsEnabled,
+      privacyEnabled,
+      cookiesEnabled
+    },
+    navigation {
+      headerLinks[] { label { ka, en, ru }, href, enabled },
+      footerColumns[] {
+        title { ka, en, ru },
+        links[] { label { ka, en, ru }, href, enabled }
+      },
+      footerBottomLinks[] { label { ka, en, ru }, href, enabled }
+    },
+    branding {
+      siteName { ka, en, ru },
+      "logoUrl": logo.asset->url,
+      "faviconUrl": favicon.asset->url,
+      primaryCTA { label { ka, en, ru }, href, enabled },
+      secondaryCTA { label { ka, en, ru }, href, enabled }
+    },
+    seoDefaults {
+      metaTitle { ka, en, ru },
+      metaDescription { ka, en, ru },
+      "ogImageUrl": ogImage.asset->url,
+      twitterCard,
+      robotsIndexDefault,
+      robotsFollowDefault,
+      canonicalBaseUrl
+    },
+    integrations {
+      ga4MeasurementId,
+      gtmId,
+      hotjarId
+    },
     siteName,
     defaultSeo {
       title,
       description,
       "ogImageUrl": ogImage.asset->url
     },
-    social {
-      facebook,
-      linkedin,
-      twitter,
-      instagram
-    },
+    social { facebook, linkedin, twitter, instagram },
     contact
   }
 `
@@ -95,7 +156,7 @@ const routeSeoQuery = groq`
 `
 
 const blogPostsQuery = groq`
-  *[_type == "blogPost"] | order(publishedAt desc) {
+  *[_type == "blogPost" && (!defined(enabled) || enabled == true)] | order(publishedAt desc) {
     _id,
     slug,
     title,
