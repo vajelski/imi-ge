@@ -1,0 +1,10 @@
+{
+    "type": "module",
+    "scripts": {
+        "migrate:about": "node scripts/migrate-about.js"
+    },
+    "dependencies": {
+        "@sanity/client": "^6.10.0",
+        "dotenv": "^17.2.4"
+    }
+}

@@ -1,0 +1,43 @@
+{
+  "name": "ai-solutions-georgia-frontend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev -H 0.0.0.0",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "start:prod": "BACKEND_URL=http://localhost:3004 next start -H 0.0.0.0 -p 3003"
+  },
+  "dependencies": {
+    "@google/genai": "latest",
+    "@portabletext/react": "^3.2.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.460.0",
+    "next": "^16.1.6",
+    "next-intl": "^4.8.2",
+    "next-sanity": "^12.1.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwind-merge": "^3.4.0",
+    "zod": "^4.3.6"
+  },
+  "browserslist": [
+    "last 2 Chrome versions",
+    "last 2 Firefox versions",
+    "last 2 Safari versions",
+    "last 2 Edge versions",
+    "not dead"
+  ],
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.18",
+    "@types/node": "latest",
+    "@types/react": "19.2.14",
+    "autoprefixer": "^10.4.24",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.18",
+    "terser": "^5.46.0",
+    "typescript": "latest"
+  }
+}

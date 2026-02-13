@@ -1,0 +1,26 @@
+{
+    "name": "imi-ge-cms",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "seed:navigation": "node scripts/seed-navigation.mjs",
+        "seed:pages": "node scripts/seed-pages.mjs",
+        "seed": "node scripts/seed-navigation.mjs && node scripts/seed-pages.mjs",
+        "dev": "sanity dev --host 0.0.0.0",
+        "start": "sanity start",
+        "build": "sanity build",
+        "deploy": "sanity deploy",
+        "deploy-graphql": "sanity graphql deploy"
+    },
+    "dependencies": {
+        "@sanity/vision": "^3.22.0",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "sanity": "^3.22.0",
+        "styled-components": "^6.1.15"
+    },
+    "devDependencies": {
+        "@types/react": "^18.2.45",
+        "typescript": "^5.3.3"
+    }
+}

@@ -1,0 +1,550 @@
+{
+    "hero": {
+        "badge": "#1 Digital Agency in Georgia",
+        "titlePrefix": "We Build",
+        "titleHighlight": "The Future",
+        "description": "Combining creative design, latest technologies, and AI to grow your business.",
+        "ctaPrimary": "Free Consultation",
+        "ctaSecondary": "Need Help?",
+        "trust1Title": "Web & Apps",
+        "trust1Desc": "Unique design and fast interface",
+        "trust2Title": "Georgian AI",
+        "trust2Desc": "Smart assistants speaking Georgian",
+        "trust3Title": "Speed",
+        "trust3Desc": "Optimized code and high performance",
+        "trust4Title": "Mobile",
+        "trust4Desc": "iOS and Android app development"
+    },
+    "services": [
+        {
+            "id": "1",
+            "title": "AI Site Audit",
+            "description": "Full technical and SEO analysis using AI. Discover issues in seconds.",
+            "icon": "Search",
+            "price": "Details",
+            "path": "/services/audit"
+        },
+        {
+            "id": "2",
+            "title": "AI Web Builder",
+            "description": "From idea to code. Our AI writes clean React/Tailwind code based on your description.",
+            "icon": "Hammer",
+            "price": "Details",
+            "path": "/services/builder"
+        },
+        {
+            "id": "3",
+            "title": "Georgian AI Assistants",
+            "description": "Chatbots tailored to your business that speak fluent Georgian and serve clients 24/7.",
+            "icon": "MessageSquareCode",
+            "price": "Details",
+            "path": "/demos"
+        }
+    ],
+    "servicesSection": {
+        "badge": "Full Service",
+        "titlePrefix": "Digital",
+        "titleHighlight": "Ecosystem",
+        "description": "Everything your business needs for digital transformation."
+    },
+    "pricing": {
+        "badge": "Why IMI.GE?",
+        "titlePrefix": "Investment in",
+        "titleHighlight": "Results",
+        "description": "We don't just sell code. We create systems that save your time, reduce costs, and increase revenue from day one.",
+        "roiFocus": "ROI Focus",
+        "ctaTitle": "Ready for transformation?",
+        "ctaDescription": "Contact us for a free consultation. We will discuss your needs and offer a personalized plan.",
+        "ctaButton": "Free Consultation",
+        "values": [
+            {
+                "title": "Efficiency",
+                "description": "Automation that saves your time and resources.",
+                "items": ["90% less manual work", "Instant results", "24/7 operations"]
+            },
+            {
+                "title": "Growth",
+                "description": "Intelligent solutions to boost your sales.",
+                "items": ["AI sales assistant", "Personalized marketing", "Analytics Insights"]
+            },
+            {
+                "title": "Security",
+                "description": "Protecting your data is our priority.",
+                "items": ["Enterprise protection", "Data encryption", "Privacy First"]
+            }
+        ]
+    },
+    "navLinks": {
+        "home": "Home",
+        "about": "About Us",
+        "services": "Services",
+        "portfolio": "Portfolio",
+        "blog": "Blog",
+        "demos": "Demos",
+        "contact": "Contact"
+    },
+    "auth": {
+        "loginButton": "Login"
+    },
+    "cookieConsent": {
+        "title": "We Use Cookies",
+        "description": "We use cookies to improve your experience and for website analytics. For more details, see our",
+        "privacyLink": "Privacy Policy",
+        "acceptButton": "Accept",
+        "declineButton": "Decline"
+    },
+    "footer": {
+        "description": "Creating the technologies of the future today. Contact us to make your business more efficient with AI.",
+        "copyrightText": "IMI.GE",
+        "creditText": "Made by",
+        "creditName": "IMI.GE",
+        "creditUrl": "/",
+        "columns": [
+            {
+                "title": "Company",
+                "links": [
+                    {
+                        "label": "About Us",
+                        "url": "/about"
+                    },
+                    {
+                        "label": "Services",
+                        "url": "/services"
+                    },
+                    {
+                        "label": "Portfolio",
+                        "url": "/portfolio"
+                    },
+                    {
+                        "label": "Blog",
+                        "url": "/blog"
+                    }
+                ]
+            },
+            {
+                "title": "Services",
+                "links": [
+                    {
+                        "label": "Web Development",
+                        "url": "/services"
+                    },
+                    {
+                        "label": "AI Integration",
+                        "url": "/demos"
+                    },
+                    {
+                        "label": "SEO Audit",
+                        "url": "/services/audit"
+                    }
+                ]
+            },
+            {
+                "title": "Contact",
+                "links": [
+                    {
+                        "label": "contact@imi.ge",
+                        "url": "mailto:contact@imi.ge"
+                    },
+                    {
+                        "label": "+995 555 00 00 00",
+                        "url": "tel:+995555000000"
+                    }
+                ]
+            },
+            {
+                "title": "Legal",
+                "links": [
+                    {
+                        "label": "Privacy Policy",
+                        "url": "/privacy"
+                    },
+                    {
+                        "label": "Terms of Service",
+                        "url": "/terms"
+                    },
+                    {
+                        "label": "Cookie Policy",
+                        "url": "/cookies"
+                    }
+                ]
+            }
+        ]
+    },
+    "about": {
+        "badge": "About Us",
+        "titlePrefix": "Who We",
+        "titleHighlight": "Are",
+        "titleSuffix": "& What We Do",
+        "description": "IMI.GE is a leading digital agency in Georgia, focused on innovation, artificial intelligence, and transforming your business.",
+        "imageTitle": "Our Vision",
+        "imageDesc": "Technology to empower the human factor.",
+        "values": [
+            {
+                "id": "1",
+                "title": "Innovation",
+                "desc": "Constantly learning and implementing the latest AI technologies.",
+                "icon": "Lightbulb"
+            },
+            {
+                "id": "2",
+                "title": "Quality",
+                "desc": "Writing clean, optimized, and scalable code.",
+                "icon": "Target"
+            },
+            {
+                "id": "3",
+                "title": "Team",
+                "desc": "Believing that the best results are achieved through collaboration.",
+                "icon": "Users"
+            },
+            {
+                "id": "4",
+                "title": "Results",
+                "desc": "Our success is measured by your business growth.",
+                "icon": "Award"
+            }
+        ],
+        "visionTitle": "Our Vision",
+        "visionDesc": "To become a bridge between Georgian business and the global technological revolution.",
+        "visionPoints": [
+            {
+                "title": "Efficiency",
+                "desc": "100% automation of routine processes.",
+                "icon": "Zap"
+            },
+            {
+                "title": "Accessibility",
+                "desc": "AI for everyone, regardless of business size.",
+                "icon": "TrendingUp"
+            },
+            {
+                "title": "Security",
+                "desc": "Highest standards of data protection.",
+                "icon": "ShieldCheck"
+            },
+            {
+                "title": "Leadership",
+                "desc": "Being first in implementing innovations.",
+                "icon": "Trophy"
+            }
+        ]
+    },
+    "allServices": {
+        "badge": "Our Services",
+        "titlePrefix": "Full Digital",
+        "titleHighlight": "Catalog",
+        "description": "Everything your business needs for digital transformation - in one space.",
+        "categories": [
+            {
+                "title": "Web & Mobile Development",
+                "items": [
+                    {
+                        "title": "Web Development",
+                        "desc": "Modern, fast, and SEO-optimized websites.",
+                        "icon": "Layout",
+                        "link": "/contact",
+                        "price": "Details"
+                    },
+                    {
+                        "title": "Mobile Apps",
+                        "desc": "Creating iOS and Android apps (React Native / Flutter).",
+                        "icon": "Smartphone",
+                        "link": "/contact",
+                        "price": "Details"
+                    },
+                    {
+                        "title": "AI Web Builder",
+                        "desc": "From idea to ready code with the help of our AI.",
+                        "icon": "Hammer",
+                        "link": "/services/builder",
+                        "price": "Details"
+                    }
+                ]
+            },
+            {
+                "title": "AI & Automation",
+                "items": [
+                    {
+                        "title": "Georgian AI Assistants",
+                        "desc": "Chatbots that speak fluent Georgian.",
+                        "icon": "MessageSquareCode",
+                        "link": "/demos",
+                        "price": "Details"
+                    },
+                    {
+                        "title": "AI Automation",
+                        "desc": "Automation of routine processes with AI.",
+                        "icon": "Brain",
+                        "link": "/contact",
+                        "price": "Details"
+                    },
+                    {
+                        "title": "Data Analytics",
+                        "desc": "Big Data processing and predictive models.",
+                        "icon": "BarChart3",
+                        "link": "/contact",
+                        "price": "Details"
+                    }
+                ]
+            },
+            {
+                "title": "Audit & Optimization",
+                "items": [
+                    {
+                        "title": "AI Site Audit",
+                        "desc": "Full technical and SEO analysis using AI.",
+                        "icon": "Search",
+                        "link": "/services/audit",
+                        "price": "Details"
+                    },
+                    {
+                        "title": "SEO & Marketing",
+                        "desc": "Site promotion in Google and technical optimization.",
+                        "icon": "Globe",
+                        "link": "/contact",
+                        "price": "Details"
+                    },
+                    {
+                        "title": "Cybersecurity",
+                        "desc": "System protection from attacks and security standards.",
+                        "icon": "ShieldCheck",
+                        "link": "/contact",
+                        "price": "Details"
+                    }
+                ]
+            }
+        ]
+    },
+    "portfolio": {
+        "badge": "Success Stories",
+        "titlePrefix": "Realized",
+        "titleHighlight": "Projects",
+        "description": "Check out real examples of how our technologies transform business processes.",
+        "ctaTitle": "Have an innovative idea?",
+        "ctaDesc": "Let's discuss your project and find the best technological solution.",
+        "ctaButton": "Free Consultation",
+        "projects": [
+            {
+                "id": 1,
+                "title": "FinTech AI Assistant",
+                "category": "Chatbot & NLP",
+                "desc": "Smart assistant created for a leading Georgian bank.",
+                "tags": [
+                    "Python",
+                    "React",
+                    "AWS"
+                ]
+            },
+            {
+                "id": 2,
+                "title": "E-commerce Platform",
+                "category": "Web Development",
+                "desc": "Complete online store with payment systems.",
+                "tags": [
+                    "Next.js",
+                    "Node.js",
+                    "Stripe"
+                ]
+            },
+            {
+                "id": 3,
+                "title": "Medical Application",
+                "category": "Mobile App",
+                "desc": "iOS and Android application for clinics.",
+                "tags": [
+                    "React Native",
+                    "Firebase",
+                    "AI"
+                ]
+            },
+            {
+                "id": 4,
+                "title": "Smart City Monitoring",
+                "category": "IoT & AI",
+                "desc": "City traffic and environment monitoring system.",
+                "tags": [
+                    "IoT",
+                    "Edge AI",
+                    "Grafana"
+                ]
+            },
+            {
+                "id": 5,
+                "title": "Real Estate Portal",
+                "category": "Web Platform",
+                "desc": "Innovative platform with 3D tours and AI valuation.",
+                "tags": [
+                    "Vue.js",
+                    "Django",
+                    "Three.js"
+                ]
+            },
+            {
+                "id": 6,
+                "title": "Logistics Management System",
+                "category": "Enterprise Software",
+                "desc": "Complex ERP system for a transport company.",
+                "tags": [
+                    "Angular",
+                    "Java",
+                    "PostgreSQL"
+                ]
+            }
+        ]
+    },
+    "blog": {
+        "badge": "Blog & Insights",
+        "titlePrefix": "Tech",
+        "titleHighlight": "Insights",
+        "description": "Learn more about digital world news, tips, and best practices.",
+        "posts": [
+            {
+                "id": 1,
+                "title": "How AI will change Georgian business in 2025",
+                "excerpt": "The impact of AI on the local market and new opportunities.",
+                "date": "March 15, 2024",
+                "author": "Revaz Bregvadze",
+                "category": "AI Trends",
+                "readTime": "5 min"
+            },
+            {
+                "id": 2,
+                "title": "Why do you need a website audit?",
+                "excerpt": "Technical bugs that hinder your sales.",
+                "date": "March 10, 2024",
+                "author": "Revaz Bregvadze",
+                "category": "SEO & Web",
+                "readTime": "3 min"
+            },
+            {
+                "id": 3,
+                "title": "Chatbot vs Live Chat: Which is better?",
+                "excerpt": "Comparing automation and human resources in customer support.",
+                "date": "March 5, 2024",
+                "author": "Revaz Bregvadze",
+                "category": "Automation",
+                "readTime": "4 min"
+            },
+            {
+                "id": 4,
+                "title": "Cybersecurity for Small Business",
+                "excerpt": "Simple steps to protect your data from hacker attacks.",
+                "date": "March 1, 2024",
+                "author": "Revaz Bregvadze",
+                "category": "Security",
+                "readTime": "6 min"
+            }
+        ]
+    },
+    "notFound": {
+        "title": "Page Not Found",
+        "description": "Sorry, the page you are looking for does not exist.",
+        "homeButton": "Go Home",
+        "backButton": "Go Back"
+    },
+    "contact": {
+        "badge": "Contact",
+        "titlePrefix": "Let's",
+        "titleHighlight": "Talk",
+        "titleSuffix": "About Your Project",
+        "description": "We are ready to help you realize your most ambitious ideas. Write or contact us.",
+        "email": "info@imi.ge",
+        "phone": "+995 555 123 456",
+        "address": "Tbilisi, Georgia",
+        "formTitle": "Project Details",
+        "nameLabel": "Name",
+        "companyLabel": "Company",
+        "emailLabel": "Email",
+        "interestLabel": "Area of Interest",
+        "messageLabel": "Message",
+        "submitButton": "Send",
+        "sending": "Sending...",
+        "success": "Sent",
+        "error": "Error - try again",
+        "interests": [
+            "Web Development",
+            "AI Integration",
+            "Mobile App",
+            "Audit",
+            "Other"
+        ]
+    },
+    "audit": {
+        "hero": {
+            "badge": "AI Audit",
+            "titlePrefix": "Website",
+            "titleHighlight": "Intelligent",
+            "titleSuffix": "Analysis",
+            "description": "Enter your site URL and get a real AI audit in seconds: SEO, speed, accessibility, and security."
+        },
+        "input": {
+            "placeholder": "Enter URL (e.g., imi.ge)",
+            "analyzeButton": "Analyzing...",
+            "checkButton": "Check"
+        },
+        "results": {
+            "recommendationsTitle": "Key Recommendations",
+            "noIssues": "No critical issues found on the site!",
+            "securityTitle": "Security",
+            "leadSuccessTitle": "Request received!",
+            "leadSuccessDesc": "Our team will send you the full report soon.",
+            "leadTitle": "Get Full Report",
+            "leadDesc": "Enter your email and get a detailed PDF analysis for free.",
+            "emailPlaceholder": "your@email.com"
+        },
+        "features": {
+            "seoTitle": "SEO Optimization",
+            "seoDesc": "Analysis based on the latest Google algorithms.",
+            "speedTitle": "Speed Boost",
+            "speedDesc": "Detailed check of Core Web Vitals metrics.",
+            "securityTitle": "Security Audit",
+            "securityDesc": "Audit of SSL, Headers, and other security parameters."
+        },
+        "scores": {
+            "performance": "Performance",
+            "seo": "SEO",
+            "accessibility": "Accessibility",
+            "bestPractices": "Best Practices"
+        }
+    },
+    "builder": {
+        "hero": {
+            "badge": "AI Builder",
+            "titlePrefix": "Automatic",
+            "titleHighlight": "Generation",
+            "titleSuffix": "of Web Pages",
+            "description": "Describe your idea in text and our AI will write clean, optimized code (React + Tailwind) for you."
+        },
+        "form": {
+            "label": "Describe Section",
+            "placeholder": "For example: Create a Hero section with a blue gradient...",
+            "button": "Generate Code",
+            "generating": "AI is writing code..."
+        },
+        "benefits": {
+            "title": "Why AI Builder?",
+            "items": [
+                {
+                    "title": "Clean Code",
+                    "desc": "Our AI writes professional React code that is easy to modify."
+                },
+                {
+                    "title": "Responsive",
+                    "desc": "Generated design automatically fits all devices."
+                },
+                {
+                    "title": "Fast Development",
+                    "desc": "Save 70% of development time. From idea to prototype in minutes."
+                }
+            ]
+        }
+    },
+    "seoPage": {
+        "hero": {
+            "badge": "SEO & Marketing",
+            "title": "Grow Your Visibility in Google",
+            "description": "Data-driven SEO strategies and marketing solutions to grow your business.",
+            "cta": "Free Audit"
+        }
+    }
+}
