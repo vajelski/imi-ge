@@ -1,24 +1,35 @@
 import { createClient } from 'next-sanity'
 
-export const client = createClient({
-    projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || '',
-    dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
-    apiVersion: process.env.SANITY_API_VERSION || '2024-01-01',
-    useCdn: false, // Set to true for production with CDN
-    token: process.env.SANITY_READ_TOKEN, // Only used server-side
-})
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
+const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
+const apiVersion = process.env.SANITY_API_VERSION || '2024-01-01'
+const token = process.env.SANITY_READ_TOKEN
 
-// Client for preview mode (uses token)
-export const previewClient = createClient({
-    projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || '',
-    dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
-    apiVersion: process.env.SANITY_API_VERSION || '2024-01-01',
-    useCdn: false,
-    token: process.env.SANITY_READ_TOKEN,
-    perspective: 'previewDrafts',
-})
+let clientInstance: ReturnType<typeof createClient> | null = null
+let previewClientInstance: ReturnType<typeof createClient> | null = null
 
-// Helper to get the right client based on preview mode
+function buildClient(preview = false) {
+    if (!projectId) {
+        throw new Error('Missing NEXT_PUBLIC_SANITY_PROJECT_ID')
+    }
+
+    return createClient({
+        projectId,
+        dataset,
+        apiVersion,
+        useCdn: false,
+        token,
+        ...(preview ? { perspective: 'previewDrafts' as const } : {}),
+    })
+}
+
+// Helper to get the right client based on preview mode.
+// Uses lazy initialization so builds don't fail when Sanity env vars are absent.
 export function getClient(preview = false) {
-    return preview ? previewClient : client
+    if (preview) {
+        previewClientInstance ??= buildClient(true)
+        return previewClientInstance
+    }
+    clientInstance ??= buildClient(false)
+    return clientInstance
 }
