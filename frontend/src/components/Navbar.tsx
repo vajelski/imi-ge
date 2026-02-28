@@ -6,6 +6,7 @@ import { useSelectedLayoutSegments, useRouter } from 'next/navigation';
 import { Link } from '@/i18n/routing';
 import { Menu, X, Cpu, Sun, Moon, Globe, User, ChevronDown } from 'lucide-react';
 import { getLocalizedValue } from '@/lib/sanity/types';
+import { isDemosHref } from '@/lib/navigationFilters';
 import type { NavigationItem } from '@/lib/sanity/types';
 
 interface NavbarProps {
@@ -14,7 +15,7 @@ interface NavbarProps {
   siteName?: string;
 }
 
-const FALLBACK_KEYS = ['home', 'about', 'services', 'portfolio', 'blog', 'demos', 'contact'] as const;
+const FALLBACK_KEYS = ['home', 'about', 'services', 'portfolio', 'blog', 'contact'] as const;
 
 const Navbar: React.FC<NavbarProps> = ({ navItems, siteName: siteNameProp }) => {
   const t = useTranslations('navLinks');
@@ -26,6 +27,7 @@ const Navbar: React.FC<NavbarProps> = ({ navItems, siteName: siteNameProp }) => 
   const displayItems = navItems && navItems.length > 0
     ? [...navItems].sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
     : null;
+  const filteredDisplayItems = displayItems?.filter((item) => !isDemosHref(item.href || '')) ?? null;
   // useSelectedLayoutSegments avoids pathname null (next-intl's usePathname throws)
   const segments = useSelectedLayoutSegments();
   const pathname = segments.length ? '/' + segments.join('/') : '/';
@@ -103,8 +105,8 @@ const Navbar: React.FC<NavbarProps> = ({ navItems, siteName: siteNameProp }) => 
 
           <div className="hidden lg:flex items-center gap-8">
             <div className="flex items-center space-x-8">
-              {displayItems
-                ? displayItems.map((item) => {
+              {filteredDisplayItems
+                ? filteredDisplayItems.map((item) => {
                     const label = getLocalizedValue(item.label, locale as 'ka' | 'en' | 'ru') || item.href;
                     const active = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
                     return (
@@ -204,8 +206,8 @@ const Navbar: React.FC<NavbarProps> = ({ navItems, siteName: siteNameProp }) => 
       {isOpen && (
         <div className="lg:hidden bg-white/95 dark:bg-darker/95 backdrop-blur-lg border-b border-gray-200 dark:border-white/10 absolute w-full shadow-2xl animate-in slide-in-from-top duration-300">
           <div className="px-4 pt-4 pb-8 space-y-2">
-            {displayItems
-              ? displayItems.map((item) => {
+            {filteredDisplayItems
+              ? filteredDisplayItems.map((item) => {
                   const label = getLocalizedValue(item.label, locale as 'ka' | 'en' | 'ru') || item.href;
                   const active = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
                   return (

@@ -14,6 +14,7 @@ import WebSiteStructuredData from '@/components/WebSiteStructuredData';
 import { getTranslations } from 'next-intl/server';
 import { getNavigation, getSiteSettings } from '@/lib/sanity/queries';
 import { getLocalizedValue, type Locale } from '@/lib/sanity/types';
+import { isDemosHref } from '@/lib/navigationFilters';
 import { SITE_URL, SITE_NAME } from '@/lib/seo/constants';
 
 /** Locale-specific default meta when Sanity defaultSeo is missing */
@@ -153,7 +154,8 @@ export default async function LocaleLayout(props: {
                           if (href.startsWith('mailto:') && contactEmail) return { url: `mailto:${contactEmail}`, label: contactEmail };
                           if (href.startsWith('tel:') && contactPhone) return { url: `tel:${contactPhone}`, label: contactPhone };
                           return { url: href, label };
-                      });
+                      })
+                      .filter((link) => !isDemosHref(link.url));
                   return { title, links };
               })
             : fallbackColumns.map((col) => {
@@ -166,7 +168,9 @@ export default async function LocaleLayout(props: {
                               ...(contactEmail ? [{ url: `mailto:${contactEmail}`, label: contactEmail }] : []),
                               ...(contactPhone ? [{ url: `tel:${contactPhone}`, label: contactPhone }] : []),
                           ]
-                          : (col.links || []).map((l: { url?: string; label?: string }) => ({ url: l?.url || '#', label: l?.label ?? '' }));
+                          : (col.links || [])
+                                .map((l: { url?: string; label?: string }) => ({ url: l?.url || '#', label: l?.label ?? '' }))
+                                .filter((link) => !isDemosHref(link.url));
                   return { title: col.title ?? '', links };
               });
 
