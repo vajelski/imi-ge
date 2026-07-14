@@ -17,6 +17,7 @@ const AGENCY_NAVIGATION = [
   { href: '/', labels: { ka: 'მთავარი', en: 'Home', ru: 'Главная' } },
   { href: '/services', labels: { ka: 'სერვისები', en: 'Services', ru: 'Услуги' } },
   { href: '/use-cases', labels: { ka: 'გამოყენების სფეროები', en: 'Use cases', ru: 'Кейсы' } },
+  { href: '/projects', labels: { ka: 'პროექტები', en: 'Projects', ru: 'Проекты' } },
   { href: '/blog', labels: { ka: 'ინსაითები', en: 'Insights', ru: 'Инсайты' } },
 ];
 
