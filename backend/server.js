@@ -20,6 +20,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+app.disable('x-powered-by');
 app.use(compression());
 app.use(express.json({ limit: process?.env?.API_PAYLOAD_MAX_SIZE || "7mb" }));
 
@@ -31,6 +32,33 @@ const formLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
 });
+
+const analyzerLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 20,
+  message: { error: 'Too many analysis requests; try again later.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const escapeHtml = (value) => String(value ?? '')
+  .replace(/&/g, '&amp;')
+  .replace(/</g, '&lt;')
+  .replace(/>/g, '&gt;')
+  .replace(/"/g, '&quot;')
+  .replace(/'/g, '&#039;');
+
+const isPublicWebUrl = (value) => {
+  try {
+    const url = new URL(value);
+    if (!['http:', 'https:'].includes(url.protocol) || (url.port && !['80', '443'].includes(url.port))) return false;
+    const host = url.hostname.toLowerCase();
+    if (host === 'localhost' || host.endsWith('.localhost') || host.endsWith('.local') || host === '::1') return false;
+    return !(/^(127|10|0)\.|^192\.168\.|^169\.254\.|^172\.(1[6-9]|2\d|3[0-1])\./.test(host));
+  } catch { return false; }
+};
+
+app.get('/api/health', (_req, res) => res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() }));
 
 // Use __dirname to reliably locate content.json relative to server.js
 const CONTENT_FILE = path.join(__dirname, 'data', 'content.json');
@@ -58,9 +86,15 @@ app.get('/api/content', (req, res) => {
 });
 
 app.post('/api/content', (req, res) => {
+  if (process.env.ALLOW_CONTENT_WRITE !== 'true') {
+    return res.status(403).json({ error: 'Content writes are disabled' });
+  }
   console.log('POST /api/content hit');
   try {
     const newContent = req.body;
+    if (!newContent || typeof newContent !== 'object' || Array.isArray(newContent)) {
+      return res.status(400).json({ error: 'Invalid content payload' });
+    }
     fs.writeFileSync(CONTENT_FILE, JSON.stringify(newContent, null, 2), 'utf8');
     res.json({ success: true, message: 'Content updated successfully' });
   } catch (error) {
@@ -202,10 +236,10 @@ app.post('/api/contact', formLimiter, async (req, res) => {
   }
 });
 
-app.post('/api/analyze', async (req, res) => {
+app.post('/api/analyze', analyzerLimiter, async (req, res) => {
   try {
     const { url } = req.body;
-    if (!url) return res.status(400).json({ error: 'URL required' });
+    if (!url || !isPublicWebUrl(url)) return res.status(400).json({ error: 'A public HTTP(S) URL is required' });
 
     console.log(`Analyzing: ${url}`);
 
@@ -400,7 +434,7 @@ const PORT = process.env.API_BACKEND_PORT || 3003;
 // Production: backend serves API only. Frontend runs via next start -p 3003
 // API is proxied to this backend via Next.js rewrites
 
-const API_BACKEND_HOST = process?.env?.API_BACKEND_HOST || "0.0.0.0";
+const API_BACKEND_HOST = process?.env?.API_BACKEND_HOST || "127.0.0.1";
 const GOOGLE_CLOUD_LOCATION = process?.env?.GOOGLE_CLOUD_LOCATION || '';
 const GOOGLE_CLOUD_PROJECT = process?.env?.GOOGLE_CLOUD_PROJECT || '';
 
@@ -549,6 +583,9 @@ function getRequestHeaders(accessToken) {
 
 // --- Proxy Endpoint ---
 app.post('/api-proxy', async (req, res) => {
+  if (process.env.ENABLE_VERTEX_PROXY !== 'true') {
+    return res.status(404).json({ error: 'Not found' });
+  }
   if (!GOOGLE_CLOUD_PROJECT || !GOOGLE_CLOUD_LOCATION) {
     return res.status(503).json({
       error: 'Vertex AI proxy not configured',

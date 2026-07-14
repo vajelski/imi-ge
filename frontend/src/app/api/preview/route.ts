@@ -1,6 +1,9 @@
 import { draftMode } from 'next/headers'
 import { redirect } from 'next/navigation'
 
+const allowedLocales = new Set(['ka', 'en', 'ru'])
+const safeSegment = /^[a-z0-9-]+$/
+
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url)
     const secret = searchParams.get('secret')
@@ -13,7 +16,7 @@ export async function GET(request: Request) {
 
     const type = searchParams.get('type') || ''
 
-    if (!slug) {
+    if (!slug || !allowedLocales.has(locale) || !safeSegment.test(slug)) {
         return new Response('Missing slug', { status: 400 })
     }
 
@@ -21,6 +24,9 @@ export async function GET(request: Request) {
 
     if (type === 'blogPost') {
         redirect(`/${locale}/blog/${slug}`)
+    }
+    if (type && type !== 'page') {
+        return new Response('Unsupported preview type', { status: 400 })
     }
     redirect(`/${locale}/${slug}`)
 }

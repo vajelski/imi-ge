@@ -8,7 +8,6 @@ const nextConfig: NextConfig = {
     async rewrites() {
         return [
             { source: '/api/:path*', destination: `${BACKEND_URL}/api/:path*` },
-            { source: '/api-proxy', destination: `${BACKEND_URL}/api-proxy` },
         ];
     },
     experimental: {
@@ -67,11 +66,7 @@ const nextConfig: NextConfig = {
                     },
                     {
                         key: 'Content-Security-Policy',
-                        value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: blob:; font-src 'self' data:; connect-src 'self' https://apicdn.sanity.io https://cloudflareinsights.com https://*.cloudflareinsights.com; frame-ancestors 'none';",
-                    },
-                    {
-                        key: 'X-XSS-Protection',
-                        value: '1; mode=block',
+                        value: "default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://cdn.sanity.io; font-src 'self' data:; connect-src 'self' https://apicdn.sanity.io https://cloudflareinsights.com https://*.cloudflareinsights.com; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self';",
                     },
                     {
                         key: 'X-Frame-Options',

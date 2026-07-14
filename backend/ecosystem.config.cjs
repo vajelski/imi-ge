@@ -7,8 +7,7 @@ module.exports = {
         env: {
             NODE_ENV: "production",
             API_BACKEND_PORT: 3004,
-            PSI_API_KEY: "AIzaSyC6DNNVkuZNSgTmUh2ZcsAXubHbPbpevBs",
-            API_BACKEND_HOST: "0.0.0.0",
+            API_BACKEND_HOST: "127.0.0.1",
             GOOGLE_CLOUD_PROJECT: "gen-lang-client-0881542862",
             GOOGLE_CLOUD_LOCATION: "global"
         }
