@@ -1,12 +1,10 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useTranslations, useLocale } from 'next-intl';
+import { useLocale } from 'next-intl';
 import { useSelectedLayoutSegments, useRouter } from 'next/navigation';
 import { Link } from '@/i18n/routing';
-import { Menu, X, Cpu, Sun, Moon, Globe, User, ChevronDown } from 'lucide-react';
-import { getLocalizedValue } from '@/lib/sanity/types';
-import { isDemosHref } from '@/lib/navigationFilters';
+import { Menu, X, Cpu, Sun, Moon, Globe, ArrowUpRight, ChevronDown } from 'lucide-react';
 import type { NavigationItem } from '@/lib/sanity/types';
 
 interface NavbarProps {
@@ -15,19 +13,18 @@ interface NavbarProps {
   siteName?: string;
 }
 
-const FALLBACK_KEYS = ['home', 'about', 'services', 'portfolio', 'blog', 'contact'] as const;
+const AGENCY_NAVIGATION = [
+  { href: '/', labels: { ka: 'მთავარი', en: 'Home', ru: 'Главная' } },
+  { href: '/services', labels: { ka: 'სერვისები', en: 'Services', ru: 'Услуги' } },
+  { href: '/use-cases', labels: { ka: 'გამოყენების სფეროები', en: 'Use cases', ru: 'Кейсы' } },
+  { href: '/blog', labels: { ka: 'ინსაითები', en: 'Insights', ru: 'Инсайты' } },
+];
 
-const Navbar: React.FC<NavbarProps> = ({ navItems, siteName: siteNameProp }) => {
-  const t = useTranslations('navLinks');
-  const commonT = useTranslations('auth');
+const Navbar: React.FC<NavbarProps> = ({ siteName: siteNameProp }) => {
   const locale = useLocale();
   const router = useRouter();
   const siteName = siteNameProp ?? 'იმი.ჯი';
 
-  const displayItems = navItems && navItems.length > 0
-    ? [...navItems].sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-    : null;
-  const filteredDisplayItems = displayItems?.filter((item) => !isDemosHref(item.href || '')) ?? null;
   // useSelectedLayoutSegments avoids pathname null (next-intl's usePathname throws)
   const segments = useSelectedLayoutSegments();
   const pathname = segments.length ? '/' + segments.join('/') : '/';
@@ -43,13 +40,7 @@ const Navbar: React.FC<NavbarProps> = ({ navItems, siteName: siteNameProp }) => 
     const savedTheme = localStorage.getItem('theme');
     const root = document.documentElement;
 
-    const getGeorgiaTheme = () => {
-      const date = new Date();
-      const georgiaHour = parseInt(date.toLocaleString('en-US', { timeZone: 'Asia/Tbilisi', hour: 'numeric', hour12: false }));
-      return (georgiaHour >= 8 && georgiaHour < 20) ? 'light' : 'dark';
-    };
-
-    const initialTheme = savedTheme || getGeorgiaTheme();
+    const initialTheme = savedTheme || 'dark';
     setTheme(initialTheme as 'dark' | 'light');
 
     if (initialTheme === 'dark') {
@@ -87,17 +78,17 @@ const Navbar: React.FC<NavbarProps> = ({ navItems, siteName: siteNameProp }) => 
 
   return (
     <nav className={`fixed w-full z-50 transition-all duration-500 ${scrolled
-      ? 'bg-white/80 dark:bg-darker/80 backdrop-blur-md border-b border-gray-200/50 dark:border-white/5 py-4 shadow-xl'
-      : 'bg-transparent py-8'
+      ? 'bg-[#070914]/85 backdrop-blur-xl border-b border-white/10 py-4 shadow-2xl shadow-black/30'
+      : 'bg-transparent py-7'
       }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-12">
           <div className="flex items-center gap-6">
             <Link href="/" className="flex items-center gap-3 group">
-              <div className="relative p-2.5 bg-primary/10 dark:bg-white/5 rounded-xl border border-primary/20 dark:border-white/10 group-hover:border-primary/50 transition-all duration-300">
+               <div className="relative p-2.5 bg-primary/15 rounded-xl border border-primary/30 group-hover:border-cyan-300/70 transition-all duration-300 neon-ring">
                 <Cpu className="h-6 w-6 text-primary relative z-10" />
               </div>
-              <span className="font-heading font-bold text-xl tracking-widest text-gray-900 dark:text-white group-hover:text-primary transition-colors">
+               <span className="font-heading font-bold text-xl tracking-widest text-white group-hover:text-cyan-200 transition-colors">
                 {siteName}
               </span>
             </Link>
@@ -105,36 +96,18 @@ const Navbar: React.FC<NavbarProps> = ({ navItems, siteName: siteNameProp }) => 
 
           <div className="hidden lg:flex items-center gap-8">
             <div className="flex items-center space-x-8">
-              {filteredDisplayItems
-                ? filteredDisplayItems.map((item) => {
-                    const label = getLocalizedValue(item.label, locale as 'ka' | 'en' | 'ru') || item.href;
+              {AGENCY_NAVIGATION.map((item) => {
                     const active = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
                     return (
                       <Link
                         key={item.href}
                         href={item.href as any}
                         className={`nav-link ${active ? 'nav-link-active' : ''} text-xs font-heading font-bold uppercase tracking-widest transition-all duration-300 ${active
-                          ? 'text-primary'
-                          : 'text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-white'
+                          ? 'text-cyan-200'
+                          : 'text-slate-300 hover:text-white'
                           }`}
                       >
-                        {label}
-                      </Link>
-                    );
-                  })
-                : FALLBACK_KEYS.map((key) => {
-                    const path = key === 'home' ? '/' : `/${key}`;
-                    const active = pathname === path || (path !== '/' && pathname.startsWith(path));
-                    return (
-                      <Link
-                        key={key}
-                        href={path as any}
-                        className={`nav-link ${active ? 'nav-link-active' : ''} text-xs font-heading font-bold uppercase tracking-widest transition-all duration-300 ${active
-                          ? 'text-primary'
-                          : 'text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-white'
-                          }`}
-                      >
-                        {t(key)}
+                        {item.labels[locale as 'ka' | 'en' | 'ru'] ?? item.labels.en}
                       </Link>
                     );
                   })}
@@ -178,11 +151,11 @@ const Navbar: React.FC<NavbarProps> = ({ navItems, siteName: siteNameProp }) => 
             </div>
 
             <Link
-              href="/auth"
-              className="px-6 py-2.5 rounded-xl bg-primary hover:bg-indigo-600 text-white text-xs font-heading font-bold uppercase tracking-widest transition-all duration-300 shadow-lg shadow-primary/20 flex items-center gap-2 transform hover:scale-105 active:scale-95"
+              href="/contact"
+              className="px-5 py-2.5 rounded-xl bg-white text-[#090a12] text-xs font-heading font-bold uppercase tracking-widest transition-all duration-300 shadow-lg shadow-white/10 flex items-center gap-2 hover:bg-cyan-100 hover:-translate-y-0.5"
             >
-              <User className="w-4 h-4" />
-              {commonT('loginButton')}
+              {locale === 'ka' ? 'AI კონსულტაცია' : locale === 'ru' ? 'AI-консультация' : 'AI consultation'}
+              <ArrowUpRight className="w-4 h-4" />
             </Link>
           </div>
 
@@ -206,9 +179,7 @@ const Navbar: React.FC<NavbarProps> = ({ navItems, siteName: siteNameProp }) => 
       {isOpen && (
         <div className="lg:hidden bg-white/95 dark:bg-darker/95 backdrop-blur-lg border-b border-gray-200 dark:border-white/10 absolute w-full shadow-2xl animate-in slide-in-from-top duration-300">
           <div className="px-4 pt-4 pb-8 space-y-2">
-            {filteredDisplayItems
-              ? filteredDisplayItems.map((item) => {
-                  const label = getLocalizedValue(item.label, locale as 'ka' | 'en' | 'ru') || item.href;
+            {AGENCY_NAVIGATION.map((item) => {
                   const active = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
                   return (
                     <Link
@@ -216,28 +187,11 @@ const Navbar: React.FC<NavbarProps> = ({ navItems, siteName: siteNameProp }) => 
                       href={item.href as any}
                       onClick={toggleMenu}
                       className={`block px-4 py-4 rounded-xl text-sm font-heading font-bold uppercase tracking-wider transition-all ${active
-                        ? 'text-primary bg-primary/10 border border-primary/20'
-                        : 'text-gray-700 dark:text-gray-300 hover:text-primary hover:bg-gray-100 dark:hover:bg-white/5'
+                          ? 'text-cyan-200 bg-primary/10 border border-primary/20'
+                          : 'text-slate-200 hover:text-white hover:bg-white/5'
                         }`}
                     >
-                      {label}
-                    </Link>
-                  );
-                })
-              : FALLBACK_KEYS.map((key) => {
-                  const path = key === 'home' ? '/' : `/${key}`;
-                  const active = pathname === path || (path !== '/' && pathname.startsWith(path));
-                  return (
-                    <Link
-                      key={key}
-                      href={path as any}
-                      onClick={toggleMenu}
-                      className={`block px-4 py-4 rounded-xl text-sm font-heading font-bold uppercase tracking-wider transition-all ${active
-                        ? 'text-primary bg-primary/10 border border-primary/20'
-                        : 'text-gray-700 dark:text-gray-300 hover:text-primary hover:bg-gray-100 dark:hover:bg-white/5'
-                        }`}
-                    >
-                      {t(key)}
+                      {item.labels[locale as 'ka' | 'en' | 'ru'] ?? item.labels.en}
                     </Link>
                   );
                 })}
@@ -257,8 +211,8 @@ const Navbar: React.FC<NavbarProps> = ({ navItems, siteName: siteNameProp }) => 
               ))}
             </div>
 
-            <Link href="/auth" onClick={toggleMenu} className="block mt-2 text-center bg-primary text-white px-4 py-4 rounded-xl text-sm font-heading font-bold uppercase tracking-wider shadow-lg shadow-primary/20 hover:bg-indigo-600 transition-colors">
-              {commonT('loginButton')}
+            <Link href="/contact" onClick={toggleMenu} className="block mt-2 text-center bg-white text-[#090a12] px-4 py-4 rounded-xl text-sm font-heading font-bold uppercase tracking-wider shadow-lg shadow-white/10 hover:bg-cyan-100 transition-colors">
+              {locale === 'ka' ? 'AI კონსულტაცია' : locale === 'ru' ? 'AI-консультация' : 'AI consultation'}
             </Link>
           </div>
         </div>

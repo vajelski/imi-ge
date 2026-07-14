@@ -204,15 +204,10 @@ export default async function LocaleLayout(props: {
         sameAs: sameAs.length > 0 ? sameAs : ['https://facebook.com/imi.ge', 'https://linkedin.com/company/imi-ge']
     };
 
-    const themeScript = `(function(){
-var t=localStorage.getItem('theme');
-var d=document.documentElement;
-if(t==='light'){d.classList.remove('dark');}else if(t==='dark'){d.classList.add('dark');}
-else{var h=parseInt(new Date().toLocaleString('en-US',{timeZone:'Asia/Tbilisi',hour:'numeric',hour12:false}));d.classList.toggle('dark',h<8||h>=20);}
-})();`;
+    const themeScript = `(function(){var t=localStorage.getItem('theme');var d=document.documentElement;d.classList.toggle('dark',t!=='light');})();`;
 
     return (
-        <html lang={locale} className="scroll-smooth" suppressHydrationWarning>
+        <html lang={locale} className="dark scroll-smooth" suppressHydrationWarning>
             <head>
                 {/* DNS-prefetch for third-party origins (lightweight, no unused preconnect penalty) */}
                 <link rel="dns-prefetch" href="https://cdn.sanity.io" />
@@ -223,7 +218,7 @@ else{var h=parseInt(new Date().toLocaleString('en-US',{timeZone:'Asia/Tbilisi',h
                 <link rel="preload" href="/fonts/bpg-mrgvlovani-caps.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
                 <script dangerouslySetInnerHTML={{ __html: themeScript }} />
             </head>
-            <body className="min-h-screen bg-gray-50 dark:bg-darker text-gray-900 dark:text-white font-sans selection:bg-primary selection:text-white flex flex-col transition-colors duration-300" suppressHydrationWarning>
+            <body className="min-h-screen bg-darker text-white font-sans selection:bg-primary selection:text-white flex flex-col transition-colors duration-300" suppressHydrationWarning>
                 <GoogleAnalytics />
                 <ScrollTracker />
                 <StructuredData type="Organization" data={orgData} />

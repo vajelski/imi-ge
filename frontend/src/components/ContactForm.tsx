@@ -66,7 +66,13 @@ const ContactForm = () => {
         }
     };
 
-    const interestsNames = ['ვებ-დეველოპმენტი', 'AI ინტეგრაცია', 'მობილური აპლიკაცია', 'აუდიტი', 'სხვა']; // Base keys for selection or just use localized list
+    const interestsNames = [
+        'AI ხმოვანი ასისტენტი ან ჩატბოტი',
+        'RAG / შიდა AI სისტემა',
+        'CRM და ბიზნეს პროცესების ავტომატიზაცია',
+        'AI-Native ვებ-პროდუქტი',
+        'AI სტრატეგია და კონსულტაცია',
+    ];
 
     return (
         <div className="bg-white dark:bg-white/5 p-10 md:p-12 rounded-[3rem] border border-gray-200 dark:border-white/10 shadow-xl relative overflow-hidden animate-in fade-in slide-in-from-right-8 duration-1000">
@@ -120,10 +126,9 @@ const ContactForm = () => {
                 <div className="space-y-2">
                     <span className="text-xs font-heading font-bold text-gray-600 dark:text-gray-300 uppercase tracking-wider ml-1 block">{t('interestLabel')}</span>
                     <div className="flex flex-wrap gap-3">
-                        {[0, 1, 2, 3, 4].map((i) => {
-                            const interest = t(`interests.${i}`);
+                        {interestsNames.map((interest) => {
                             return (
-                                <label key={i} className="cursor-pointer">
+                                <label key={interest} className="cursor-pointer">
                                     <input
                                         type="checkbox"
                                         className="peer sr-only"

@@ -8,12 +8,24 @@
   --font-sans: "BPG Mrgvlovani", sans-serif;
   --font-heading: "BPG Mrgvlovani Caps", sans-serif;
 
-  --color-primary: #6366f1;
-  --color-secondary: #d946ef;
-  --color-accent: #06b6d4;
-  --color-dark: #0B0F19;
-  --color-darker: #050505;
-  --color-surface: #121624;
+  --color-primary: #7c5cff;
+  --color-secondary: #b78cff;
+  --color-accent: #22d3ee;
+  --color-dark: #090a12;
+  --color-darker: #05060a;
+  --color-surface: #111321;
+  --color-panel: #15182a;
+}
+
+:root {
+  --page: #05060a;
+  --surface: rgba(17, 19, 33, 0.72);
+  --surface-strong: #111321;
+  --line: rgba(206, 216, 255, 0.12);
+  --text: #f5f7ff;
+  --muted: #a7b0c8;
+  --violet: #7c5cff;
+  --cyan: #22d3ee;
 }
 
 /* ===== Self-hosted fonts: preloaded + optional (zero CLS, instant on repeat visits) ===== */
@@ -57,11 +69,14 @@
 
 /* ===== Body Base Styles (dark by default) ===== */
 body {
-  background-color: #050505;
-  color: #d1d5db;
+  background:
+    radial-gradient(circle at 18% -8%, rgba(124, 92, 255, 0.2), transparent 30rem),
+    radial-gradient(circle at 90% 6%, rgba(34, 211, 238, 0.12), transparent 28rem),
+    var(--page);
+  color: var(--text);
   transition: background-color 0.3s ease, color 0.3s ease;
   line-height: 1.7;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
 }
 
 html:not(.dark) body {
@@ -103,4 +118,36 @@ h4,
 h5,
 h6 {
   font-family: "BPG Mrgvlovani Caps", sans-serif;
+}
+
+::selection {
+  background: var(--violet);
+  color: white;
+}
+
+.ai-grid {
+  background-image:
+    linear-gradient(rgba(169, 183, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(169, 183, 255, 0.06) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: linear-gradient(to bottom, black, transparent);
+}
+
+.glass-panel {
+  background: linear-gradient(135deg, rgba(30, 34, 57, 0.82), rgba(11, 13, 24, 0.72));
+  border: 1px solid var(--line);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(18px);
+}
+
+.neon-ring {
+  box-shadow: 0 0 0 1px rgba(124, 92, 255, 0.26), 0 0 38px rgba(124, 92, 255, 0.24);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ai-grid { animation: grid-drift 18s linear infinite; }
+}
+
+@keyframes grid-drift {
+  to { background-position: 56px 56px; }
 }
