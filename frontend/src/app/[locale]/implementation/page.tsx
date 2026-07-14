@@ -1,0 +1,15 @@
+import type { Metadata } from 'next';
+import { ArrowUpRight, BadgeCheck, Code2, Eye, LockKeyhole, Rocket } from 'lucide-react';
+import { setRequestLocale } from 'next-intl/server';
+import { Link } from '@/i18n/routing';
+import BreadcrumbStructuredData from '@/components/BreadcrumbStructuredData';
+
+export const metadata: Metadata = { title: 'AI დანერგვის მოდელი', description: 'როგორ ვგეგმავთ, ვაშენებთ და ვუშვებთ უსაფრთხო AI სისტემებს: discovery, architecture, pilot, monitoring და scale.' };
+
+const phases = [[Eye,'Discovery','ვიკვლევთ პროცესს, მომხმარებლის გზას, მონაცემის წყაროსა და KPI-ს.'],[LockKeyhole,'Architecture','ვგეგმავთ ინტეგრაციებს, წვდომას, მონაცემის საზღვრებსა და approval steps-ს.'],[Code2,'Pilot','ვუშვებთ ვიწრო, გაზომვად workflow-ს რეალურ მომხმარებელსა და რეალურ კონტექსტში.'],[Rocket,'Scale','ვაფართოებთ use case-ს, ვამატებთ monitoring-ს და ownership-ს ვაძლევთ თქვენს გუნდს.']];
+
+export default async function ImplementationPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  return <div className="relative overflow-hidden pt-32 pb-24"><BreadcrumbStructuredData locale={locale} items={[{ name: 'მთავარი', path: '' }, { name: 'დანერგვის მოდელი', path: '/implementation' }]} /><section className="mx-auto max-w-7xl px-6 lg:px-8"><p className="text-xs font-bold tracking-[.2em] text-primary">DELIVERY MODEL</p><h1 className="mt-5 max-w-4xl text-4xl font-bold leading-tight text-slate-950 dark:text-white sm:text-6xl">AI დანერგვა არის პროდუქტის განვითარება, არა ერთჯერადი ინტეგრაცია.</h1><p className="mt-7 max-w-3xl text-lg leading-8 text-slate-600 dark:text-slate-300">ჩვენი მოდელი აერთიანებს service design-ს, data governance-ს, engineering-სა და adoption-ს, რათა პილოტი არ დარჩეს isolated demo-დ.</p><div className="mt-14 grid gap-5 md:grid-cols-2 xl:grid-cols-4">{phases.map(([Icon,title,text], index) => { const Component = Icon as typeof Eye; return <article key={title as string} className="glass-panel rounded-3xl p-6"><p className="text-sm font-bold text-primary">0{index + 1}</p><Component className="mt-10 text-primary" size={25}/><h2 className="mt-6 text-xl font-bold text-slate-950 dark:text-white">{title as string}</h2><p className="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">{text as string}</p></article>})}</div><div className="mt-20 rounded-[2rem] border border-primary/25 bg-primary/10 p-8 sm:p-12"><BadgeCheck className="text-primary"/><h2 className="mt-5 text-3xl font-bold text-slate-950 dark:text-white">ხარისხი, უსაფრთხოება და ownership ერთი პროცესია.</h2><p className="mt-4 max-w-2xl leading-8 text-slate-600 dark:text-slate-300">პასუხების სისწორე, fallback სცენარები, მონაცემზე წვდომა და ადამიანის ჩართულობა განისაზღვრება design ეტაპიდან. შედეგად, თქვენი გუნდი იღებს არა მხოლოდ მოდელს, არამედ მართვად სისტემას.</p><Link href="/consultation" className="mt-8 inline-flex items-center gap-2 rounded-xl bg-slate-950 px-6 py-4 text-sm font-bold text-white dark:bg-white dark:text-slate-950">გადავხედოთ თქვენს use case-ს <ArrowUpRight size={18}/></Link></div></section></div>;
+}

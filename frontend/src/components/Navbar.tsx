@@ -152,7 +152,7 @@ const Navbar: React.FC<NavbarProps> = ({ siteName: siteNameProp }) => {
             </div>
 
             <Link
-              href="/contact"
+              href="/consultation"
               className="px-5 py-2.5 rounded-xl bg-white text-[#090a12] text-xs font-heading font-bold uppercase tracking-widest transition-all duration-300 shadow-lg shadow-white/10 flex items-center gap-2 hover:bg-cyan-100 hover:-translate-y-0.5"
             >
               {locale === 'ka' ? 'AI კონსულტაცია' : locale === 'ru' ? 'AI-консультация' : 'AI consultation'}
@@ -212,7 +212,7 @@ const Navbar: React.FC<NavbarProps> = ({ siteName: siteNameProp }) => {
               ))}
             </div>
 
-            <Link href="/contact" onClick={toggleMenu} className="block mt-2 text-center bg-white text-[#090a12] px-4 py-4 rounded-xl text-sm font-heading font-bold uppercase tracking-wider shadow-lg shadow-white/10 hover:bg-cyan-100 transition-colors">
+            <Link href="/consultation" onClick={toggleMenu} className="block mt-2 text-center bg-white text-[#090a12] px-4 py-4 rounded-xl text-sm font-heading font-bold uppercase tracking-wider shadow-lg shadow-white/10 hover:bg-cyan-100 transition-colors">
               {locale === 'ka' ? 'AI კონსულტაცია' : locale === 'ru' ? 'AI-консультация' : 'AI consultation'}
             </Link>
           </div>
