@@ -28,6 +28,15 @@
   --cyan: #22d3ee;
 }
 
+html:not(.dark) {
+  --page: #f6f7fb;
+  --surface: rgba(255, 255, 255, 0.78);
+  --surface-strong: #ffffff;
+  --line: rgba(28, 36, 64, 0.13);
+  --text: #111827;
+  --muted: #536078;
+}
+
 /* ===== Self-hosted fonts: preloaded + optional (zero CLS, instant on repeat visits) ===== */
 @font-face {
   font-family: 'BPG Mrgvlovani Caps';
@@ -80,8 +89,11 @@ body {
 }
 
 html:not(.dark) body {
-  background-color: #f9fafb;
-  color: #111827;
+  background:
+    radial-gradient(circle at 12% -8%, rgba(124, 92, 255, 0.14), transparent 30rem),
+    radial-gradient(circle at 95% 4%, rgba(34, 211, 238, 0.11), transparent 28rem),
+    var(--page);
+  color: var(--text);
 }
 
 /* ===== Nav Link Animation ===== */
@@ -134,10 +146,14 @@ h6 {
 }
 
 .glass-panel {
-  background: linear-gradient(135deg, rgba(30, 34, 57, 0.82), rgba(11, 13, 24, 0.72));
+  background: linear-gradient(135deg, var(--surface), color-mix(in srgb, var(--surface-strong) 78%, transparent));
   border: 1px solid var(--line);
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
   backdrop-filter: blur(18px);
+}
+
+html:not(.dark) .glass-panel {
+  box-shadow: 0 24px 60px rgba(46, 56, 87, 0.1);
 }
 
 .neon-ring {
