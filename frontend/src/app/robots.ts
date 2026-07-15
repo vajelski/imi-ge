@@ -8,7 +8,7 @@ export default function robots(): MetadataRoute.Robots {
             allow: '/',
             disallow: ['/api/', '/cms-preview', '/admin', '/auth', '/ka/cms-preview', '/en/', '/ru/', '/ka/auth'],
         },
-        sitemap: `${SITE_URL}/sitemap.xml`,
+        sitemap: [`${SITE_URL}/sitemap.xml`, `${SITE_URL}/blog/sitemap.xml`, `${SITE_URL}/docs/sitemap.xml`],
         host: SITE_URL,
     };
 }

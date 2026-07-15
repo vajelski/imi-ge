@@ -12,8 +12,7 @@ interface WebSiteStructuredDataProps {
 }
 
 /**
- * WebSite schema with SearchAction (Sitelinks Search Box) for Google
- * @see https://developers.google.com/search/docs/appearance/sitelinks-searchbox
+ * WebSite schema for the Georgian public site.
  */
 const WebSiteStructuredData: React.FC<WebSiteStructuredDataProps> = ({ locale }) => {
   const lang = locale === 'ka' ? 'ka' : locale === 'ru' ? 'ru' : 'en';
@@ -27,14 +26,6 @@ const WebSiteStructuredData: React.FC<WebSiteStructuredDataProps> = ({ locale })
     inLanguage: [lang],
     publisher: {
       '@id': `${SITE_URL}/#organization`,
-    },
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: {
-        '@type': 'EntryPoint',
-        urlTemplate: `${SITE_URL}/${locale}/blog?q={search_term_string}`,
-      },
-      'query-input': 'required name=search_term_string',
     },
   };
 

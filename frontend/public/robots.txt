@@ -1,2 +1,0 @@
-# Imi.ge Robots.txt - Allowed for all
-Sitemap: https://imi.ge/sitemap.xml
