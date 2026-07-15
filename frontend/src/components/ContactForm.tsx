@@ -8,6 +8,7 @@ import { trackEvent } from '@/lib/analytics';
 
 const ContactForm = () => {
     const t = useTranslations('contact');
+    const translatedInterests = (t.raw('interests') as string[]) ?? [];
     const [formData, setFormData] = useState({
         name: '',
         company: '',
@@ -66,12 +67,8 @@ const ContactForm = () => {
         }
     };
 
-    const interestsNames = [
-        'AI ხმოვანი ასისტენტი ან ჩატბოტი',
-        'RAG / შიდა AI სისტემა',
-        'CRM და ბიზნეს პროცესების ავტომატიზაცია',
-        'AI-Native ვებ-პროდუქტი',
-        'AI სტრატეგია და კონსულტაცია',
+    const interestsNames = translatedInterests.length ? translatedInterests : [
+        'AI ხმოვანი ასისტენტი ან ჩატბოტი', 'RAG / შიდა AI სისტემა', 'CRM და ბიზნეს პროცესების ავტომატიზაცია', 'AI-Native ვებ-პროდუქტი', 'AI სტრატეგია და კონსულტაცია',
     ];
 
     return (
