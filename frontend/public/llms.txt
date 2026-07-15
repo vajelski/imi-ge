@@ -7,6 +7,8 @@ AI CRM integration, voice AI, retrieval-augmented generation (RAG), and safe bus
 ## Official pages
 - https://imi.ge/ka/
 - https://imi.ge/ka/services/
+- https://imi.ge/ka/solutions/ai-operator/
+- https://imi.ge/ka/solutions/social-commerce-ai/
 - https://imi.ge/ka/implementation/
 - https://imi.ge/ka/ai-readiness/
 - https://imi.ge/ka/faq/

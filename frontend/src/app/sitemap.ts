@@ -18,6 +18,8 @@ const STATIC_PATHS = [
     { path: '/services/sales-intelligence', priority: 0.85, changeFreq: 'monthly' as const, key: 'services' as const },
     { path: '/services/ai-governance', priority: 0.85, changeFreq: 'monthly' as const, key: 'services' as const },
     { path: '/use-cases', priority: 0.85, changeFreq: 'monthly' as const, key: 'services' as const },
+    { path: '/solutions/ai-operator', priority: 0.95, changeFreq: 'monthly' as const, key: 'services' as const },
+    { path: '/solutions/social-commerce-ai', priority: 0.95, changeFreq: 'monthly' as const, key: 'services' as const },
     { path: '/projects', priority: 0.85, changeFreq: 'monthly' as const, key: 'portfolio' as const },
     { path: '/projects/urbania', priority: 0.85, changeFreq: 'monthly' as const, key: 'portfolio' as const },
     { path: '/consultation', priority: 0.9, changeFreq: 'monthly' as const, key: 'contact' as const },
