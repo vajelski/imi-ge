@@ -8,24 +8,24 @@
   --font-sans: "Google Sans", sans-serif;
   --font-heading: "BPG Mrgvlovani Caps", "Google Sans", sans-serif;
 
-  --color-primary: #4f46e5;
-  --color-secondary: #0f9f8d;
-  --color-accent: #0891b2;
-  --color-dark: #0b1220;
-  --color-darker: #07111f;
-  --color-surface: #111c2e;
-  --color-panel: #17243a;
+  --color-primary: #ff5c35;
+  --color-secondary: #c8ff54;
+  --color-accent: #2dd4bf;
+  --color-dark: #071a3d;
+  --color-darker: #04132e;
+  --color-surface: #0b2553;
+  --color-panel: #103069;
 }
 
 :root {
-  --page: #07111f;
-  --surface: rgba(17, 28, 46, 0.78);
-  --surface-strong: #111c2e;
-  --line: rgba(203, 213, 225, 0.14);
-  --text: #f8fafc;
-  --muted: #a8b5c7;
-  --violet: #4f46e5;
-  --cyan: #22b8c7;
+  --page: #04132e;
+  --surface: rgba(11, 37, 83, 0.78);
+  --surface-strong: #0b2553;
+  --line: rgba(226, 232, 240, 0.14);
+  --text: #fffaf4;
+  --muted: #b6c2d7;
+  --violet: #ff5c35;
+  --cyan: #2dd4bf;
 }
 
 html,
@@ -35,11 +35,11 @@ body {
 }
 
 html:not(.dark) {
-  --page: #f7f9fc;
-  --surface: rgba(255, 255, 255, 0.88);
-  --surface-strong: #ffffff;
-  --line: rgba(30, 41, 59, 0.12);
-  --text: #172033;
+  --page: #f8f3eb;
+  --surface: rgba(255, 253, 249, 0.9);
+  --surface-strong: #fffdf9;
+  --line: rgba(7, 26, 61, 0.13);
+  --text: #071a3d;
   --muted: #526075;
 }
 
@@ -79,8 +79,8 @@ body {
   font-optical-sizing: auto;
   font-synthesis: none;
   background:
-    radial-gradient(circle at 18% -8%, rgba(79, 70, 229, 0.2), transparent 30rem),
-    radial-gradient(circle at 90% 6%, rgba(15, 159, 141, 0.13), transparent 28rem),
+    radial-gradient(circle at 18% -8%, rgba(255, 92, 53, 0.28), transparent 30rem),
+    radial-gradient(circle at 90% 6%, rgba(200, 255, 84, 0.12), transparent 28rem),
     var(--page);
   color: var(--text);
   transition: background-color 0.3s ease, color 0.3s ease;
@@ -90,8 +90,8 @@ body {
 
 html:not(.dark) body {
   background:
-    radial-gradient(circle at 12% -8%, rgba(79, 70, 229, 0.12), transparent 30rem),
-    radial-gradient(circle at 95% 4%, rgba(15, 159, 141, 0.1), transparent 28rem),
+    radial-gradient(circle at 12% -8%, rgba(255, 92, 53, 0.12), transparent 30rem),
+    radial-gradient(circle at 95% 4%, rgba(45, 212, 191, 0.1), transparent 28rem),
     var(--page);
   color: var(--text);
 }
@@ -207,7 +207,7 @@ html:not(.dark) .urbania-page [class*="border-white"] {
 }
 
 .neon-ring {
-  box-shadow: 0 0 0 1px rgba(79, 70, 229, 0.25), 0 0 38px rgba(15, 159, 141, 0.18);
+  box-shadow: 0 0 0 1px rgba(255, 92, 53, 0.28), 0 0 38px rgba(45, 212, 191, 0.18);
 }
 
 html:not(.dark) .site-footer {
