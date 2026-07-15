@@ -6,6 +6,7 @@ import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import UnDrawPageArt from '@/components/UnDrawPageArt';
 import LazyCookieConsent from '@/components/LazyCookieConsent';
 import GoogleAnalytics from '@/components/GoogleAnalytics';
 import ScrollTracker from '@/components/ScrollTracker';
@@ -225,6 +226,7 @@ export default async function LocaleLayout(props: {
                 <WebSiteStructuredData locale={locale} />
                 <NextIntlClientProvider locale={locale} messages={messages}>
                     <Navbar navItems={navItems} siteName={siteNameResolved} />
+                    <UnDrawPageArt />
                     <main className="flex-grow">
                         {children}
                     </main>

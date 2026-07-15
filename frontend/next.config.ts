@@ -66,7 +66,7 @@ const nextConfig: NextConfig = {
                     },
                     {
                         key: 'Content-Security-Policy',
-                        value: "default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com https://vercel.live; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https://cdn.sanity.io https://vercel.live; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://apicdn.sanity.io https://cloudflareinsights.com https://*.cloudflareinsights.com https://vercel.live wss://vercel.live; frame-src 'self' https://vercel.live; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self';",
+                        value: "default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com https://vercel.live; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https://cdn.sanity.io https://cdn.undraw.co https://vercel.live; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://apicdn.sanity.io https://cloudflareinsights.com https://*.cloudflareinsights.com https://vercel.live wss://vercel.live; frame-src 'self' https://vercel.live; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self';",
                     },
                     {
                         key: 'X-Frame-Options',
