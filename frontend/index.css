@@ -276,6 +276,53 @@ html:not(.dark) .site-footer .footer-cta .bg-white {
   color: #ffffff !important;
 }
 
+.site-footer .footer-link {
+  position: relative;
+  width: fit-content;
+  transition: color 180ms ease, transform 180ms ease;
+}
+
+.site-footer .footer-link::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: -4px;
+  left: 0;
+  height: 1px;
+  transform: scaleX(0);
+  transform-origin: right;
+  background: currentColor;
+  transition: transform 180ms ease;
+}
+
+.site-footer .footer-link:hover {
+  color: #ffffff;
+  transform: translateX(2px);
+}
+
+.site-footer .footer-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.site-footer .footer-contact {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 0.6rem;
+  transition: color 180ms ease, transform 180ms ease;
+}
+
+.site-footer .footer-contact:hover {
+  color: #ffffff;
+  transform: translateX(2px);
+}
+
+html:not(.dark) .site-footer .footer-link:hover,
+html:not(.dark) .site-footer .footer-contact:hover {
+  color: #171717;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .ai-grid { animation: grid-drift 18s linear infinite; }
 }
