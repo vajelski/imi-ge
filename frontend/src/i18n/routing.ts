@@ -1,4 +1,5 @@
 import { defineRouting } from 'next-intl/routing';
+import { getLocalizedPath } from './path';
 
 export const routing = defineRouting({
     locales: ['ka', 'en', 'ru'],
@@ -7,15 +8,6 @@ export const routing = defineRouting({
 });
 
 // Custom getPathname — createNavigation causes "pathname" null crash during SSR
-export function getPathname({
-    locale,
-    href,
-}: {
-    locale: 'ka' | 'en' | 'ru';
-    href: string;
-}): string {
-    const path = href === '/' ? '' : href;
-    return `/${locale}${path}`;
-}
+export const getPathname = ({ locale, href }: { locale: 'ka' | 'en' | 'ru'; href: string }) => getLocalizedPath(locale, href);
 
 export { LocalizedLink as Link } from '@/components/LocalizedLink';

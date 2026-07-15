@@ -2,7 +2,7 @@
 
 import NextLink from 'next/link';
 import { useLocale } from 'next-intl';
-import { getPathname } from '@/i18n/routing';
+import { getLocalizedPath } from '@/i18n/path';
 import type { ComponentProps } from 'react';
 
 /**
@@ -15,6 +15,6 @@ export function LocalizedLink({
   ...props
 }: Omit<ComponentProps<typeof NextLink>, 'href'> & { href: string }) {
   const locale = useLocale();
-  const resolvedHref = getPathname({ locale: locale as 'ka' | 'en' | 'ru', href });
+  const resolvedHref = getLocalizedPath(locale as 'ka' | 'en' | 'ru', href);
   return <NextLink href={resolvedHref} {...props} />;
 }
