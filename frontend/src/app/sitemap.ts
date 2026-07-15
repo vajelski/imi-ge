@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next';
 import { getBlogPosts, getSiteSettings } from '@/lib/sanity/queries';
 import { SITE_URL } from '@/lib/seo/constants';
+import { insights } from '@/data/insights';
 
 const LOCALES = ['ka', 'en', 'ru'] as const;
 const STATIC_PATHS = [
@@ -82,6 +83,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
                     languages: Object.fromEntries(
                         LOCALES.map((l) => [l, `${SITE_URL}/${l}${path}`])
                     ) as Record<string, string>,
+                },
+            });
+        }
+    }
+
+    for (const locale of LOCALES) {
+        for (const insight of insights) {
+            const path = `/blog/${insight.slug}`;
+            entries.push({
+                url: `${SITE_URL}/${locale}${path}`,
+                lastModified: new Date(insight.date),
+                changeFrequency: 'monthly',
+                priority: 0.75,
+                alternates: {
+                    languages: Object.fromEntries(LOCALES.map((l) => [l, `${SITE_URL}/${l}${path}`])) as Record<string, string>,
                 },
             });
         }
