@@ -46,7 +46,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             <div className="grid gap-4 sm:grid-cols-[1.1fr_.9fr]">
               <div className="rounded-[1.5rem] border border-black/10 bg-white p-5 text-[#171717] dark:border-white/10 dark:bg-[#0d0d0d] dark:text-white">
                 <p className="font-heading text-xs font-bold tracking-[.14em] text-neutral-500">თქვენი AI სამუშაო სივრცე</p>
-                <blockquote className="mt-8 max-w-[28rem] text-lg font-medium leading-[1.55] tracking-[-.02em] sm:text-xl">„გვჭირდება სისტემა, რომელიც გაყიდვების მოთხოვნებს გაიგებს და გუნდს სწორ ადამიანს მიუთითებს.“</blockquote>
+                <blockquote className="mt-8 max-w-[28rem] text-lg font-medium leading-[1.55] tracking-[-.02em] sm:text-xl">„გვჭირდება სისტემა, რომელიც გაყიდვების მოთხოვნას გაიგებს და სწორ ადამიანთან გადაამისამართებს.“</blockquote>
                 <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-black/10 pt-4 text-sm text-neutral-500 dark:border-white/10"><span>AI CRM / გაყიდვები</span><span className="font-heading text-[#171717] dark:text-white">მოქმედება მზადაა</span></div>
               </div>
               <div className="undraw-hero-illustration overflow-hidden rounded-[1.5rem] border border-black/10 bg-[#ececec] p-3 dark:border-white/10 dark:bg-[#202020]"><img src="https://cdn.undraw.co/illustration/tech-keynote_ytf3.svg" alt="AI სამუშაო სივრცის ილუსტრაცია" loading="eager" decoding="async" /></div>
