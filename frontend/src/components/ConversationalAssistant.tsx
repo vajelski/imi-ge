@@ -7,8 +7,8 @@ type Message = { role: 'user' | 'model'; text: string };
 
 const starter: Message = { role: 'model', text: 'გამარჯობა. მე IMI.GE-ის AI ასისტენტი ვარ. მომიყევით, რომელი პროცესის გაუმჯობესება გსურთ და დაგეხმარებით სწორი მიმართულების შერჩევაში.' };
 
-export default function ConversationalAssistant() {
-  const [messages, setMessages] = useState<Message[]>([starter]);
+export default function ConversationalAssistant({ locale = 'ka' }: { locale?: 'ka' | 'en' }) {
+  const [messages, setMessages] = useState<Message[]>([locale === 'en' ? { role: 'model', text: "Hello. I’m IMI.GE’s AI assistant. Tell me which business process you want to improve." } : starter]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
@@ -25,7 +25,7 @@ export default function ConversationalAssistant() {
     setInput('');
     setLoading(true);
     try {
-      const response = await fetch('/api/assistant', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: [...history.map((message) => ({ role: message.role === 'model' ? 'assistant' : 'user', content: message.text })), { role: 'user', content: text }] }) });
+      const response = await fetch('/api/assistant', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ locale, messages: [...history.map((message) => ({ role: message.role === 'model' ? 'assistant' : 'user', content: message.text })), { role: 'user', content: text }] }) });
       const data = await response.json() as { message?: string; error?: string };
       if (!response.ok || !data.message) throw new Error(data.error ?? 'Assistant error');
       setMessages((current) => [...current, { role: 'model', text: data.message! }]);
