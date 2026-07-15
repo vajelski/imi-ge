@@ -6,7 +6,7 @@
 /* ===== Theme Configuration (Tailwind v4) ===== */
 @theme {
   --font-sans: "Google Sans", sans-serif;
-  --font-heading: "Google Sans", sans-serif;
+  --font-heading: "BPG Mrgvlovani Caps", "Google Sans", sans-serif;
 
   --color-primary: #7c5cff;
   --color-secondary: #b78cff;
@@ -35,6 +35,14 @@ html:not(.dark) {
   --line: rgba(28, 36, 64, 0.13);
   --text: #111827;
   --muted: #536078;
+}
+
+@font-face {
+  font-family: "BPG Mrgvlovani Caps";
+  src: url("/fonts/bpg-mrgvlovani-caps.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
 /* ===== Scrollbar Styling ===== */
@@ -115,7 +123,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Google Sans", sans-serif;
+  font-family: "BPG Mrgvlovani Caps", "Google Sans", sans-serif;
 }
 
 ::selection {

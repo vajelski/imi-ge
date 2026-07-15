@@ -216,6 +216,7 @@ export default async function LocaleLayout(props: {
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
                 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap" />
+                <link rel="preload" href="/fonts/bpg-mrgvlovani-caps.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
                 <script dangerouslySetInnerHTML={{ __html: themeScript }} />
             </head>
             <body className="min-h-screen bg-darker text-white font-sans selection:bg-primary selection:text-white flex flex-col transition-colors duration-300" suppressHydrationWarning>

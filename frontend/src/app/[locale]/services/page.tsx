@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
-import { ArrowUpRight, Bot, Code2, Database, Headphones, ShieldCheck, Workflow } from 'lucide-react';
+import { ArrowUpRight, Bot, Code2, Database, Headphones, ShieldCheck, UsersRound, Workflow } from 'lucide-react';
 import { setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/routing';
 
 export const metadata: Metadata = {
   title: 'AI სერვისები ბიზნესისთვის',
-  description: 'ხმოვანი AI, RAG სისტემები, CRM ავტომატიზაცია და AI-ზე დაფუძნებული ვებ-პროდუქტები საქართველოს ბიზნესებისთვის.',
+  description: 'ხმოვანი AI, RAG სისტემები, AI CRM ინტეგრაცია, გაყიდვების ავტომატიზაცია და AI-ზე დაფუძნებული ვებ-პროდუქტები საქართველოს ბიზნესებისთვის.',
 };
 
 const services = [
@@ -13,6 +13,10 @@ const services = [
   { href: '/services/rag-internal-ai', icon: Database, label: 'ცოდნის AI', title: 'RAG და შიდა AI სისტემები', description: 'ენის მოდელი, რომელიც უსაფრთხოდ მუშაობს თქვენს დოკუმენტებთან, წესებთან, CRM-სა და ცოდნის ბაზასთან.', outputs: ['როლებზე დაფუძნებული წვდომა', 'წყაროზე მიბმული პასუხები', 'შიდა პროცესების ავტომატიზაცია'] },
   { href: '/services/business-automation', icon: Workflow, label: 'ოპერაციული AI', title: 'ბიზნეს პროცესების ავტომატიზაცია', description: 'AI აგენტები, რომლებიც ამუშავებენ განმეორებად დავალებებს, აკონტროლებენ SLA-ს და ადამიანურ გუნდს რთულ ნაწილზე ტოვებენ.', outputs: ['ლიდების გადანაწილება', 'დოკუმენტების დამუშავება', 'ოპერაციული შეტყობინებები'] },
   { href: '/services/ai-native-web', icon: Code2, label: 'პროდუქტის ინჟინერია', title: 'AI-ზე დაფუძნებული ვებ-პროდუქტები', description: 'სწრაფი საიტები და ვებ-აპლიკაციები, სადაც AI ფუნქცია არქიტექტურის ორგანული ნაწილია და არა ზედაპირული დამატება.', outputs: ['კონვერსიაზე ორიენტირებული UX', 'დაცული backend პროცესები', 'წარმადობის მონიტორინგი'] },
+  { href: '/services/ai-crm-integration', icon: UsersRound, label: 'AI CRM', title: 'AI CRM ინტეგრაცია და ოპტიმიზაცია', description: 'ვაშენებთ AI ფენას თქვენს არსებულ CRM-ში, რათა ლიდები ავტომატურად შეფასდეს, გაყიდვების გუნდი სწორ დროს მიიღებდეს სწორ კონტექსტს და მონაცემი მოქმედებად გადაიქცეს.', outputs: ['ლიდების შეფასება', 'შემდეგი ნაბიჯის რეკომენდაცია', 'CRM მონაცემის გამდიდრება'] },
+  { href: '/services/ai-first-crm', icon: Workflow, label: 'CRM ტრანსფორმაცია', title: 'კომპანიის AI-first CRM-ზე გადაყვანა', description: 'თუ არსებული CRM ბიზნესს აღარ შეესაბამება, ვგეგმავთ გადასვლას, მონაცემის მიგრაციასა და ახალ AI-first ოპერაციულ მოდელს ისე, რომ გაყიდვები და მომსახურება არ გაჩერდეს.', outputs: ['CRM სტრატეგია და არქიტექტურა', 'მონაცემის უსაფრთხო მიგრაცია', 'AI პროცესები თავიდანვე'] },
+  { href: '/services/sales-intelligence', icon: Database, label: 'გაყიდვების ინტელექტი', title: 'AI გაყიდვების ინტელექტი და პროგნოზირება', description: 'AI აერთიანებს ლიდების, ზარების, წერილებისა და CRM მონაცემს, რათა გაყიდვების გუნდმა სწრაფად დაინახოს პრიორიტეტი, რისკი და მომდევნო საუკეთესო მოქმედება.', outputs: ['გაყიდვების პროგნოზი', 'გარიგების რისკის სიგნალები', 'მომდევნო ნაბიჯის რეკომენდაცია'] },
+  { href: '/services/ai-governance', icon: ShieldCheck, label: 'AI უსაფრთხოება', title: 'AI Governance და უსაფრთხო დანერგვა', description: 'ვადგენთ მონაცემის, წვდომის, ხარისხის შემოწმებისა და ადამიანის კონტროლის წესებს, რათა AI სისტემები წარმოებაში მართვადი და უსაფრთხო იყოს.', outputs: ['წვდომისა და მონაცემის წესები', 'ხარისხის მონიტორინგი', 'ადამიანის დამტკიცების ეტაპები'] },
 ];
 
 export default async function ServicesPage({ params }: { params: Promise<{ locale: string }> }) {
