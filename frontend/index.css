@@ -28,6 +28,12 @@
   --cyan: #22d3ee;
 }
 
+html,
+body {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
 html:not(.dark) {
   --page: #f6f7fb;
   --surface: rgba(255, 255, 255, 0.78);
@@ -114,6 +120,11 @@ html:not(.dark) body {
 
 /* ===== Typography ===== */
 .font-heading {
+  letter-spacing: -0.01em;
+}
+
+.font-caps {
+  font-family: "BPG Mrgvlovani Caps", "Google Sans", sans-serif;
   letter-spacing: -0.01em;
 }
 
