@@ -60,7 +60,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             if (key === 'blog' && !enableBlog) continue;
             entries.push({
                 url: `${SITE_URL}/${locale}${path}`,
-                lastModified: new Date(),
                 changeFrequency: changeFreq,
                 priority,
                 alternates: {

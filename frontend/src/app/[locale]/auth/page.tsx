@@ -3,8 +3,9 @@ import { Metadata } from 'next';
 import AuthView from '@/components/AuthView';
 
 export const metadata: Metadata = {
-    title: 'Login / Register — IMI.GE',
-    description: 'Access your IMI.GE account to manage services, view analytics, and more.',
+    title: 'ანგარიშზე შესვლა',
+    description: 'IMI.GE ანგარიშზე შესვლა.',
+    robots: { index: false, follow: false, googleBot: { index: false, follow: false } },
 };
 
 const AuthPage = async () => {

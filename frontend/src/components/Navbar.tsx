@@ -17,6 +17,8 @@ const navigation = [
   { href: '/use-cases', label: 'სფეროები', marker: '03' },
   { href: '/projects', label: 'პროექტები', marker: '04' },
   { href: '/blog', label: 'ინსაითები', marker: '05' },
+  { href: '/docs', label: 'დოკუმენტაცია', marker: '06' },
+  { href: '/faq', label: 'კითხვები', marker: '07' },
 ];
 
 export default function Navbar({ siteName = 'იმი.ჯი' }: NavbarProps) {
