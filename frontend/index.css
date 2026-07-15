@@ -148,8 +148,13 @@ h6 {
 }
 
 ::selection {
-  background: var(--violet);
-  color: white;
+  background: #171717;
+  color: #ffffff;
+}
+
+html:not(.dark) ::selection {
+  background: #171717;
+  color: #ffffff;
 }
 
 .ai-grid {
@@ -353,6 +358,46 @@ html:not(.dark) .site-footer .footer-contact:hover {
 
 .undraw-hero-illustration:hover img {
   transform: scale(1.04) rotate(-1deg);
+}
+
+.home-vector {
+  display: block;
+  width: 100%;
+  object-fit: contain;
+  filter: grayscale(1) contrast(1.04);
+}
+
+.hero-vector {
+  height: 15rem;
+}
+
+.workflow-vector {
+  max-width: 18rem;
+  height: 10rem;
+  filter: grayscale(1) brightness(1.8) contrast(0.9);
+}
+
+.products-vector {
+  height: 8rem;
+  opacity: 0.72;
+}
+
+html:not(.dark) .products-vector {
+  filter: grayscale(1) contrast(1.08);
+}
+
+@media (max-width: 639px) {
+  .hero-vector {
+    height: 11rem;
+  }
+
+  .workflow-vector {
+    height: 8rem;
+  }
+
+  .products-vector {
+    height: 6rem;
+  }
 }
 
 .undraw-page-art:hover {
