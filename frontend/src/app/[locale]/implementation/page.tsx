@@ -4,9 +4,9 @@ import { setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/routing';
 import BreadcrumbStructuredData from '@/components/BreadcrumbStructuredData';
 
-export const metadata: Metadata = { title: 'AI დანერგვის მოდელი', description: 'როგორ ვგეგმავთ, ვაშენებთ და ვუშვებთ უსაფრთხო AI სისტემებს: discovery, architecture, pilot, monitoring და scale.' };
+export const metadata: Metadata = { title: 'AI დანერგვის მოდელი', description: 'როგორ ვგეგმავთ, ვაშენებთ და ვუშვებთ უსაფრთხო AI სისტემებს: აღმოჩენა, არქიტექტურა, პილოტი, მონიტორინგი და მასშტაბირება.' };
 
-const phases = [[Eye,'Discovery','ვიკვლევთ პროცესს, მომხმარებლის გზას, მონაცემის წყაროსა და KPI-ს.'],[LockKeyhole,'Architecture','ვგეგმავთ ინტეგრაციებს, წვდომას, მონაცემის საზღვრებსა და approval steps-ს.'],[Code2,'Pilot','ვუშვებთ ვიწრო, გაზომვად workflow-ს რეალურ მომხმარებელსა და რეალურ კონტექსტში.'],[Rocket,'Scale','ვაფართოებთ use case-ს, ვამატებთ monitoring-ს და ownership-ს ვაძლევთ თქვენს გუნდს.']];
+const phases = [[Eye,'აღმოჩენა','ვიკვლევთ პროცესს, მომხმარებლის გზას, მონაცემის წყაროსა და KPI-ს.'],[LockKeyhole,'არქიტექტურა','ვგეგმავთ ინტეგრაციებს, წვდომას, მონაცემის საზღვრებსა და დამტკიცების ეტაპებს.'],[Code2,'პილოტი','ვუშვებთ ვიწრო, გაზომვად სამუშაო პროცესს რეალურ მომხმარებელსა და რეალურ კონტექსტში.'],[Rocket,'მასშტაბირება','ვაფართოებთ გამოყენების შემთხვევას, ვამატებთ მონიტორინგს და პასუხისმგებლობას თქვენს გუნდს ვანიჭებთ.']];
 
 export default async function ImplementationPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;

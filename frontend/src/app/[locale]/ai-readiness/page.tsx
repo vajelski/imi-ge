@@ -4,10 +4,10 @@ import { setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/routing';
 import BreadcrumbStructuredData from '@/components/BreadcrumbStructuredData';
 
-export const metadata: Metadata = { title: 'AI Readiness Assessment', description: 'შეაფასეთ რამდენად მზად არის თქვენი კომპანია AI voice, RAG, automation ან AI-native product-ის დანერგვისთვის.' };
+export const metadata: Metadata = { title: 'AI მზადყოფნის შეფასება', description: 'შეაფასეთ, რამდენად მზად არის თქვენი კომპანია ხმოვანი AI-ის, RAG-ის, ავტომატიზაციის ან AI-ზე დაფუძნებული პროდუქტის დანერგვისთვის.' };
 
 const checks = [
-  ['პროცესი', 'არსებობს განმეორებადი workflow, რომელსაც დღეს გუნდი ხელით მართავს?'],
+  ['პროცესი', 'არსებობს განმეორებადი სამუშაო პროცესი, რომელსაც დღეს გუნდი ხელით მართავს?'],
   ['მონაცემები', 'ცოდნა, დოკუმენტები ან CRM ჩანაწერები საკმარისად ორგანიზებულია?'],
   ['Ownership', 'ვინ ამოწმებს AI-ის პასუხს და მართავს პროცესის ხარისხს?'],
   ['ინტეგრაცია', 'რომელი სისტემები უნდა დაუკავშირდეს პირველ პილოტს?'],
