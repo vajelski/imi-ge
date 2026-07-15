@@ -65,9 +65,8 @@ export default function Footer({ siteSettings, footerColumns, footerBottomLinks,
 
   const labels = routeLabels[locale];
   const routes = ['/services/ai-crm-integration', '/services/ai-voice-agents', '/services/rag-internal-ai', '/ai-readiness'];
-  const contact = siteSettings?.contacts ?? siteSettings?.contact;
-  const email = contact?.primaryEmail ?? contact?.email;
-  const phone = contact?.primaryPhone ?? contact?.phone;
+  const email = siteSettings?.contacts?.primaryEmail ?? siteSettings?.contact?.email ?? 'hello@imi.ge';
+  const phone = siteSettings?.contacts?.primaryPhone ?? siteSettings?.contact?.phone ?? '555904011';
   const columns = footerColumns?.length
     ? footerColumns
     : fallbackColumns[locale].map((column) => ({
