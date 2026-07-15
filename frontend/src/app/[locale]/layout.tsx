@@ -77,10 +77,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
             title,
             description,
         },
-        alternates: {
-            canonical: base,
-            languages: { 'x-default': `${SITE_URL}/en`, ka: `${SITE_URL}/ka`, en: `${SITE_URL}/en`, ru: `${SITE_URL}/ru` },
-        },
+        alternates: { canonical: base },
         robots: {
             index: true,
             follow: true,
@@ -96,8 +93,8 @@ export function generateViewport() {
         width: 'device-width',
         initialScale: 1,
         themeColor: [
-            { media: '(prefers-color-scheme: light)', color: '#f9fafb' },
-            { media: '(prefers-color-scheme: dark)', color: '#050505' },
+            { media: '(prefers-color-scheme: light)', color: '#f7f9fc' },
+            { media: '(prefers-color-scheme: dark)', color: '#07111f' },
         ],
     };
 }
@@ -198,9 +195,11 @@ export default async function LocaleLayout(props: {
                 ...(telephone && { telephone }),
                 ...(email && { email }),
                 contactType: 'customer service',
-                availableLanguage: ['Georgian', 'English', 'Russian']
+                availableLanguage: ['Georgian']
             }
         } : {}),
+        areaServed: { '@type': 'Country', name: 'საქართველო' },
+        knowsAbout: ['ხელოვნური ინტელექტი', 'AI CRM ინტეგრაცია', 'RAG სისტემები', 'ხმოვანი AI', 'ბიზნეს პროცესების ავტომატიზაცია'],
         sameAs: sameAs.length > 0 ? sameAs : ['https://facebook.com/imi.ge', 'https://linkedin.com/company/imi-ge']
     };
 

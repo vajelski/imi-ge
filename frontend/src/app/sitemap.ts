@@ -3,7 +3,8 @@ import { getBlogPosts, getSiteSettings } from '@/lib/sanity/queries';
 import { SITE_URL } from '@/lib/seo/constants';
 import { insights } from '@/data/insights';
 
-const LOCALES = ['ka', 'en', 'ru'] as const;
+// The public experience is Georgian-only. English and Russian legacy URLs redirect to /ka.
+const LOCALES = ['ka'] as const;
 const STATIC_PATHS = [
     { path: '', priority: 1, changeFreq: 'daily' as const, key: 'home' as const },
     { path: '/about', priority: 0.9, changeFreq: 'monthly' as const, key: 'about' as const },

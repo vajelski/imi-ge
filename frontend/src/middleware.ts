@@ -5,6 +5,13 @@ import { routing } from './i18n/routing';
 const intlMiddleware = createMiddleware(routing);
 
 export default function middleware(req: NextRequest) {
+    const localeRedirect = req.nextUrl.pathname.match(/^\/(en|ru)(\/.*)?$/);
+    if (localeRedirect) {
+        const url = req.nextUrl.clone();
+        url.pathname = `/ka${localeRedirect[2] ?? ''}`;
+        return NextResponse.redirect(url, 308);
+    }
+
     const res = intlMiddleware(req);
     // cms-preview და სხვა დინამიური გვერდები — ქეშის გარეშე (404 არ იკეშება)
     const path = req.nextUrl.pathname;
