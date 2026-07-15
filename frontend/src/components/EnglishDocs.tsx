@@ -1,0 +1,8 @@
+import { ArrowUpRight, BookOpen } from 'lucide-react';
+import { Link } from '@/i18n/routing';
+
+const docs = [['ai-readiness', 'AI readiness guide', 'How to assess process, data, ownership, and outcomes before an AI pilot.'], ['rag-systems', 'RAG systems guide', 'Grounded company knowledge, source-linked answers, and access control.'], ['voice-ai', 'Voice AI guide', 'How to plan a Georgian or multilingual voice assistant for support and sales.'], ['ai-governance', 'AI governance guide', 'Access, quality, data boundaries, and human control for production AI.']];
+
+export default function EnglishDocs() {
+  return <main className="mx-auto max-w-6xl px-6 pb-24 pt-32 lg:px-8"><p className="font-heading text-xs font-bold tracking-[.16em] text-primary">IMI.GE DOCUMENTATION</p><h1 className="mt-5 text-4xl font-semibold tracking-[-.04em] text-slate-950 dark:text-white sm:text-6xl">Practical guides for AI systems.</h1><p className="mt-6 max-w-3xl text-lg leading-8 text-slate-600 dark:text-slate-300">Public guidance for planning, deploying, and evaluating AI systems in business operations.</p><div className="mt-14 grid gap-4 md:grid-cols-2">{docs.map(([slug, title, description]) => <Link key={slug} href={`/docs/${slug}`} className="group rounded-[1.75rem] border border-black/15 p-6 transition hover:bg-black hover:text-white dark:border-white/15 dark:hover:bg-white dark:hover:text-black"><BookOpen size={22}/><h2 className="mt-12 text-xl font-semibold">{title}</h2><p className="mt-3 text-sm leading-7 text-neutral-600 group-hover:text-neutral-300 dark:text-neutral-400">{description}</p><span className="font-heading mt-7 inline-flex items-center gap-2 text-sm font-bold">Read guide <ArrowUpRight size={16}/></span></Link>)}</div></main>;
+}

@@ -41,6 +41,14 @@ const useCases = [
     outcome: 'დაცული ცოდნის ძიება, აუდიტის კვალით და როლებზე დაფუძნებული წვდომით',
   },
 ];
+const englishUseCases = [
+  { icon: Building2, title: 'Corporate operations', description: 'Unify CRM, documents, and internal processes so teams can reach decisions faster.', outcome: 'Less manual work and clearer operations' },
+  { icon: Warehouse, title: 'Logistics and field operations', description: 'AI receives requests, checks status, combines operational data, and escalates only exceptions.', outcome: 'Faster coordination and fewer errors' },
+  { icon: Stethoscope, title: 'Healthcare and professional services', description: 'Controlled knowledge access reduces time spent searching rules, documents, and service scenarios.', outcome: 'Consistent answers with controlled access' },
+  { icon: Headphones, title: 'Customer support', description: 'Voice agents and chatbots answer questions, qualify requests, and route complex cases to the right team.', outcome: 'Always-on service without losing quality' },
+  { icon: ShoppingBag, title: 'Sales and ecommerce', description: 'Personalized offers, lead scoring, and automated follow-up help teams respond faster.', outcome: 'Faster response and better use of existing traffic' },
+  { icon: Landmark, title: 'Finance and regulated industries', description: 'Secure RAG systems give staff controlled access to policies, contracts, and internal knowledge.', outcome: 'Auditable knowledge access with role-based controls' },
+];
 
 export const metadata: Metadata = {
   title: 'AI გამოყენების სფეროები',
@@ -50,22 +58,24 @@ export const metadata: Metadata = {
 export default async function UseCasesPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const english = locale === 'en';
+  const activeUseCases = english ? englishUseCases : useCases;
 
   return (
     <div className="relative overflow-hidden pt-32 pb-24">
       <div className="ai-grid pointer-events-none absolute inset-0 -z-10 opacity-70" />
       <section className="mx-auto max-w-7xl px-6 lg:px-8">
-        <p className="mb-6 text-xs font-bold uppercase tracking-[0.24em] text-cyan-700 dark:text-cyan-300">AI IN PRACTICE / 2026</p>
+        <p className="mb-6 text-xs font-bold uppercase tracking-[0.24em] text-primary">{english ? 'AI IN PRACTICE / 2026' : 'AI პრაქტიკაში / 2026'}</p>
         <h1 className="max-w-4xl text-4xl font-bold leading-tight text-slate-950 dark:text-white sm:text-6xl">
-          AI, რომელიც რეალურ ბიზნეს-პროცესებში მუშაობს.
+          {english ? 'AI that works inside real business processes.' : 'AI, რომელიც რეალურ ბიზნეს-პროცესებში მუშაობს.'}
         </h1>
         <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300">
-          არ ვქმნით იზოლირებულ დემოებს. ვაპროექტებთ ინტეგრაციებს, რომლებიც თქვენს მონაცემებს, გუნდებსა და მომხმარებლის გამოცდილებას ერთ სამუშაო სისტემად აერთიანებს.
+          {english ? 'We do not build isolated demos. We design integrations that connect your data, teams, and customer experience into one working system.' : 'არ ვქმნით იზოლირებულ დემოებს. ვაპროექტებთ ინტეგრაციებს, რომლებიც თქვენს მონაცემებს, გუნდებსა და მომხმარებლის გამოცდილებას ერთ სამუშაო სისტემად აერთიანებს.'}
         </p>
       </section>
 
       <section className="mx-auto mt-16 grid max-w-7xl gap-5 px-6 md:grid-cols-2 lg:px-8">
-        {useCases.map(({ icon: Icon, title, description, outcome }) => (
+        {activeUseCases.map(({ icon: Icon, title, description, outcome }) => (
           <article key={title} className="glass-panel group rounded-3xl p-7 transition duration-300 hover:-translate-y-1 hover:border-primary/60">
             <div className="mb-8 flex size-12 items-center justify-center rounded-2xl bg-primary/15 text-cyan-700 dark:text-cyan-200 neon-ring">
               <Icon size={23} />
@@ -80,11 +90,11 @@ export default async function UseCasesPage({ params }: { params: Promise<{ local
       <section className="mx-auto mt-20 max-w-7xl px-6 lg:px-8">
         <div className="glass-panel flex flex-col justify-between gap-8 rounded-3xl p-8 md:flex-row md:items-center md:p-10">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-cyan-700 dark:text-cyan-300">YOUR OPERATING MODEL</p>
-            <h2 className="mt-4 text-2xl font-bold text-slate-950 dark:text-white">დავგეგმოთ თქვენი პირველი AI workflow.</h2>
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">{english ? 'YOUR OPERATING MODEL' : 'თქვენი სამუშაო მოდელი'}</p>
+            <h2 className="mt-4 text-2xl font-bold text-slate-950 dark:text-white">{english ? 'Plan your first AI workflow.' : 'დავგეგმოთ თქვენი პირველი AI workflow.'}</h2>
           </div>
           <Link href="/contact" className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-bold text-[#090a12] transition hover:bg-cyan-100">
-            სტრატეგიული კონსულტაცია <ArrowUpRight size={18} />
+             {english ? 'Strategy consultation' : 'სტრატეგიული კონსულტაცია'} <ArrowUpRight size={18} />
           </Link>
         </div>
       </section>
