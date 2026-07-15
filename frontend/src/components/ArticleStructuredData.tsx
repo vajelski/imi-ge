@@ -8,6 +8,7 @@ interface ArticleStructuredDataProps {
   author?: string | null;
   publishedAt?: string | null;
   url: string;
+  inLanguage?: string;
 }
 
 /**
@@ -21,6 +22,7 @@ const ArticleStructuredData: React.FC<ArticleStructuredDataProps> = ({
   author,
   publishedAt,
   url,
+  inLanguage,
 }) => {
   const data = {
     '@context': 'https://schema.org',
@@ -46,6 +48,7 @@ const ArticleStructuredData: React.FC<ArticleStructuredDataProps> = ({
       '@type': 'WebPage',
       '@id': url,
     },
+    ...(inLanguage ? { inLanguage } : {}),
   };
 
   return (
