@@ -1,166 +1,63 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { ArrowUpRight, Cpu, Menu, Moon, Sun, X } from 'lucide-react';
 import { useSelectedLayoutSegments } from 'next/navigation';
 import { Link } from '@/i18n/routing';
-import { Menu, X, Cpu, Sun, Moon, ArrowUpRight } from 'lucide-react';
 import type { NavigationItem } from '@/lib/sanity/types';
 
 interface NavbarProps {
   navItems?: NavigationItem[] | null;
-  /** Site name from CMS branding (default: იმი.ჯი) */
   siteName?: string;
 }
 
-const AGENCY_NAVIGATION = [
-  { href: '/', label: 'მთავარი' },
-  { href: '/services', label: 'სერვისები' },
-  { href: '/use-cases', label: 'გამოყენების სფეროები' },
-  { href: '/projects', label: 'პროექტები' },
-  { href: '/blog', label: 'ინსაითები' },
+const navigation = [
+  { href: '/', label: 'მთავარი', marker: '01' },
+  { href: '/services', label: 'სერვისები', marker: '02' },
+  { href: '/use-cases', label: 'სფეროები', marker: '03' },
+  { href: '/projects', label: 'პროექტები', marker: '04' },
+  { href: '/blog', label: 'ინსაითები', marker: '05' },
 ];
 
-const Navbar: React.FC<NavbarProps> = ({ siteName: siteNameProp }) => {
-  const siteName = siteNameProp ?? 'იმი.ჯი';
-
-  // useSelectedLayoutSegments avoids pathname null (next-intl's usePathname throws)
+export default function Navbar({ siteName = 'იმი.ჯი' }: NavbarProps) {
   const segments = useSelectedLayoutSegments();
-  const pathname = segments.length ? '/' + segments.join('/') : '/';
-
-  const [isOpen, setIsOpen] = useState(false);
+  const pathname = segments.length ? `/${segments.join('/')}` : '/';
+  const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
 
-  const toggleMenu = () => setIsOpen(!isOpen);
-
   useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    const root = document.documentElement;
-
-    const initialTheme = savedTheme || 'dark';
-    setTheme(initialTheme as 'dark' | 'light');
-
-    if (initialTheme === 'dark') {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-    }
-
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const savedTheme = localStorage.getItem('theme') as 'dark' | 'light' | null;
+    const initialTheme = savedTheme ?? 'dark';
+    setTheme(initialTheme);
+    document.documentElement.classList.toggle('dark', initialTheme === 'dark');
+    const onScroll = () => setScrolled(window.scrollY > 28);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   const toggleTheme = () => {
-    const newTheme = theme === 'dark' ? 'light' : 'dark';
-    setTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
-    document.documentElement.classList.toggle('dark');
+    const next = theme === 'dark' ? 'light' : 'dark';
+    setTheme(next);
+    localStorage.setItem('theme', next);
+    document.documentElement.classList.toggle('dark', next === 'dark');
   };
 
-  return (
-    <nav className={`fixed w-full z-50 transition-all duration-500 ${scrolled
-      ? 'bg-[#070914]/85 backdrop-blur-xl border-b border-white/10 py-4 shadow-2xl shadow-black/30'
-      : 'bg-transparent py-7'
-      }`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-12">
-          <div className="flex items-center gap-6">
-            <Link href="/" className="flex items-center gap-3 group">
-               <div className="relative p-2.5 bg-primary/15 rounded-xl border border-primary/30 group-hover:border-cyan-300/70 transition-all duration-300 neon-ring">
-                <Cpu className="h-6 w-6 text-primary relative z-10" />
-              </div>
-               <span className="font-heading font-bold text-xl tracking-widest text-white group-hover:text-cyan-200 transition-colors">
-                {siteName}
-              </span>
-            </Link>
-          </div>
+  return <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-6 sm:pt-5">
+    <nav className={`mx-auto flex max-w-[1500px] items-center justify-between rounded-[1.35rem] border px-3 py-2 transition-all duration-500 sm:px-4 ${scrolled ? 'border-slate-900/10 bg-white/85 shadow-[0_18px_45px_rgba(15,23,42,0.12)] backdrop-blur-2xl dark:border-white/10 dark:bg-[#090a12]/80 dark:shadow-black/30' : 'border-transparent bg-white/45 backdrop-blur-md dark:bg-[#090a12]/35'}`}>
+      <Link href="/" className="group flex items-center gap-3 rounded-xl px-2 py-1.5">
+        <span className="relative grid size-9 place-items-center overflow-hidden rounded-xl bg-slate-950 text-white dark:bg-white dark:text-slate-950"><Cpu size={19}/><i className="absolute -right-3 -top-3 size-6 rounded-full bg-cyan-300/70 blur-md"/></span>
+        <span><span className="font-heading block text-base font-bold leading-none tracking-[-.04em] text-slate-950 dark:text-white">{siteName}</span><span className="mt-1 block text-[9px] font-bold tracking-[.16em] text-slate-500 dark:text-slate-400">AI / OPERATING SYSTEMS</span></span>
+      </Link>
 
-          <div className="hidden lg:flex items-center gap-8">
-            <div className="flex items-center space-x-8">
-              {AGENCY_NAVIGATION.map((item) => {
-                    const active = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
-                    return (
-                      <Link
-                        key={item.href}
-                        href={item.href as any}
-                        className={`nav-link ${active ? 'nav-link-active' : ''} text-xs font-heading font-bold uppercase tracking-widest transition-all duration-300 ${active
-                          ? 'text-cyan-200'
-                          : 'text-slate-300 hover:text-white'
-                          }`}
-                      >
-                        {item.label}
-                      </Link>
-                    );
-                  })}
-            </div>
+      <div className="hidden items-center gap-1 lg:flex">{navigation.map((item) => {
+        const active = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
+        return <Link key={item.href} href={item.href as never} className={`group relative rounded-xl px-3 py-2 text-xs font-semibold transition ${active ? 'bg-slate-950 text-white dark:bg-white dark:text-slate-950' : 'text-slate-600 hover:bg-slate-900/5 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white'}`}><span className="mr-1.5 text-[9px] opacity-50">{item.marker}</span>{item.label}</Link>;
+      })}</div>
 
-            <div className="h-6 w-px bg-gray-300 dark:bg-white/10"></div>
-
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-white/5 text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-white transition-all duration-300"
-              aria-label="Toggle Theme"
-            >
-              {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-            </button>
-
-            <Link
-              href="/consultation"
-              className="px-5 py-2.5 rounded-xl bg-white text-[#090a12] text-xs font-heading font-bold uppercase tracking-widest transition-all duration-300 shadow-lg shadow-white/10 flex items-center gap-2 hover:bg-cyan-100 hover:-translate-y-0.5"
-            >
-              AI კონსულტაცია
-              <ArrowUpRight className="w-4 h-4" />
-            </Link>
-          </div>
-
-          <div className="-mr-2 flex lg:hidden gap-4">
-            <button
-              onClick={toggleTheme}
-              aria-label="Toggle Theme"
-              className="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:text-primary transition-colors"
-            >
-              {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-            </button>
-
-            <button onClick={toggleMenu} aria-label={isOpen ? 'Close menu' : 'Open menu'} className="inline-flex items-center justify-center p-2 rounded-xl text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-gray-100 dark:hover:bg-white/5 focus:outline-none transition-all duration-300">
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile menu */}
-      {isOpen && (
-        <div className="lg:hidden bg-white/95 dark:bg-darker/95 backdrop-blur-lg border-b border-gray-200 dark:border-white/10 absolute w-full shadow-2xl animate-in slide-in-from-top duration-300">
-          <div className="px-4 pt-4 pb-8 space-y-2">
-            {AGENCY_NAVIGATION.map((item) => {
-                  const active = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href as any}
-                      onClick={toggleMenu}
-                      className={`block px-4 py-4 rounded-xl text-sm font-heading font-bold uppercase tracking-wider transition-all ${active
-                          ? 'text-cyan-200 bg-primary/10 border border-primary/20'
-                          : 'text-slate-200 hover:text-white hover:bg-white/5'
-                        }`}
-                    >
-                      {item.label}
-                    </Link>
-                  );
-                })}
-
-            <Link href="/consultation" onClick={toggleMenu} className="block mt-2 text-center bg-white text-[#090a12] px-4 py-4 rounded-xl text-sm font-heading font-bold uppercase tracking-wider shadow-lg shadow-white/10 hover:bg-cyan-100 transition-colors">
-              AI კონსულტაცია
-            </Link>
-          </div>
-        </div>
-      )}
+      <div className="flex items-center gap-1.5"><button type="button" onClick={toggleTheme} className="grid size-9 place-items-center rounded-xl text-slate-600 transition hover:bg-slate-900/5 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white" aria-label={theme === 'dark' ? 'ნათელ რეჟიმზე გადასვლა' : 'მუქ რეჟიმზე გადასვლა'}>{theme === 'dark' ? <Sun size={17}/> : <Moon size={17}/>}</button><Link href="/consultation" className="hidden items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-xs font-bold text-white shadow-[0_8px_24px_rgba(124,92,255,.3)] transition hover:-translate-y-0.5 hover:bg-slate-950 lg:inline-flex dark:hover:bg-white dark:hover:text-slate-950">AI კონსულტაცია <ArrowUpRight size={15}/></Link><button type="button" onClick={() => setOpen((value) => !value)} className="grid size-9 place-items-center rounded-xl bg-slate-950 text-white dark:bg-white dark:text-slate-950 lg:hidden" aria-label={open ? 'მენიუს დახურვა' : 'მენიუს გახსნა'}>{open ? <X size={19}/> : <Menu size={19}/>}</button></div>
     </nav>
-  );
-};
-
-export default Navbar;
+    {open && <div className="mx-auto mt-2 max-w-[1500px] overflow-hidden rounded-[1.35rem] border border-slate-900/10 bg-white/95 p-2 shadow-2xl backdrop-blur-2xl dark:border-white/10 dark:bg-[#090a12]/95 lg:hidden">{navigation.map((item) => <Link key={item.href} href={item.href as never} onClick={() => setOpen(false)} className="flex items-center justify-between rounded-xl px-4 py-3 text-sm font-bold text-slate-950 hover:bg-primary/10 dark:text-white dark:hover:bg-white/10"><span>{item.label}</span><span className="text-xs text-primary">{item.marker}</span></Link>)}<Link href="/consultation" onClick={() => setOpen(false)} className="mt-1 flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-bold text-white">AI კონსულტაცია <ArrowUpRight size={16}/></Link></div>}
+  </header>;
+}
