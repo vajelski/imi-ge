@@ -203,10 +203,10 @@ export default async function LocaleLayout(props: {
         sameAs: sameAs.length > 0 ? sameAs : ['https://facebook.com/imi.ge', 'https://linkedin.com/company/imi-ge']
     };
 
-    const themeScript = `(function(){var t=localStorage.getItem('theme');var d=document.documentElement;d.classList.toggle('dark',t!=='light');})();`;
+    const themeScript = `(function(){var t=localStorage.getItem('theme');var dark=t? t==='dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.classList.toggle('dark',dark);})();`;
 
     return (
-        <html lang={locale} className="dark scroll-smooth" suppressHydrationWarning>
+        <html lang={locale} className="scroll-smooth" suppressHydrationWarning>
             <head>
                 {/* DNS-prefetch for third-party origins (lightweight, no unused preconnect penalty) */}
                 <link rel="dns-prefetch" href="https://cdn.sanity.io" />
