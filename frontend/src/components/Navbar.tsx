@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { ArrowUpRight, Cpu, Menu, Moon, Sun, X } from 'lucide-react';
 import { useSelectedLayoutSegments } from 'next/navigation';
+import { useLocale } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import type { NavigationItem } from '@/lib/sanity/types';
 
@@ -12,18 +13,14 @@ interface NavbarProps {
 }
 
 const navigation = [
-  { href: '/', label: 'მთავარი', marker: '01' },
-  { href: '/services', label: 'სერვისები', marker: '02' },
-  { href: '/use-cases', label: 'სფეროები', marker: '03' },
-  { href: '/projects', label: 'პროექტები', marker: '04' },
-  { href: '/blog', label: 'ინსაითები', marker: '05' },
-  { href: '/docs', label: 'დოკუმენტაცია', marker: '06' },
-  { href: '/faq', label: 'კითხვები', marker: '07' },
-  { href: '/assistant', label: 'ესაუბრეთ AI-ს', marker: '08' },
-];
+  ['/', 'მთავარი', 'Home'], ['/services', 'სერვისები', 'Services'], ['/use-cases', 'სფეროები', 'Use cases'],
+  ['/projects', 'პროექტები', 'Projects'], ['/blog', 'ინსაითები', 'Insights'], ['/docs', 'დოკუმენტაცია', 'Docs'],
+  ['/faq', 'კითხვები', 'FAQ'], ['/assistant', 'ესაუბრეთ AI-ს', 'Talk to AI'],
+].map(([href, ka, en], index) => ({ href, label: { ka, en }, marker: String(index + 1).padStart(2, '0') }));
 
 export default function Navbar({ siteName = 'იმი.ჯი' }: NavbarProps) {
   const segments = useSelectedLayoutSegments();
+  const locale = useLocale() as 'ka' | 'en';
   const pathname = segments.length ? `/${segments.join('/')}` : '/';
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -56,11 +53,11 @@ export default function Navbar({ siteName = 'იმი.ჯი' }: NavbarProps) {
 
       <div className="hidden items-center gap-1 lg:flex">{navigation.map((item) => {
         const active = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
-        return <Link key={item.href} href={item.href as never} className={`font-heading group relative rounded-xl px-3 py-2 text-xs font-semibold transition ${active ? 'bg-slate-950 text-white dark:bg-white dark:text-slate-950' : 'text-slate-600 hover:bg-slate-900/5 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white'}`}><span className="mr-1.5 text-[9px] opacity-50">{item.marker}</span>{item.label}</Link>;
+        return <Link key={item.href} href={item.href as never} className={`font-heading group relative rounded-xl px-3 py-2 text-xs font-semibold transition ${active ? 'bg-slate-950 text-white dark:bg-white dark:text-slate-950' : 'text-slate-600 hover:bg-slate-900/5 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white'}`}><span className="mr-1.5 text-[9px] opacity-50">{item.marker}</span>{item.label[locale]}</Link>;
       })}</div>
 
       <div className="flex items-center gap-1.5"><button type="button" onClick={toggleTheme} className="grid size-9 place-items-center rounded-xl text-slate-600 transition hover:bg-slate-900/5 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white" aria-label={theme === 'dark' ? 'ნათელ რეჟიმზე გადასვლა' : 'მუქ რეჟიმზე გადასვლა'}>{theme === 'dark' ? <Sun size={17}/> : <Moon size={17}/>}</button><Link href="/consultation" className="font-heading hidden items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-xs font-bold text-white shadow-[0_8px_24px_rgba(0,0,0,.2)] transition hover:-translate-y-0.5 hover:bg-slate-950 lg:inline-flex dark:bg-white dark:text-black dark:hover:bg-neutral-200">AI კონსულტაცია <ArrowUpRight size={15}/></Link><button type="button" onClick={() => setOpen((value) => !value)} className="grid size-9 place-items-center rounded-xl bg-slate-950 text-white dark:bg-white dark:text-slate-950 lg:hidden" aria-label={open ? 'მენიუს დახურვა' : 'მენიუს გახსნა'}>{open ? <X size={19}/> : <Menu size={19}/>}</button></div>
     </nav>
-    {open && <div className="mx-auto mt-2 max-w-7xl overflow-hidden rounded-[1.35rem] border border-slate-900/10 bg-white/95 p-2 shadow-2xl backdrop-blur-2xl dark:border-white/10 dark:bg-[#070707]/95 lg:hidden">{navigation.map((item) => <Link key={item.href} href={item.href as never} onClick={() => setOpen(false)} className="font-heading flex items-center justify-between rounded-xl px-4 py-3 text-sm font-bold text-slate-950 hover:bg-primary/10 dark:text-white dark:hover:bg-white/10"><span>{item.label}</span><span className="text-xs text-primary">{item.marker}</span></Link>)}<Link href="/consultation" onClick={() => setOpen(false)} className="font-heading mt-1 flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-bold text-white">AI კონსულტაცია <ArrowUpRight size={16}/></Link></div>}
+    {open && <div className="mx-auto mt-2 max-w-7xl overflow-hidden rounded-[1.35rem] border border-slate-900/10 bg-white/95 p-2 shadow-2xl backdrop-blur-2xl dark:border-white/10 dark:bg-[#070707]/95 lg:hidden">{navigation.map((item) => <Link key={item.href} href={item.href as never} onClick={() => setOpen(false)} className="font-heading flex items-center justify-between rounded-xl px-4 py-3 text-sm font-bold text-slate-950 hover:bg-primary/10 dark:text-white dark:hover:bg-white/10"><span>{item.label[locale]}</span><span className="text-xs text-primary">{item.marker}</span></Link>)}<Link href="/consultation" onClick={() => setOpen(false)} className="font-heading mt-1 flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-bold text-white">{locale === 'en' ? 'AI consultation' : 'AI კონსულტაცია'} <ArrowUpRight size={16}/></Link></div>}
   </header>;
 }
