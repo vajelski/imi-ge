@@ -5,14 +5,14 @@ import { Link } from '@/i18n/routing';
 
 export const metadata: Metadata = {
   title: 'AI სერვისები ბიზნესისთვის',
-  description: 'AI voice agents, RAG systems, CRM automation და AI-native web development საქართველოს ბიზნესებისთვის.',
+  description: 'ხმოვანი AI, RAG სისტემები, CRM ავტომატიზაცია და AI-ზე დაფუძნებული ვებ-პროდუქტები საქართველოს ბიზნესებისთვის.',
 };
 
 const services = [
-  { href: '/services/ai-voice-agents', icon: Headphones, label: 'VOICE AI', title: 'AI ხმოვანი ასისტენტები და ჩატბოტები', description: 'ქართულად მოსაუბრე voice და chat agents მომხმარებლის მხარდაჭერის, ლიდების კვალიფიკაციისა და call automation-ისთვის.', outputs: ['24/7 customer support', 'CRM context capture', 'Call routing და QA'] },
-  { href: '/services/rag-internal-ai', icon: Database, label: 'KNOWLEDGE AI', title: 'RAG და შიდა AI სისტემები', description: 'LLM, რომელიც უსაფრთხოდ მუშაობს თქვენს დოკუმენტებთან, წესებთან, CRM-სა და ცოდნის ბაზასთან.', outputs: ['როლებზე დაფუძნებული წვდომა', 'წყაროზე მიბმული პასუხები', 'Internal workflow automation'] },
-  { href: '/services/business-automation', icon: Workflow, label: 'AGENTIC OPS', title: 'ბიზნეს პროცესების ავტომატიზაცია', description: 'AI agents, რომლებიც ამუშავებენ განმეორებად დავალებებს, აკონტროლებენ SLA-ს და ადამიანურ გუნდს რთულ ნაწილზე ტოვებენ.', outputs: ['Lead routing', 'Document processing', 'Operations alerts'] },
-  { href: '/services/ai-native-web', icon: Code2, label: 'PRODUCT ENGINEERING', title: 'AI-Native ვებ-პროდუქტები', description: 'სწრაფი საიტები და web apps, სადაც AI ფუნქცია არქიტექტურის ორგანული ნაწილია და არა ზედაპირული დამატება.', outputs: ['Conversion-first UX', 'Secure backend workflows', 'Production observability'] },
+  { href: '/services/ai-voice-agents', icon: Headphones, label: 'ხმოვანი AI', title: 'AI ხმოვანი ასისტენტები და ჩატბოტები', description: 'ქართულად მოსაუბრე ხმოვანი და ტექსტური ასისტენტები მომხმარებლის მხარდაჭერის, ლიდების კვალიფიკაციისა და ზარების ავტომატიზაციისთვის.', outputs: ['24/7 მხარდაჭერა', 'CRM კონტექსტის აღრიცხვა', 'ზარების გადამისამართება და ხარისხის კონტროლი'] },
+  { href: '/services/rag-internal-ai', icon: Database, label: 'ცოდნის AI', title: 'RAG და შიდა AI სისტემები', description: 'ენის მოდელი, რომელიც უსაფრთხოდ მუშაობს თქვენს დოკუმენტებთან, წესებთან, CRM-სა და ცოდნის ბაზასთან.', outputs: ['როლებზე დაფუძნებული წვდომა', 'წყაროზე მიბმული პასუხები', 'შიდა პროცესების ავტომატიზაცია'] },
+  { href: '/services/business-automation', icon: Workflow, label: 'ოპერაციული AI', title: 'ბიზნეს პროცესების ავტომატიზაცია', description: 'AI აგენტები, რომლებიც ამუშავებენ განმეორებად დავალებებს, აკონტროლებენ SLA-ს და ადამიანურ გუნდს რთულ ნაწილზე ტოვებენ.', outputs: ['ლიდების გადანაწილება', 'დოკუმენტების დამუშავება', 'ოპერაციული შეტყობინებები'] },
+  { href: '/services/ai-native-web', icon: Code2, label: 'პროდუქტის ინჟინერია', title: 'AI-ზე დაფუძნებული ვებ-პროდუქტები', description: 'სწრაფი საიტები და ვებ-აპლიკაციები, სადაც AI ფუნქცია არქიტექტურის ორგანული ნაწილია და არა ზედაპირული დამატება.', outputs: ['კონვერსიაზე ორიენტირებული UX', 'დაცული backend პროცესები', 'წარმადობის მონიტორინგი'] },
 ];
 
 export default async function ServicesPage({ params }: { params: Promise<{ locale: string }> }) {

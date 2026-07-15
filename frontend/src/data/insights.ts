@@ -1,7 +1,7 @@
 export const insights = [
   {
     slug: 'rag-system-before-chatbot',
-    category: 'RAG / KNOWLEDGE AI',
+    category: 'ცოდნის AI / RAG',
     date: '2026-07-15',
     readTime: '6 წთ',
     title: 'რატომ იწყება ძლიერი AI ასისტენტი ცოდნის არქიტექტურით და არა ჩატბოტით',
@@ -15,7 +15,7 @@ export const insights = [
   },
   {
     slug: 'voice-ai-that-represents-your-brand',
-    category: 'VOICE AI',
+    category: 'ხმოვანი AI',
     date: '2026-07-12',
     readTime: '5 წთ',
     title: 'ხმოვანი AI, რომელიც თქვენს ბრენდს მართლა წარმოადგენს',
@@ -29,7 +29,7 @@ export const insights = [
   },
   {
     slug: 'ai-automation-roi-first-workflow',
-    category: 'AUTOMATION',
+    category: 'ავტომატიზაცია',
     date: '2026-07-08',
     readTime: '7 წთ',
     title: 'სად იწყება AI automation-ის რეალური ROI',

@@ -1,10 +1,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useLocale } from 'next-intl';
-import { useSelectedLayoutSegments, useRouter } from 'next/navigation';
+import { useSelectedLayoutSegments } from 'next/navigation';
 import { Link } from '@/i18n/routing';
-import { Menu, X, Cpu, Sun, Moon, Globe, ArrowUpRight, ChevronDown } from 'lucide-react';
+import { Menu, X, Cpu, Sun, Moon, ArrowUpRight } from 'lucide-react';
 import type { NavigationItem } from '@/lib/sanity/types';
 
 interface NavbarProps {
@@ -14,16 +13,14 @@ interface NavbarProps {
 }
 
 const AGENCY_NAVIGATION = [
-  { href: '/', labels: { ka: 'მთავარი', en: 'Home', ru: 'Главная' } },
-  { href: '/services', labels: { ka: 'სერვისები', en: 'Services', ru: 'Услуги' } },
-  { href: '/use-cases', labels: { ka: 'გამოყენების სფეროები', en: 'Use cases', ru: 'Кейсы' } },
-  { href: '/projects', labels: { ka: 'პროექტები', en: 'Projects', ru: 'Проекты' } },
-  { href: '/blog', labels: { ka: 'ინსაითები', en: 'Insights', ru: 'Инсайты' } },
+  { href: '/', label: 'მთავარი' },
+  { href: '/services', label: 'სერვისები' },
+  { href: '/use-cases', label: 'გამოყენების სფეროები' },
+  { href: '/projects', label: 'პროექტები' },
+  { href: '/blog', label: 'ინსაითები' },
 ];
 
 const Navbar: React.FC<NavbarProps> = ({ siteName: siteNameProp }) => {
-  const locale = useLocale();
-  const router = useRouter();
   const siteName = siteNameProp ?? 'იმი.ჯი';
 
   // useSelectedLayoutSegments avoids pathname null (next-intl's usePathname throws)
@@ -33,7 +30,6 @@ const Navbar: React.FC<NavbarProps> = ({ siteName: siteNameProp }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
-  const [isLangOpen, setIsLangOpen] = useState(false);
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -62,19 +58,6 @@ const Navbar: React.FC<NavbarProps> = ({ siteName: siteNameProp }) => {
     setTheme(newTheme);
     localStorage.setItem('theme', newTheme);
     document.documentElement.classList.toggle('dark');
-  };
-
-  const languages = [
-    { code: 'ka', label: 'GEO', full: 'ქართული' },
-    { code: 'en', label: 'ENG', full: 'English' },
-    { code: 'ru', label: 'RUS', full: 'Русский' },
-  ];
-
-  const currentLang = languages.find(l => l.code === locale) || languages[0];
-
-  const handleLocaleChange = (newLocale: string) => {
-    router.replace(`/${newLocale}${pathname === '/' ? '' : pathname}`);
-    setIsLangOpen(false);
   };
 
   return (
@@ -108,7 +91,7 @@ const Navbar: React.FC<NavbarProps> = ({ siteName: siteNameProp }) => {
                           : 'text-slate-300 hover:text-white'
                           }`}
                       >
-                        {item.labels[locale as 'ka' | 'en' | 'ru'] ?? item.labels.en}
+                        {item.label}
                       </Link>
                     );
                   })}
@@ -124,38 +107,11 @@ const Navbar: React.FC<NavbarProps> = ({ siteName: siteNameProp }) => {
               {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </button>
 
-            <div className="relative">
-              <button
-                onClick={() => setIsLangOpen(!isLangOpen)}
-                className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-white/5 text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-white transition-all duration-300 font-heading font-bold text-xs uppercase group"
-              >
-                <Globe className="w-4 h-4" />
-                {currentLang.label}
-                <ChevronDown className={`w-3 h-3 transition-transform duration-300 ${isLangOpen ? 'rotate-180' : ''}`} />
-              </button>
-
-              {isLangOpen && (
-                <div className="absolute top-full right-0 mt-2 w-32 bg-white dark:bg-darker border border-gray-200 dark:border-white/10 rounded-xl shadow-2xl overflow-hidden py-1 z-50 animate-in fade-in zoom-in duration-200">
-                  {languages.map((l) => (
-                    <button
-                      key={l.code}
-                      onClick={() => handleLocaleChange(l.code)}
-                      className={`w-full text-left px-4 py-2.5 text-xs font-heading font-bold uppercase hover:bg-gray-100 dark:hover:bg-white/5 transition-colors flex items-center justify-between ${locale === l.code ? 'text-primary bg-primary/5' : 'text-gray-600 dark:text-gray-300'
-                        }`}
-                    >
-                      {l.full}
-                      {locale === l.code && <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></div>}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-
             <Link
               href="/consultation"
               className="px-5 py-2.5 rounded-xl bg-white text-[#090a12] text-xs font-heading font-bold uppercase tracking-widest transition-all duration-300 shadow-lg shadow-white/10 flex items-center gap-2 hover:bg-cyan-100 hover:-translate-y-0.5"
             >
-              {locale === 'ka' ? 'AI კონსულტაცია' : locale === 'ru' ? 'AI-консультация' : 'AI consultation'}
+              AI კონსულტაცია
               <ArrowUpRight className="w-4 h-4" />
             </Link>
           </div>
@@ -192,28 +148,13 @@ const Navbar: React.FC<NavbarProps> = ({ siteName: siteNameProp }) => {
                           : 'text-slate-200 hover:text-white hover:bg-white/5'
                         }`}
                     >
-                      {item.labels[locale as 'ka' | 'en' | 'ru'] ?? item.labels.en}
+                      {item.label}
                     </Link>
                   );
                 })}
 
-            <div className="flex gap-2 px-4 py-4">
-              {languages.map((l) => (
-                <button
-                  key={l.code}
-                  onClick={() => handleLocaleChange(l.code)}
-                  className={`flex-1 py-2.5 rounded-lg text-xs font-heading font-bold uppercase border transition-all ${locale === l.code
-                    ? 'bg-primary/10 border-primary text-primary shadow-sm'
-                    : 'border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5'
-                    }`}
-                >
-                  {l.label}
-                </button>
-              ))}
-            </div>
-
             <Link href="/consultation" onClick={toggleMenu} className="block mt-2 text-center bg-white text-[#090a12] px-4 py-4 rounded-xl text-sm font-heading font-bold uppercase tracking-wider shadow-lg shadow-white/10 hover:bg-cyan-100 transition-colors">
-              {locale === 'ka' ? 'AI კონსულტაცია' : locale === 'ru' ? 'AI-консультация' : 'AI consultation'}
+              AI კონსულტაცია
             </Link>
           </div>
         </div>

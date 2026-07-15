@@ -213,9 +213,8 @@ export default async function LocaleLayout(props: {
                 <link rel="dns-prefetch" href="https://cdn.sanity.io" />
                 <link rel="dns-prefetch" href="https://apicdn.sanity.io" />
                 <link rel="dns-prefetch" href="https://static.cloudflareinsights.com" />
-                {/* Preload critical fonts (loaded with font-display: optional for zero CLS) */}
-                <link rel="preload" href="/fonts/bpg-mrgvlovani.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
-                <link rel="preload" href="/fonts/bpg-mrgvlovani-caps.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+                <link rel="preconnect" href="https://fonts.googleapis.com" />
+                <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
                 <script dangerouslySetInnerHTML={{ __html: themeScript }} />
             </head>
             <body className="min-h-screen bg-darker text-white font-sans selection:bg-primary selection:text-white flex flex-col transition-colors duration-300" suppressHydrationWarning>
