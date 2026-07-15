@@ -219,7 +219,7 @@ export default async function LocaleLayout(props: {
                 <link rel="preload" href="/fonts/bpg-mrgvlovani-caps.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
                 <script dangerouslySetInnerHTML={{ __html: themeScript }} />
             </head>
-            <body className="min-h-screen bg-darker text-white font-sans selection:bg-primary selection:text-white flex flex-col transition-colors duration-300" suppressHydrationWarning>
+            <body className="min-h-screen bg-[var(--page)] text-[var(--text)] font-sans selection:bg-primary selection:text-white flex flex-col transition-colors duration-300" suppressHydrationWarning>
                 <GoogleAnalytics />
                 <ScrollTracker />
                 <StructuredData type="Organization" data={orgData} />

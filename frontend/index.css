@@ -150,6 +150,39 @@ html:not(.dark) .glass-panel {
   box-shadow: 0 24px 60px rgba(46, 56, 87, 0.1);
 }
 
+/* Project case studies use a dark, product-like composition in dark mode.
+   These overrides preserve the same hierarchy without low-contrast text in light mode. */
+html:not(.dark) .project-page .text-white,
+html:not(.dark) .urbania-page .text-white {
+  color: #0f172a !important;
+}
+
+html:not(.dark) .project-page .text-slate-200,
+html:not(.dark) .urbania-page .text-slate-200 {
+  color: #334155 !important;
+}
+
+html:not(.dark) .project-page .text-slate-300,
+html:not(.dark) .urbania-page .text-slate-300 {
+  color: #475569 !important;
+}
+
+html:not(.dark) .project-page .text-cyan-100,
+html:not(.dark) .project-page .text-cyan-200,
+html:not(.dark) .urbania-page .text-cyan-200 {
+  color: #0e7490 !important;
+}
+
+html:not(.dark) .project-page [class*="bg-black"],
+html:not(.dark) .urbania-page [class*="bg-black"] {
+  background-color: rgba(15, 23, 42, 0.045) !important;
+}
+
+html:not(.dark) .project-page [class*="border-white"],
+html:not(.dark) .urbania-page [class*="border-white"] {
+  border-color: rgba(15, 23, 42, 0.12) !important;
+}
+
 .neon-ring {
   box-shadow: 0 0 0 1px rgba(124, 92, 255, 0.26), 0 0 38px rgba(124, 92, 255, 0.24);
 }
