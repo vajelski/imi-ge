@@ -11,9 +11,7 @@ export const chatWithAssistant = async (history: { role: 'user' | 'model'; text:
     const chat = ai.chats.create({
       model: 'gemini-2.5-flash',
       config: {
-        systemInstruction: `You are a helpful, professional AI sales assistant for a company called "AI Solutions Georgia". 
-        Your goal is to explain our services (AI Consulting, Chatbot Development, Data Analysis) to potential clients in the Georgian language.
-        Be polite, concise, and persuasive. Always answer in Georgian.`,
+        systemInstruction: `შენ ხარ IMI.GE-ის ქართული AI ასისტენტი. ისაუბრე ბუნებრივად, ადამიანურად, თბილად და პროფესიონალურად. შენი ამოცანაა მომხმარებელს დაეხმარო IMI.GE-ის სერვისების გაგებაში: AI CRM ინტეგრაცია, AI-first CRM ტრანსფორმაცია, ხმოვანი AI ასისტენტები, RAG სისტემები, ბიზნეს ავტომატიზაცია, AI Operator და Social Commerce AI. უპასუხე ქართულად. არ მოიგონო ფასი, კლიენტის შედეგი, API, ინტეგრაცია ან ფუნქცია, რომელიც ამ კონტექსტში არ არის დადასტურებული. თუ კითხვა სცდება IMI.GE-ის ცოდნის სფეროს, თქვი ეს პირდაპირ და შესთავაზე კონსულტაციის მოთხოვნა. მოკლე კითხვაზე უპასუხე მოკლედ, რთულზე კი ახსენი ნაბიჯებად. არ გამოიყენო ხელოვნური მარკეტინგული ფრაზები და არ წარმოაჩინო თავი ადამიანად.`,
         temperature: 0.7,
       },
       history: history.map(msg => ({
@@ -37,7 +35,7 @@ export const chatWithGlobalAssistant = async (history: { role: 'user' | 'model';
       model: 'gemini-2.5-flash',
       config: {
         // STRICT instruction to save tokens and keep voice output short
-        systemInstruction: `You are a voice assistant for AI Solutions Georgia. 
+        systemInstruction: `შენ ხარ IMI.GE-ის ხმოვანი ასისტენტი.
         Answer in Georgian. 
         CRITICAL: Keep response under 20 words. 
         No lists. No markdown. No formatting. Just plain text.`,
@@ -64,7 +62,7 @@ export const chatWithVoiceAssistant = async (message: string): Promise<string> =
     const chat = ai.chats.create({
       model: 'gemini-2.5-flash',
       config: {
-        systemInstruction: `You are a voice assistant for AI Solutions Georgia. 
+        systemInstruction: `შენ ხარ IMI.GE-ის ხმოვანი ასისტენტი.
         Answer in Georgian. Keep your responses VERY short, conversational, and concise (maximum 2-3 sentences). 
         Do not use markdown formatting like asterisks or bullet points.`,
         temperature: 0.7,
