@@ -231,6 +231,12 @@ html:not(.dark) .urbania-page [class*="border-white"] {
   --tw-gradient-to: #737373 var(--tw-gradient-to-position) !important;
 }
 
+/* Editorial illustrations are intentionally neutral so the Insights library
+   remains coherent with the monochrome product system. */
+img[src^="/vectors/"] {
+  filter: grayscale(1) contrast(1.12);
+}
+
 html:not(.dark) .site-footer {
   background: #f4f4f4;
   color: #171717;
