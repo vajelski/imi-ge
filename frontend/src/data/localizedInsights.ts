@@ -39,6 +39,10 @@ const english: Record<string, { category: string; title: string; excerpt: string
   },
 };
 
+export function formatReadTime(minutes: number, locale: 'ka' | 'en') {
+  return locale === 'en' ? `${minutes} min read` : `${minutes} წთ`;
+}
+
 export function getLocalizedInsight(slug: string, locale: 'ka' | 'en') {
   const insight = insights.find((item) => item.slug === slug);
   if (!insight) return null;
@@ -48,6 +52,7 @@ export function getLocalizedInsight(slug: string, locale: 'ka' | 'en') {
     category: translation?.category ?? insight.category,
     title: translation?.title ?? insight.title,
     excerpt: translation?.excerpt ?? insight.excerpt,
+    readTime: formatReadTime(insight.readTime, locale),
     sections: translation?.sections ?? insight.sections,
     visual: insightVisuals[slug],
   };

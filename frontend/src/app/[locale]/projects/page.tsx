@@ -2,11 +2,12 @@ import type { Metadata } from 'next';
 import { ArrowUpRight, AudioLines, Building2, Map, PawPrint, ShieldCheck, Volume2 } from 'lucide-react';
 import { setRequestLocale } from 'next-intl/server';
 import EnglishProjects from '@/components/EnglishProjects';
+import { localizedMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'შერჩეული პროექტები',
-  description: 'IMI.GE-ის ეკოსისტემის პროდუქტები: ქართული ხმოვანი AI, voice platform, urban intelligence და მონაცემებზე დაფუძნებული marketplace.',
-};
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  return localizedMetadata({ locale, path: '/projects', title: { ka: 'შერჩეული პროექტები', en: 'Selected products and projects' }, description: { ka: 'IMI.GE-ის ეკოსისტემის პროდუქტები: ქართული ხმოვანი AI, voice platform, urban intelligence და მონაცემებზე დაფუძნებული marketplace.', en: 'Products from the IMI.GE ecosystem: Georgian voice AI, voice platforms, urban intelligence, and data-informed marketplaces.' } });
+}
 
 const projects = [
   {

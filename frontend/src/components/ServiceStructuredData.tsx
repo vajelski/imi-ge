@@ -28,11 +28,13 @@ const ServiceStructuredData: React.FC<ServiceStructuredDataProps> = ({
     url,
     provider: {
       '@type': 'Organization',
-      '@id': `${SITE_URL}/#organization`,
-      name: SITE_NAME,
+       '@id': `${SITE_URL}/#organization`,
+       name: SITE_NAME,
+       url: SITE_URL,
+       logo: `${SITE_URL}/og-image.png`,
     },
     areaServed: { '@type': 'Country', name: 'Georgia' },
-    inLanguage: locale === 'ka' ? 'ka' : locale === 'ru' ? 'ru' : 'en',
+     inLanguage: locale === 'ka' ? 'ka' : 'en',
     ...(serviceType && { serviceType }),
   };
 

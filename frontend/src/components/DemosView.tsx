@@ -49,11 +49,16 @@ const DemosView = () => {
         const storage = localStorage.getItem('voice_usage');
 
         if (storage) {
-            const parsed = JSON.parse(storage);
-            if (parsed.date === today) {
-                setDailyUsage(parsed.count);
-                if (parsed.count >= MAX_DAILY_REQUESTS) setLimitReached(true);
-            } else {
+            try {
+                const parsed = JSON.parse(storage);
+                if (parsed.date === today && Number.isInteger(parsed.count) && parsed.count >= 0) {
+                    setDailyUsage(parsed.count);
+                    if (parsed.count >= MAX_DAILY_REQUESTS) setLimitReached(true);
+                } else {
+                    localStorage.setItem('voice_usage', JSON.stringify({ count: 0, date: today }));
+                    setDailyUsage(0);
+                }
+            } catch {
                 localStorage.setItem('voice_usage', JSON.stringify({ count: 0, date: today }));
                 setDailyUsage(0);
             }
@@ -116,6 +121,11 @@ const DemosView = () => {
     const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
+            const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+            if (!allowedTypes.includes(file.type) || file.size > 4 * 1024 * 1024) {
+                e.target.value = '';
+                return;
+            }
             setSelectedFile(file);
             const reader = new FileReader();
             reader.onloadend = () => {
@@ -244,6 +254,7 @@ const DemosView = () => {
                                 type="text"
                                 value={chatInput}
                                 onChange={(e) => setChatInput(e.target.value)}
+                                maxLength={4000}
                                 placeholder="დასვით კითხვა..."
                                 className="flex-1 bg-darker border border-white/10 rounded-xl px-6 py-4 text-white placeholder-gray-500 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all font-sans"
                                 disabled={isChatLoading}
@@ -285,6 +296,7 @@ const DemosView = () => {
                                 type="text"
                                 value={visionPrompt}
                                 onChange={(e) => setVisionPrompt(e.target.value)}
+                                maxLength={2000}
                                 placeholder="რა არის გამოსახული სურათზე?"
                                 className="w-full bg-darker border border-white/10 rounded-xl px-5 py-4 text-white focus:border-cyan-400 focus:outline-none transition-all font-sans"
                             />
@@ -318,6 +330,7 @@ const DemosView = () => {
                                 rows={4}
                                 value={imagePrompt}
                                 onChange={(e) => setImagePrompt(e.target.value)}
+                                maxLength={1000}
                                 placeholder="A futuristic city in Georgia with neon lights..."
                                 className="w-full bg-darker border border-white/10 rounded-2xl px-5 py-4 text-white focus:border-secondary focus:outline-none transition-all resize-none font-sans"
                             ></textarea>

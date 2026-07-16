@@ -1,7 +1,7 @@
 import { draftMode } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-const allowedLocales = new Set(['ka', 'en', 'ru'])
+const allowedLocales = new Set(['ka', 'en'])
 const safeSegment = /^[a-z0-9-]+$/
 
 export async function GET(request: Request) {

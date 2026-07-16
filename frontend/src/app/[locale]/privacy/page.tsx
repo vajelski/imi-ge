@@ -38,7 +38,7 @@ const PrivacyPage = async ({ params }: PrivacyPageProps) => {
         const title = getLocalizedValue(legal.title, locale as Locale) || 'Privacy Policy';
         const content = getLocalizedValue(legal.content, locale as Locale);
         const lastUpdated = legal.lastUpdated
-            ? new Date(legal.lastUpdated).toLocaleDateString(locale === 'ka' ? 'ka-GE' : locale === 'ru' ? 'ru-RU' : 'en-US', {
+            ? new Date(legal.lastUpdated).toLocaleDateString(locale === 'ka' ? 'ka-GE' : 'en-US', {
                   year: 'numeric',
                   month: 'long',
                   day: 'numeric',

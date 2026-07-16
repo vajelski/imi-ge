@@ -1,12 +1,12 @@
 import React from 'react';
 import { Metadata } from 'next';
 import AuthView from '@/components/AuthView';
+import { localizedMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-    title: 'ანგარიშზე შესვლა',
-    description: 'IMI.GE ანგარიშზე შესვლა.',
-    robots: { index: false, follow: false, googleBot: { index: false, follow: false } },
-};
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+    const { locale } = await params;
+    return localizedMetadata({ locale, path: '/auth', title: { ka: 'ანგარიშზე შესვლა', en: 'Sign in' }, description: { ka: 'IMI.GE ანგარიშზე შესვლა.', en: 'Sign in to your IMI.GE account.' }, noindex: true });
+}
 
 const AuthPage = async () => {
     return (

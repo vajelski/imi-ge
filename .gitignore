@@ -35,3 +35,6 @@ npm-debug.log*
 coverage/
 .vercel
 _archive/
+
+# Runtime lead submissions are notification-only and must never be tracked.
+backend/data/leads.json

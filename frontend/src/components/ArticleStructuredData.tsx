@@ -26,21 +26,26 @@ const ArticleStructuredData: React.FC<ArticleStructuredDataProps> = ({
 }) => {
   const data = {
     '@context': 'https://schema.org',
-    '@type': 'Article',
+    '@type': 'BlogPosting',
+    '@id': `${url}#article`,
     headline: title,
     description: description || undefined,
     image: imageUrl ? imageUrl : `${SITE_URL}/og-image.png`,
     author: {
       '@type': 'Organization',
       name: author || SITE_NAME,
+      url: SITE_URL,
     },
     publisher: {
       '@type': 'Organization',
+      '@id': `${SITE_URL}/#organization`,
       name: SITE_NAME,
-      logo: {
-        '@type': 'ImageObject',
-        url: `${SITE_URL}/favicon.svg`,
-      },
+        logo: {
+         '@type': 'ImageObject',
+         url: `${SITE_URL}/og-image.png`,
+         width: 1200,
+         height: 630,
+       },
     },
     datePublished: publishedAt || undefined,
     dateModified: publishedAt || undefined,
@@ -48,6 +53,7 @@ const ArticleStructuredData: React.FC<ArticleStructuredDataProps> = ({
       '@type': 'WebPage',
       '@id': url,
     },
+    isPartOf: { '@id': `${SITE_URL}/#website` },
     ...(inLanguage ? { inLanguage } : {}),
   };
 

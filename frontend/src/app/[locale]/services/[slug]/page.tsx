@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { ArrowUpRight, Check, LockKeyhole, MessageSquareText, Network, Sparkles } from 'lucide-react';
 import { setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/routing';
+import { localizedMetadata } from '@/lib/seo/metadata';
 
 const services = {
   'ai-voice-agents': { eyebrow: 'ხმოვანი AI', title: 'თქვენი ბრენდის ხმა, რომელიც ნებისმიერ დროს პასუხობს.', description: 'ვქმნით ქართულ და მრავალენოვან ხმოვან AI ასისტენტებსა და ჩატბოტებს, რომლებიც საუბრობენ ბუნებრივად, მართავენ დიალოგს და საჭირო კონტექსტს სწორ გუნდამდე მიჰყავთ.', outcomes: ['24/7 პასუხი და კვალიფიკაცია', 'გაყიდვებისა და CRM ინტეგრაცია', 'ხარისხის კონტროლი და ანალიტიკა'] },
@@ -17,10 +18,23 @@ const services = {
 
 type ServiceSlug = keyof typeof services;
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const { slug } = await params;
+const englishServiceTitles: Record<ServiceSlug, string> = {
+  'ai-voice-agents': 'AI voice assistants and chatbots',
+  'rag-internal-ai': 'RAG and internal AI systems',
+  'business-automation': 'Business process automation',
+  'ai-native-web': 'AI-native web products',
+  'ai-crm-integration': 'AI CRM integration and optimization',
+  'ai-first-crm': 'Move your company to an AI-first CRM model',
+  'sales-intelligence': 'AI sales intelligence and forecasting',
+  'ai-governance': 'AI governance and safe deployment',
+};
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }): Promise<Metadata> {
+  const { locale, slug } = await params;
   const service = services[slug as ServiceSlug];
-  return service ? { title: service.title, description: service.description } : {};
+  if (!service) return { title: 'Service not found', robots: { index: false, follow: false } };
+  const englishTitle = englishServiceTitles[slug as ServiceSlug];
+  return localizedMetadata({ locale, path: `/services/${slug}`, title: { ka: service.title, en: englishTitle }, description: { ka: service.description, en: `${englishTitle}. A practical, measurable, and secure service from IMI.GE.` } });
 }
 
 export default async function ServiceDetailPage({ params }: { params: Promise<{ locale: string; slug: string }> }) {

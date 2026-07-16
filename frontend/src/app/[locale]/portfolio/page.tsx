@@ -7,7 +7,7 @@ import { getRouteMetadata } from '@/lib/sanity/metadata';
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
     const t = await getTranslations({ locale, namespace: 'portfolio' });
-    return getRouteMetadata('portfolio', '/portfolio', locale as 'ka' | 'en' | 'ru', {
+    return getRouteMetadata('portfolio', '/portfolio', locale as 'ka' | 'en', {
         title: t('badge'),
         description: t('description'),
     });
@@ -82,7 +82,7 @@ const PortfolioPage = async (props: { params: Promise<{ locale: string }> }) => 
                                     </p>
 
                                     <button className="flex items-center text-sm font-heading font-bold text-primary hover:text-secondary transition-colors uppercase tracking-[0.15em] group/btn mt-auto">
-                                        {locale === 'ka' ? 'სრულად ნახვა' : locale === 'ru' ? 'Смотреть полностью' : 'View Full Story'} <ArrowRight className="ml-2 w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                                        {locale === 'ka' ? 'სრულად ნახვა' : 'View Full Story'} <ArrowRight className="ml-2 w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
                                     </button>
                                 </div>
                             </article>

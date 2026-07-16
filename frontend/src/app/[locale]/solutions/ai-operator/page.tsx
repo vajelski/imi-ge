@@ -4,8 +4,12 @@ import { setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/routing';
 import BreadcrumbStructuredData from '@/components/BreadcrumbStructuredData';
 import RoiCalculator from '@/components/RoiCalculator';
+import { localizedMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = { title: 'AI Operator ბიზნესისთვის', description: 'AI Operator, რომელიც მომხმარებლის მოთხოვნებს იგებს, CRM-ში კონტექსტს ტოვებს და სამუშაო პროცესს სწორ გუნდთან აკავშირებს.' };
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  return localizedMetadata({ locale, path: '/solutions/ai-operator', title: { ka: 'AI Operator ბიზნესისთვის', en: 'AI Operator for business' }, description: { ka: 'AI Operator, რომელიც მომხმარებლის მოთხოვნებს იგებს, CRM-ში კონტექსტს ტოვებს და სამუშაო პროცესს სწორ გუნდთან აკავშირებს.', en: 'An AI operating layer that understands requests, preserves CRM context, and connects work to the right team.' } });
+}
 
 const steps = [['მიღება', 'იღებს მოთხოვნას ჩატიდან, ვებგვერდიდან ან ხმოვანი არხიდან.'], ['გაგება', 'პოულობს განზრახვას, საჭირო მონაცემს და კომპანიის შესაბამის ცოდნას.'], ['მოქმედება', 'ქმნის CRM ჩანაწერს, აგზავნის პასუხს ან რთულ შემთხვევას ადამიანს გადასცემს.']];
 

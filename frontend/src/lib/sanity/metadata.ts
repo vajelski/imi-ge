@@ -16,6 +16,7 @@ function buildMetadataFromSeo(
     path: string,
     fallback: { title: string; description: string }
 ): Metadata {
+    const publicLocale = locale === 'ka' ? 'ka' : 'en'
     const metaTitle = seo?.metaTitle ? getLocalizedValue(seo.metaTitle, locale) : fallback.title
     const metaDescription = seo?.metaDescription ? getLocalizedValue(seo.metaDescription, locale) : fallback.description
     const title = metaTitle?.includes('IMI.GE') ? metaTitle : `${metaTitle || fallback.title} — IMI.GE`
@@ -29,15 +30,16 @@ function buildMetadataFromSeo(
         keywords: DEFAULT_KEYWORDS,
         ...(seo?.noindex && { robots: { index: false, follow: false } }),
         alternates: {
-            canonical: `${SITE_URL}/${locale}${path}`,
-            languages: { 'x-default': `${SITE_URL}/en${path}`, ka: `${SITE_URL}/ka${path}`, en: `${SITE_URL}/en${path}`, ru: `${SITE_URL}/ru${path}` },
+            canonical: `${SITE_URL}/${publicLocale}${path}`,
+            languages: { 'x-default': `${SITE_URL}/ka${path}`, ka: `${SITE_URL}/ka${path}`, en: `${SITE_URL}/en${path}` },
         },
         openGraph: {
             title,
             description: desc,
-            url: `${SITE_URL}/${locale}${path}`,
+            url: `${SITE_URL}/${publicLocale}${path}`,
             siteName: SITE_NAME,
-            locale: locale === 'ka' ? 'ka_GE' : locale === 'ru' ? 'ru_GE' : 'en_US',
+            locale: publicLocale === 'ka' ? 'ka_GE' : 'en_US',
+            alternateLocale: publicLocale === 'ka' ? ['en_US'] : ['ka_GE'],
             type: 'website',
             images: [{ url: ogImageUrl, width: OG_IMAGE_WIDTH, height: OG_IMAGE_HEIGHT, alt: title }],
         },
@@ -56,6 +58,7 @@ export async function getHomeMetadata(
     locale: Locale,
     fallback: { title: string; description: string }
 ): Promise<Metadata> {
+    const publicLocale = locale === 'ka' ? 'ka' : 'en'
     const [routeSeoData, siteSettings] = await Promise.all([
         getRouteSeo('home', false),
         getSiteSettings(false),
@@ -87,15 +90,16 @@ export async function getHomeMetadata(
         keywords: DEFAULT_KEYWORDS,
         ...(seo?.noindex && { robots: { index: false, follow: false } }),
         alternates: {
-            canonical: `${SITE_URL}/${locale}`,
-            languages: { 'x-default': `${SITE_URL}/en`, ka: `${SITE_URL}/ka`, en: `${SITE_URL}/en`, ru: `${SITE_URL}/ru` },
+            canonical: `${SITE_URL}/${publicLocale}`,
+            languages: { 'x-default': `${SITE_URL}/ka`, ka: `${SITE_URL}/ka`, en: `${SITE_URL}/en` },
         },
         openGraph: {
             title,
             description: desc,
-            url: `${SITE_URL}/${locale}`,
+            url: `${SITE_URL}/${publicLocale}`,
             siteName: SITE_NAME,
-            locale: locale === 'ka' ? 'ka_GE' : locale === 'ru' ? 'ru_GE' : 'en_US',
+            locale: publicLocale === 'ka' ? 'ka_GE' : 'en_US',
+            alternateLocale: publicLocale === 'ka' ? ['en_US'] : ['ka_GE'],
             type: 'website',
             images: [{ url: ogImg, width: OG_IMAGE_WIDTH, height: OG_IMAGE_HEIGHT, alt: title }],
         },

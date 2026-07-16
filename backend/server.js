@@ -10,6 +10,8 @@ import compression from 'compression';
 import rateLimit from 'express-rate-limit';
 import { GoogleAuth } from 'google-auth-library';
 import fetch from 'node-fetch';
+import dns from 'node:dns/promises';
+import { isIP } from 'node:net';
 import fs from 'fs';
 import path from 'path';
 import nodemailer from 'nodemailer';
@@ -41,6 +43,15 @@ const analyzerLimiter = rateLimit({
   legacyHeaders: false,
 });
 
+const isPlainObject = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
+
+const optionalText = (value, maxLength) => {
+  if (value === undefined || value === null) return '';
+  if (typeof value !== 'string') return null;
+  const text = value.trim();
+  return text.length <= maxLength ? text : null;
+};
+
 const escapeHtml = (value) => String(value ?? '')
   .replace(/&/g, '&amp;')
   .replace(/</g, '&lt;')
@@ -48,14 +59,121 @@ const escapeHtml = (value) => String(value ?? '')
   .replace(/"/g, '&quot;')
   .replace(/'/g, '&#039;');
 
-const isPublicWebUrl = (value) => {
+const isPrivateIPv4 = (address) => {
+  const octets = address.split('.').map(Number);
+  if (octets.length !== 4 || octets.some((octet) => !Number.isInteger(octet) || octet < 0 || octet > 255)) return true;
+  const [a, b] = octets;
+  return a === 0 || a === 10 || a === 127 || (a === 100 && b >= 64 && b <= 127) ||
+    (a === 169 && b === 254) || (a === 172 && b >= 16 && b <= 31) ||
+    (a === 192 && (b === 0 || b === 168)) || (a === 198 && (b === 18 || b === 19)) ||
+    (a === 198 && b === 51) || (a === 203 && b === 0) || a >= 224;
+};
+
+const ipv6ToBigInt = (address) => {
+  let normalized = address.toLowerCase();
+  if (normalized.includes('.')) {
+    const lastColon = normalized.lastIndexOf(':');
+    const ipv4 = normalized.slice(lastColon + 1).split('.').map(Number);
+    if (ipv4.length !== 4 || ipv4.some((octet) => !Number.isInteger(octet) || octet < 0 || octet > 255)) return null;
+    normalized = `${normalized.slice(0, lastColon)}:${((ipv4[0] << 8) | ipv4[1]).toString(16)}:${((ipv4[2] << 8) | ipv4[3]).toString(16)}`;
+  }
+  const [left, right] = normalized.split('::');
+  const leftParts = left ? left.split(':') : [];
+  const rightParts = right ? right.split(':') : [];
+  if (!right && leftParts.length !== 8) return null;
+  if (leftParts.length + rightParts.length > 8) return null;
+  const parts = [...leftParts, ...Array(8 - leftParts.length - rightParts.length).fill('0'), ...rightParts];
+  if (parts.length !== 8 || parts.some((part) => !/^[0-9a-f]{1,4}$/.test(part))) return null;
+  return parts.reduce((result, part) => (result << 16n) + BigInt(`0x${part}`), 0n);
+};
+
+const isPrivateIPv6 = (address) => {
+  const value = ipv6ToBigInt(address);
+  if (value === null) return true;
+  const high96 = value >> 32n;
+  if (high96 === 0n || high96 === 0xffffn) {
+    const ipv4Value = value & 0xffffffffn;
+    const ipv4 = [24n, 16n, 8n, 0n].map((shift) => Number((ipv4Value >> shift) & 0xffn)).join('.');
+    if (isPrivateIPv4(ipv4)) return true;
+  }
+  const cidr = (prefix, bits) => (value >> BigInt(128 - prefix)) === (bits >> BigInt(128 - prefix));
+  return cidr(7, 0xfc000000000000000000000000000000n) || // Unique local
+    cidr(10, 0xfe800000000000000000000000000000n) || // Link local
+    cidr(8, 0xff000000000000000000000000000000n) || // Multicast
+    cidr(32, 0x20010db8000000000000000000000000n) || // Documentation
+    value === 0n || value === 1n;
+};
+
+const isPrivateIp = (address) => isIP(address) === 4 ? isPrivateIPv4(address) : isPrivateIPv6(address);
+
+const withTimeout = (promise, timeoutMs) => {
+  let timer;
+  const timeout = new Promise((_, reject) => {
+    timer = setTimeout(() => reject(new Error('DNS resolution timed out')), timeoutMs);
+  });
+  return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
+};
+
+const parsePublicWebUrl = (value) => {
   try {
+    if (typeof value !== 'string' || value.length > 2048) return null;
     const url = new URL(value);
-    if (!['http:', 'https:'].includes(url.protocol) || (url.port && !['80', '443'].includes(url.port))) return false;
-    const host = url.hostname.toLowerCase();
-    if (host === 'localhost' || host.endsWith('.localhost') || host.endsWith('.local') || host === '::1') return false;
-    return !(/^(127|10|0)\.|^192\.168\.|^169\.254\.|^172\.(1[6-9]|2\d|3[0-1])\./.test(host));
-  } catch { return false; }
+    const host = url.hostname.toLowerCase().replace(/^\[|\]$/g, '').replace(/\.$/, '');
+    if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password || (url.port && !['80', '443'].includes(url.port)) || !host) return null;
+    if (host === 'localhost' || host.endsWith('.localhost') || host.endsWith('.local') || host.endsWith('.internal') || host === '::1') return null;
+    if (isIP(host) && isPrivateIp(host)) return null;
+    return url;
+  } catch { return null; }
+};
+
+const resolvePublicFetchTarget = async (rawUrl, timeoutMs = 5000) => {
+  const url = parsePublicWebUrl(rawUrl);
+  if (!url) throw new Error('Unsafe public URL');
+  const hostname = url.hostname.replace(/^\[|\]$/g, '');
+  let address;
+  let family;
+  if (isIP(hostname)) {
+    address = hostname;
+    family = isIP(hostname);
+  } else {
+    const resolved = await withTimeout(dns.lookup(hostname, { all: true, verbatim: true }), timeoutMs);
+    if (!resolved.length || resolved.some(({ address: candidate }) => isPrivateIp(candidate))) {
+      throw new Error('URL resolves to a private or reserved address');
+    }
+    ({ address, family } = resolved[0]);
+  }
+  if (isPrivateIp(address)) throw new Error('URL resolves to a private or reserved address');
+  return {
+    url,
+    // Pin the lookup result so a DNS rebinding cannot change the destination during this request.
+    lookup: (_hostname, _options, callback) => callback(null, address, family),
+  };
+};
+
+const fetchPublicUrl = async (rawUrl, options = {}, timeoutMs = 5000) => {
+  let currentUrl = rawUrl;
+  for (let redirectCount = 0; redirectCount <= 3; redirectCount += 1) {
+    const target = await resolvePublicFetchTarget(currentUrl, timeoutMs);
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    let response;
+    try {
+      response = await fetch(target.url.toString(), {
+        ...options,
+        redirect: 'manual',
+        lookup: target.lookup,
+        signal: controller.signal,
+      });
+    } finally {
+      clearTimeout(timer);
+    }
+    if (![301, 302, 303, 307, 308].includes(response.status)) return response;
+    const location = response.headers.get('location');
+    if (response.body && typeof response.body.destroy === 'function') response.body.destroy();
+    if (!location || redirectCount === 3) throw new Error('Unsafe or excessive redirect chain');
+    currentUrl = new URL(location, target.url).toString();
+  }
+  throw new Error('Unsafe redirect chain');
 };
 
 app.get('/api/health', (_req, res) => res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() }));
@@ -131,56 +249,43 @@ const sendEmail = async (subject, text, html) => {
   }
 };
 
-// --- Audit & Leads API ---
-const LEADS_FILE = path.join(__dirname, 'data', 'leads.json');
-
-// Ensure leads file exists
-if (!fs.existsSync(LEADS_FILE)) {
-  fs.writeFileSync(LEADS_FILE, '[]');
-}
-
 // Simple email format check
-const isValidEmail = (v) => typeof v === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
+const isValidEmail = (v) => typeof v === 'string' && v.length <= 254 && !/[\r\n]/.test(v) && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
 
 app.post('/api/leads', formLimiter, async (req, res) => {
   try {
-    const { email, url, reportType, date, _hp, website } = req.body;
-    if (_hp || (typeof website === 'string' && website.trim())) return res.status(400).json({ error: 'Invalid request' });
-    if (!email) return res.status(400).json({ error: 'Email required' });
-    if (!isValidEmail(email)) return res.status(400).json({ error: 'Invalid email format' });
+    if (!isPlainObject(req.body)) return res.status(400).json({ error: 'Invalid request' });
+    const { email, url, reportType, _hp, website } = req.body;
+    if (_hp !== undefined && typeof _hp !== 'string') return res.status(400).json({ error: 'Invalid request' });
+    if (typeof _hp === 'string' && _hp.trim()) return res.status(400).json({ error: 'Invalid request' });
+    if (website !== undefined && typeof website !== 'string') return res.status(400).json({ error: 'Invalid request' });
+    if (typeof website === 'string' && website.trim()) return res.status(400).json({ error: 'Invalid request' });
+    const emailValue = optionalText(email, 254);
+    const urlValue = optionalText(url, 2048);
+    const reportTypeValue = optionalText(reportType, 100);
+    if (emailValue === null || urlValue === null || reportTypeValue === null) return res.status(400).json({ error: 'Invalid request' });
+    if (!emailValue) return res.status(400).json({ error: 'Email required' });
+    if (!isValidEmail(emailValue)) return res.status(400).json({ error: 'Invalid email format' });
 
-    let leads = [];
-    if (fs.existsSync(LEADS_FILE)) {
-      try {
-        leads = JSON.parse(fs.readFileSync(LEADS_FILE, 'utf8'));
-      } catch (e) { leads = []; }
-    }
-
-    const newLead = {
-      id: Date.now().toString(),
-      email,
-      url,
-      reportType,
-      date: date || new Date().toISOString()
-    };
-
-    leads.push(newLead);
-    fs.writeFileSync(LEADS_FILE, JSON.stringify(leads, null, 2));
+    // Lead PII is delivered to the configured mailbox only; it is not retained in the repository or on disk.
+    const receivedAt = new Date().toISOString();
 
     // Send Email Notification
-    const subject = `New Lead: ${email}`;
-    const text = `New lead generated from Audit Widget.\nEmail: ${email}\nURL: ${url}\nType: ${reportType}`;
+    const subject = 'New audit lead';
+    const text = `New lead generated from Audit Widget.\nEmail: ${emailValue}\nURL: ${urlValue}\nType: ${reportTypeValue}\nDate: ${receivedAt}`;
     const html = `
       <h3>New Lead captured!</h3>
-      <p><strong>Email:</strong> ${email}</p>
-      <p><strong>URL:</strong> ${url}</p>
-      <p><strong>Type:</strong> ${reportType}</p>
-      <p><strong>Date:</strong> ${newLead.date}</p>
+      <p><strong>Email:</strong> ${escapeHtml(emailValue)}</p>
+      <p><strong>URL:</strong> ${escapeHtml(urlValue)}</p>
+      <p><strong>Type:</strong> ${escapeHtml(reportTypeValue)}</p>
+      <p><strong>Date:</strong> ${escapeHtml(receivedAt)}</p>
     `;
-    // Fire and forget email (don't block response)
-    sendEmail(subject, text, html);
+    const emailSent = await sendEmail(subject, text, html);
+    if (!emailSent) {
+      return res.status(500).json({ error: 'Failed to send lead' });
+    }
 
-    res.json({ success: true, message: 'Lead saved' });
+    res.json({ success: true, message: 'Lead received' });
   } catch (error) {
     console.error('Lead save error:', error);
     res.status(500).json({ error: 'Failed to save lead' });
@@ -190,35 +295,44 @@ app.post('/api/leads', formLimiter, async (req, res) => {
 // --- Contact Form API ---
 app.post('/api/contact', formLimiter, async (req, res) => {
   try {
+    if (!isPlainObject(req.body)) return res.status(400).json({ error: 'Invalid request' });
     const { name, company, email, interests, message, _hp, website } = req.body;
-    if (_hp || (typeof website === 'string' && website.trim())) return res.status(400).json({ error: 'Invalid request' });
-    if (!email || !message) return res.status(400).json({ error: 'Email and message are required' });
-    if (!isValidEmail(email)) return res.status(400).json({ error: 'Invalid email format' });
-    const msg = String(message).trim();
+    if (_hp !== undefined && typeof _hp !== 'string') return res.status(400).json({ error: 'Invalid request' });
+    if (typeof _hp === 'string' && _hp.trim()) return res.status(400).json({ error: 'Invalid request' });
+    if (website !== undefined && typeof website !== 'string') return res.status(400).json({ error: 'Invalid request' });
+    if (typeof website === 'string' && website.trim()) return res.status(400).json({ error: 'Invalid request' });
+    const nameValue = optionalText(name, 200);
+    const companyValue = optionalText(company, 200);
+    const emailValue = optionalText(email, 254);
+    const msg = optionalText(message, 5000);
+    const interestValues = interests === undefined ? [] : interests;
+    if (nameValue === null || companyValue === null || emailValue === null || msg === null ||
+      !Array.isArray(interestValues) || interestValues.length > 20 ||
+      interestValues.some((interest) => typeof interest !== 'string' || interest.length > 100)) {
+      return res.status(400).json({ error: 'Invalid request' });
+    }
+    if (!emailValue || !msg) return res.status(400).json({ error: 'Email and message are required' });
+    if (!isValidEmail(emailValue)) return res.status(400).json({ error: 'Invalid email format' });
     if (msg.length < 10) return res.status(400).json({ error: 'Message too short' });
     if (msg.length > 5000) return res.status(400).json({ error: 'Message too long' });
-    const nameLen = name != null ? String(name).trim().length : 0;
-    const companyLen = company != null ? String(company).trim().length : 0;
-    if (nameLen > 200) return res.status(400).json({ error: 'Name too long' });
-    if (companyLen > 200) return res.status(400).json({ error: 'Company name too long' });
 
-    const subject = `New Contact Form Submission: ${name || email}`;
+    const subject = 'New contact form submission';
     const text = `
-      Name: ${name}
-      Company: ${company}
-      Email: ${email}
-      Interests: ${interests ? interests.join(', ') : 'None'}
-      Message: ${message}
+      Name: ${nameValue}
+      Company: ${companyValue}
+      Email: ${emailValue}
+      Interests: ${interestValues.length ? interestValues.join(', ') : 'None'}
+      Message: ${msg}
     `;
     const html = `
       <h3>New Contact Form Submission</h3>
-      <p><strong>Name:</strong> ${name}</p>
-      <p><strong>Company:</strong> ${company}</p>
-      <p><strong>Email:</strong> ${email}</p>
-      <p><strong>Interests:</strong> ${interests ? interests.join(', ') : 'None'}</p>
+      <p><strong>Name:</strong> ${escapeHtml(nameValue)}</p>
+      <p><strong>Company:</strong> ${escapeHtml(companyValue)}</p>
+      <p><strong>Email:</strong> ${escapeHtml(emailValue)}</p>
+      <p><strong>Interests:</strong> ${escapeHtml(interestValues.length ? interestValues.join(', ') : 'None')}</p>
       <div style="margin-top: 20px; padding: 15px; background-color: #f5f5f5; border-left: 4px solid #333;">
         <p><strong>Message:</strong></p>
-        <p>${message.replace(/\n/g, '<br>')}</p>
+        <p>${escapeHtml(msg).replace(/\r?\n/g, '<br>')}</p>
       </div>
     `;
 
@@ -238,22 +352,30 @@ app.post('/api/contact', formLimiter, async (req, res) => {
 
 app.post('/api/analyze', analyzerLimiter, async (req, res) => {
   try {
+    if (!isPlainObject(req.body)) return res.status(400).json({ error: 'A public HTTP(S) URL is required' });
     const { url } = req.body;
-    if (!url || !isPublicWebUrl(url)) return res.status(400).json({ error: 'A public HTTP(S) URL is required' });
+    const parsedUrl = parsePublicWebUrl(url);
+    if (!parsedUrl) return res.status(400).json({ error: 'A public HTTP(S) URL is required' });
+    try {
+      await resolvePublicFetchTarget(parsedUrl.toString());
+    } catch {
+      return res.status(400).json({ error: 'The URL must resolve to a public address' });
+    }
+    const publicUrl = parsedUrl.toString();
 
-    console.log(`Analyzing: ${url}`);
+    console.log(`Analyzing: ${publicUrl}`);
 
     // Helper: fetch with AbortController timeout
     const fetchWithTimeout = (fetchUrl, options = {}, timeoutMs = 20000) => {
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), timeoutMs);
-      return fetch(fetchUrl, { ...options, signal: controller.signal })
+      return fetch(fetchUrl, { ...options, redirect: 'error', signal: controller.signal })
         .finally(() => clearTimeout(timer));
     };
 
     // Google PageSpeed Insights API
     const apiKey = process.env.GOOGLE_PAGESPEED_API_KEY || process.env.PSI_API_KEY || '';
-    const apiUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&strategy=mobile&category=performance&category=accessibility&category=best-practices&category=seo${apiKey ? `&key=${apiKey}` : ''}`;
+     const apiUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(publicUrl)}&strategy=mobile&category=performance&category=accessibility&category=best-practices&category=seo${apiKey ? `&key=${apiKey}` : ''}`;
 
     let data;
     try {
@@ -268,7 +390,7 @@ app.post('/api/analyze', analyzerLimiter, async (req, res) => {
       // If API Key fails (e.g. invalid key), try again without key
       if (data?.error && apiKey) {
         console.warn('API Key failed, retrying without key...', data.error?.message);
-        const retryUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&strategy=mobile&category=performance&category=accessibility&category=best-practices&category=seo`;
+         const retryUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(publicUrl)}&strategy=mobile&category=performance&category=accessibility&category=best-practices&category=seo`;
         const retryRes = await fetchWithTimeout(retryUrl, {}, 18000);
         const retryText = await retryRes.text();
         data = JSON.parse(retryText);
@@ -276,17 +398,17 @@ app.post('/api/analyze', analyzerLimiter, async (req, res) => {
     } catch (fetchErr) {
       console.warn('Google API fetch failed:', fetchErr.message);
       // Fallback mock
-      const hash = url.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+       const hash = publicUrl.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
       const pr = (s) => Math.floor((Math.sin(hash + s) * 10000) % 36 + 60);
       let securityScore = 0;
       try {
-        const headRes = await fetchWithTimeout(url, { method: 'HEAD' }, 5000);
+         const headRes = await fetchPublicUrl(publicUrl, { method: 'HEAD' }, 5000);
         ['strict-transport-security', 'x-frame-options'].forEach(h => {
           if (headRes.headers.get(h)) securityScore += 25;
         });
       } catch {}
       return res.json({
-        url,
+         url: publicUrl,
         scores: { performance: pr(1), accessibility: pr(2), bestPractices: pr(3), seo: pr(4) },
         securityScore,
         recommendations: [{ id: 'check', title: 'Google API temporarily unavailable', description: 'Please try again later.' }],
@@ -298,7 +420,7 @@ app.post('/api/analyze', analyzerLimiter, async (req, res) => {
     if (data.error) {
       console.warn('PSI API Error, using fallback:', data.error.message);
       // Fallback — Google quota/error-ის დროს ვაბრუნებთ სავარაუდო მონაცემებს
-      const hash = url.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+       const hash = publicUrl.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
       const pseudoRandom = (seed) => {
         const x = Math.sin(hash + seed) * 10000;
         return x - Math.floor(x);
@@ -326,7 +448,7 @@ app.post('/api/analyze', analyzerLimiter, async (req, res) => {
       };
 
       try {
-        const headRes = await fetchWithTimeout(url, { method: 'HEAD' }, 5000);
+         const headRes = await fetchPublicUrl(publicUrl, { method: 'HEAD' }, 5000);
         const headers = headRes.headers;
         Object.keys(securityHeaders).forEach(header => {
           if (headers.get(header.toLowerCase())) {
@@ -338,7 +460,7 @@ app.post('/api/analyze', analyzerLimiter, async (req, res) => {
       }
 
       return res.json({
-        url,
+         url: publicUrl,
         scores: mockScores,
         securityScore,
         recommendations: mockRecommendations,
@@ -350,13 +472,13 @@ app.post('/api/analyze', analyzerLimiter, async (req, res) => {
     const lighthouse = data.lighthouseResult;
     if (!lighthouse || !lighthouse.categories) {
       console.warn('PSI API returned unexpected format (no lighthouseResult), using fallback');
-      const hash = url.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+       const hash = publicUrl.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
       const pseudoRandom = (seed) => {
         const x = Math.sin(hash + seed) * 10000;
         return x - Math.floor(x);
       };
       return res.json({
-        url,
+         url: publicUrl,
         scores: {
           performance: Math.floor(pseudoRandom(1) * 35 + 60),
           accessibility: Math.floor(pseudoRandom(2) * 20 + 80),
@@ -404,7 +526,7 @@ app.post('/api/analyze', analyzerLimiter, async (req, res) => {
     };
 
     try {
-      const headRes = await fetchWithTimeout(url, { method: 'HEAD' }, 5000);
+       const headRes = await fetchPublicUrl(publicUrl, { method: 'HEAD' }, 5000);
       const headers = headRes.headers;
 
       Object.keys(securityHeaders).forEach(header => {
@@ -417,7 +539,7 @@ app.post('/api/analyze', analyzerLimiter, async (req, res) => {
     }
 
     res.json({
-      url: lighthouse.finalUrl || url,
+       url: lighthouse.finalUrl || publicUrl,
       scores,
       securityScore,
       recommendations: recommendations.slice(0, 5)
@@ -429,7 +551,7 @@ app.post('/api/analyze', analyzerLimiter, async (req, res) => {
   }
 });
 
-const PORT = process.env.API_BACKEND_PORT || 3003;
+const PORT = process.env.API_BACKEND_PORT || 3004;
 
 // Production: backend serves API only. Frontend runs via next start -p 3003
 // API is proxied to this backend via Next.js rewrites
@@ -597,8 +719,14 @@ app.post('/api-proxy', async (req, res) => {
     return res.status(403).send('Forbidden: Request must originate from the local Vertex App shim.');
   }
 
+  if (!isPlainObject(req.body)) {
+    return res.status(400).send('Bad Request: invalid proxy payload.');
+  }
   const { originalUrl, method, headers, body } = req.body;
-  if (!originalUrl) {
+  if (typeof originalUrl !== 'string' || !originalUrl ||
+    (method !== undefined && method !== 'POST') ||
+    (headers !== undefined && !isPlainObject(headers)) ||
+    (body !== undefined && typeof body !== 'string')) {
     return res.status(400).send('Bad Request: originalUrl is required.');
   }
 
@@ -630,8 +758,8 @@ app.post('/api-proxy', async (req, res) => {
     const apiHeaders = getRequestHeaders(accessToken);
 
     const apiFetchOptions = {
-      method: method || 'POST',
-      headers: { ...apiHeaders, ...headers },
+      method: 'POST',
+      headers: apiHeaders,
       body: body ? body : undefined,
     };
 
@@ -688,7 +816,7 @@ app.post('/api-proxy', async (req, res) => {
       apiResponse.body.on('error', (streamError) => {
         console.error('[Node Proxy] Error from Vertex stream:', streamError);
         if (!res.writableEnded) {
-          res.end(JSON.stringify({ proxyError: 'Stream error from Vertex AI', details: streamError.message }));
+          res.end(JSON.stringify({ proxyError: 'Stream error from Vertex AI' }));
         }
       });
 
@@ -708,7 +836,7 @@ app.post('/api-proxy', async (req, res) => {
   } catch (error) {
     console.error(`[Node Proxy] Error proxying request for ${apiClient.name}`);
     console.error(error)
-    res.status(500).json({ error: error });
+    res.status(500).json({ error: 'Vertex AI proxy request failed' });
   }
 });
 

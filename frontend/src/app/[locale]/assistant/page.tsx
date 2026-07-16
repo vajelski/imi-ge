@@ -2,8 +2,12 @@ import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
 import BreadcrumbStructuredData from '@/components/BreadcrumbStructuredData';
 import ConversationalAssistant from '@/components/ConversationalAssistant';
+import { localizedMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = { title: 'AI ასისტენტი', description: 'ესაუბრეთ IMI.GE-ის ქართულ AI ასისტენტს სერვისებზე, AI CRM-ზე, ხმოვან ასისტენტებსა და ავტომატიზაციაზე.' };
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  return localizedMetadata({ locale, path: '/assistant', title: { ka: 'AI ასისტენტი', en: 'IMI.GE AI assistant' }, description: { ka: 'ესაუბრეთ IMI.GE-ის ქართულ AI ასისტენტს სერვისებზე, AI CRM-ზე, ხმოვან ასისტენტებსა და ავტომატიზაციაზე.', en: 'Talk to the IMI.GE AI assistant about services, AI CRM, voice assistants, and automation.' } });
+}
 
 export default async function AssistantPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;

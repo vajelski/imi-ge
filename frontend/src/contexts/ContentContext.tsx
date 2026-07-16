@@ -1,13 +1,12 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Content } from '../types';
-import { contentKA, contentEN, contentRU } from '../data/translations';
+import { contentKA, contentEN } from '../data/translations';
 
-type Language = 'ka' | 'en' | 'ru';
+type Language = 'ka' | 'en';
 
 const translationMap: Record<Language, Content> = {
     ka: contentKA,
     en: contentEN,
-    ru: contentRU,
 };
 
 interface ContentContextType {

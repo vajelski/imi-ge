@@ -5,8 +5,17 @@ import { Link } from '@/i18n/routing';
 import BreadcrumbStructuredData from '@/components/BreadcrumbStructuredData';
 import { docs } from '@/data/docs';
 import EnglishDocs from '@/components/EnglishDocs';
+import { localizedMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = { title: 'AI დოკუმენტაცია და გზამკვლევები', description: 'IMI.GE-ის საჯარო გზამკვლევები AI მზადყოფნაზე, RAG სისტემებზე, ხმოვან AI-სა და AI უსაფრთხოებაზე.' };
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  return localizedMetadata({
+    locale,
+    path: '/docs',
+    title: { ka: 'AI დოკუმენტაცია და გზამკვლევები', en: 'AI documentation and guides' },
+    description: { ka: 'IMI.GE-ის საჯარო გზამკვლევები AI მზადყოფნაზე, RAG სისტემებზე, ხმოვან AI-სა და AI უსაფრთხოებაზე.', en: 'Public IMI.GE guides for AI readiness, RAG systems, voice AI, and safe deployment.' },
+  });
+}
 
 export default async function DocsPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;

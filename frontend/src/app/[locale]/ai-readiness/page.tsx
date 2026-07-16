@@ -3,8 +3,12 @@ import { ArrowUpRight, CheckCircle2, CircleDashed, Database, UsersRound } from '
 import { setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/routing';
 import BreadcrumbStructuredData from '@/components/BreadcrumbStructuredData';
+import { localizedMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = { title: 'AI მზადყოფნის შეფასება', description: 'შეაფასეთ, რამდენად მზად არის თქვენი კომპანია ხმოვანი AI-ის, RAG-ის, ავტომატიზაციის ან AI-ზე დაფუძნებული პროდუქტის დანერგვისთვის.' };
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  return localizedMetadata({ locale, path: '/ai-readiness', title: { ka: 'AI მზადყოფნის შეფასება', en: 'AI readiness assessment' }, description: { ka: 'შეაფასეთ, რამდენად მზად არის თქვენი კომპანია ხმოვანი AI-ის, RAG-ის, ავტომატიზაციის ან AI-ზე დაფუძნებული პროდუქტის დანერგვისთვის.', en: 'Assess whether your company is ready to deploy voice AI, RAG, automation, or an AI-native product.' } });
+}
 
 const checks = [
   ['პროცესი', 'არსებობს განმეორებადი სამუშაო პროცესი, რომელსაც დღეს გუნდი ხელით მართავს?'],

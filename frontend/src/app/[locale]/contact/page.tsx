@@ -4,11 +4,12 @@ import { setRequestLocale } from 'next-intl/server';
 import ContactForm from '@/components/ContactForm';
 import TrackedOutboundLink from '@/components/TrackedOutboundLink';
 import { getSiteSettings } from '@/lib/sanity/queries';
+import { localizedMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'AI კონსულტაცია',
-  description: 'დაგეგმეთ AI voice agent, RAG, CRM automation ან AI-native web პროდუქტის სტრატეგიული კონსულტაცია IMI.GE-სთან.',
-};
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  return localizedMetadata({ locale, path: '/contact', title: { ka: 'დაგვიკავშირდით IMI.GE-ს', en: 'Contact IMI.GE' }, description: { ka: 'დაგეგმეთ AI voice agent, RAG, CRM automation ან AI-native web პროდუქტის სტრატეგიული კონსულტაცია IMI.GE-სთან.', en: 'Tell IMI.GE which process you want to improve and plan a practical AI next step.' } });
+}
 
 export default async function ContactPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;

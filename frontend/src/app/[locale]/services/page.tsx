@@ -2,11 +2,12 @@ import type { Metadata } from 'next';
 import { ArrowUpRight, Bot, Code2, Database, Headphones, ShieldCheck, UsersRound, Workflow } from 'lucide-react';
 import { setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/routing';
+import { localizedMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'AI სერვისები ბიზნესისთვის',
-  description: 'ხმოვანი AI, RAG სისტემები, AI CRM ინტეგრაცია, გაყიდვების ავტომატიზაცია და AI-ზე დაფუძნებული ვებ-პროდუქტები საქართველოს ბიზნესებისთვის.',
-};
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  return localizedMetadata({ locale, path: '/services', title: { ka: 'AI სერვისები ბიზნესისთვის', en: 'AI services for business' }, description: { ka: 'ხმოვანი AI, RAG სისტემები, AI CRM ინტეგრაცია, გაყიდვების ავტომატიზაცია და AI-ზე დაფუძნებული ვებ-პროდუქტები საქართველოს ბიზნესებისთვის.', en: 'Voice AI, RAG systems, AI CRM integration, sales automation, and AI-native web products for businesses in Georgia.' } });
+}
 
 const services = [
   { href: '/services/ai-voice-agents', icon: Headphones, label: 'ხმოვანი AI', title: 'AI ხმოვანი ასისტენტები და ჩატბოტები', description: 'ქართულად მოსაუბრე ხმოვანი და ტექსტური ასისტენტები მომხმარებლის მხარდაჭერის, ლიდების კვალიფიკაციისა და ზარების ავტომატიზაციისთვის.', outputs: ['24/7 მხარდაჭერა', 'CRM კონტექსტის აღრიცხვა', 'ზარების გადამისამართება და ხარისხის კონტროლი'] },

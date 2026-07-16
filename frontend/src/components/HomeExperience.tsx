@@ -1,13 +1,8 @@
 import { ArrowRight, ArrowUpRight, Bot, Check, Database, Headphones, ShieldCheck, Workflow } from 'lucide-react';
 import { Link } from '@/i18n/routing';
+import WorkflowDiagram from './WorkflowDiagram';
 
 type Locale = 'ka' | 'en';
-
-const art = {
-  keynote: 'https://cdn.undraw.co/illustration/tech-keynote_ytf3.svg',
-  plan: 'https://cdn.undraw.co/illustration/idea-to-plan_jnei.svg',
-  strategy: 'https://cdn.undraw.co/illustration/solution-mindset_5xp7.svg',
-};
 
 const copy = {
   ka: {
@@ -97,7 +92,7 @@ export default function HomeExperience({ locale }: { locale: Locale }) {
         </div>
         <div className="home-console">
           <div className="home-console__top"><span className="home-console__label">{t.workspace}</span><span className="home-console__status"><i />{t.live}</span></div>
-          <div className="home-console__screen"><div className="home-console__screen-art"><img src={art.keynote} alt="" /></div><div className="home-console__request"><div className="home-console__request-head"><span>{t.request}</span><span>09:42</span></div><p>{t.requestText}</p><div className="home-console__route"><span className="home-console__avatar">AI</span><span>{t.routed}</span><ArrowRight size={14} /></div></div></div>
+           <div className="home-console__screen"><div className="home-console__screen-art" aria-hidden="true"><div className="home-console__signal"><span /><span /><span /><i /></div><div className="home-console__signal-label">{t.context}</div></div><div className="home-console__request"><div className="home-console__request-head"><span>{t.request}</span><span>09:42</span></div><p>{t.requestText}</p><div className="home-console__route"><span className="home-console__avatar">AI</span><span>{t.routed}</span><ArrowRight size={14} /></div></div></div>
           <div className="home-console__footer"><span>{t.context}</span><span className="home-console__divider" /><span>{t.control}</span></div>
         </div>
       </div>
@@ -105,9 +100,9 @@ export default function HomeExperience({ locale }: { locale: Locale }) {
 
     <section className="home-capabilities"><div className="home-container"><div className="home-section-heading"><div><p className="home-eyebrow">{t.capabilityEyebrow}</p><h2>{t.capabilityTitle}</h2></div><p>{t.capabilityText}</p></div><div className="home-capability-grid">{t.capabilities.map(([title, text, Icon], index) => <article key={title} className="home-capability"><span className="home-capability__number">0{index + 1}</span><div className="home-capability__icon"><Icon size={21} /></div><h3>{title}</h3><p>{text}</p><ArrowUpRight className="home-capability__arrow" size={18} /></article>)}</div></div></section>
 
-    <section className="home-process"><div className="home-container home-process__grid"><div className="home-process__intro"><p className="home-eyebrow">{t.processEyebrow}</p><h2>{t.processTitle}</h2><p>{t.processText}</p><div className="home-process__art"><img src={art.plan} alt="" /></div></div><div className="home-steps">{t.steps.map(([number, title, text]) => <div className="home-step" key={number}><span>{number}</span><div><h3>{title}</h3><p>{text}</p></div></div>)}</div></div></section>
+     <section className="home-process"><div className="home-container home-process__grid"><div className="home-process__intro"><p className="home-eyebrow">{t.processEyebrow}</p><h2>{t.processTitle}</h2><p>{t.processText}</p><WorkflowDiagram locale={locale} /></div><div className="home-steps">{t.steps.map(([number, title, text]) => <div className="home-step" key={number}><span>{number}</span><div><h3>{title}</h3><p>{text}</p></div></div>)}</div></div></section>
 
-    <section className="home-products"><div className="home-container"><div className="home-section-heading home-section-heading--products"><div><p className="home-eyebrow">{t.productsEyebrow}</p><h2>{t.productsTitle}</h2></div><div className="home-products__aside"><img src={art.strategy} alt="" /><p>{t.productsText}</p></div></div><div className="home-product-grid">{t.products.map(([name, detail], index) => <Link key={name} href={name === 'Urbania' ? '/projects/urbania' : '/projects'} className="home-product"><span>0{index + 1}</span><h3>{name}</h3><p>{detail}</p><ArrowUpRight size={18} /></Link>)}</div></div></section>
+     <section className="home-products"><div className="home-container"><div className="home-section-heading home-section-heading--products"><div><p className="home-eyebrow">{t.productsEyebrow}</p><h2>{t.productsTitle}</h2></div><div className="home-products__aside"><div className="home-products__index" aria-hidden="true"><strong>04</strong><span /><i /></div><p>{t.productsText}</p></div></div><div className="home-product-grid">{t.products.map(([name, detail], index) => <Link key={name} href={name === 'Urbania' ? '/projects/urbania' : '/projects'} className="home-product"><span>0{index + 1}</span><h3>{name}</h3><p>{detail}</p><ArrowUpRight size={18} /></Link>)}</div></div></section>
 
     <section className="home-cta"><div className="home-container home-cta__inner"><div><p className="home-eyebrow">{t.ctaEyebrow}</p><h2>{t.ctaTitle}</h2><p>{t.ctaText}</p></div><Link href="/consultation" className="home-button home-button--light">{t.cta}<ArrowUpRight size={17} /></Link></div></section>
   </div>;

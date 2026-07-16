@@ -9,7 +9,7 @@ import { SITE_URL } from '@/lib/seo/constants';
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
     const t = await getTranslations({ locale, namespace: 'seoPage' });
-    return getRouteMetadata('services/seo', '/services/seo', locale as 'ka' | 'en' | 'ru', {
+        return getRouteMetadata('services/seo', '/services/seo', locale as 'ka' | 'en', {
         title: t('hero.badge'),
         description: t('hero.description'),
     });

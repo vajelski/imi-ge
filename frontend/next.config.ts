@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-// Backend URL for API rewrites. Dev: 3003, Prod (start:prod): 3004
+// Backend URL for API rewrites. The local backend defaults to port 3004.
 const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:3004';
 
 const nextConfig: NextConfig = {
@@ -66,7 +66,7 @@ const nextConfig: NextConfig = {
                     },
                     {
                         key: 'Content-Security-Policy',
-                        value: "default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com https://vercel.live; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https://cdn.sanity.io https://cdn.undraw.co https://vercel.live; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://apicdn.sanity.io https://cloudflareinsights.com https://*.cloudflareinsights.com https://vercel.live wss://vercel.live; frame-src 'self' https://vercel.live; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self';",
+                         value: "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https://cdn.sanity.io https://cdn.undraw.co https://picsum.photos https://ui-avatars.com; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://*.api.sanity.io https://apicdn.sanity.io https://www.google-analytics.com https://region1.google-analytics.com; frame-src 'none'; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self';",
                     },
                     {
                         key: 'X-Frame-Options',

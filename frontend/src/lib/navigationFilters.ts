@@ -1,4 +1,4 @@
-const DEMOS_PATHS = new Set(['/demos', '/ka/demos', '/en/demos', '/ru/demos']);
+const DEMOS_PATHS = new Set(['/demos', '/ka/demos', '/en/demos']);
 
 function normalizeHref(href: string): string {
   const trimmed = (href || '').trim();

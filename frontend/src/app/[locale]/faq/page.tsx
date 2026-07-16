@@ -3,6 +3,7 @@ import { setRequestLocale } from 'next-intl/server';
 import FAQStructuredData from '@/components/FAQStructuredData';
 import BreadcrumbStructuredData from '@/components/BreadcrumbStructuredData';
 import { Link } from '@/i18n/routing';
+import { localizedMetadata } from '@/lib/seo/metadata';
 
 const questions = [
   ['რა არის IMI.GE?', 'IMI.GE არის ქართული AI სისტემების კომპანია, რომელიც ბიზნესისთვის ქმნის ხმოვან ასისტენტებს, RAG სისტემებს, AI CRM ინტეგრაციასა და სამუშაო პროცესების ავტომატიზაციას.'],
@@ -25,7 +26,10 @@ const englishQuestions = [
   ['Where can I request a consultation?', 'You can submit a consultation request through the IMI.GE contact form.'],
 ];
 
-export const metadata: Metadata = { title: 'ხშირი კითხვები AI სისტემებზე', description: 'პასუხები IMI.GE-ის AI ასისტენტებზე, RAG-ზე, AI CRM ინტეგრაციასა და ბიზნეს ავტომატიზაციაზე.' };
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  return localizedMetadata({ locale, path: '/faq', title: { ka: 'ხშირი კითხვები AI სისტემებზე', en: 'Frequently asked questions about AI systems' }, description: { ka: 'პასუხები IMI.GE-ის AI ასისტენტებზე, RAG-ზე, AI CRM ინტეგრაციასა და ბიზნეს ავტომატიზაციაზე.', en: 'Answers about IMI.GE AI assistants, RAG, AI CRM integration, and business automation.' } });
+}
 
 export default async function FaqPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;

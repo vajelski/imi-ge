@@ -2,14 +2,15 @@ import React from 'react';
 import { Metadata } from 'next';
 import { getSiteSettings, getNavigation, getPageBySlug, getRouteSeo } from '@/lib/sanity/queries';
 import { ExternalLink } from 'lucide-react';
+import { localizedMetadata } from '@/lib/seo/metadata';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-export const metadata: Metadata = {
-  title: 'CMS Preview',
-  robots: { index: false, follow: false },
-};
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  return localizedMetadata({ locale, path: '/cms-preview', title: { ka: 'CMS Preview', en: 'CMS preview' }, description: { ka: 'შიდა CMS preview.', en: 'Internal CMS preview.' }, noindex: true });
+}
 
 export default async function CmsPreviewPage() {
     const fetchTime = new Date().toISOString()

@@ -1,16 +1,14 @@
 import type { Metadata } from 'next';
 import { ArrowUpRight, Building2, FileSearch, Layers3, MapPinned, ShieldCheck, Sparkles } from 'lucide-react';
 import { setRequestLocale } from 'next-intl/server';
+import { localizedMetadata } from '@/lib/seo/metadata';
 
 const siteUrl = 'https://imi.ge';
 
-export const metadata: Metadata = {
-  title: 'Urbania: AI საკადასტრო და ურბანული აუდიტი',
-  description: 'Urbania არის AI-ზე დაფუძნებული ურბანული და საკადასტრო აუდიტის სამუშაო სივრცე საქართველოში: მიწის ნაკვეთის, ზონირების, K1/K2/K3 და საინვესტიციო რისკების ანალიზი.',
-  keywords: ['Urbania', 'საკადასტრო აუდიტი', 'მიწის ნაკვეთის ანალიზი', 'ზონირება', 'K1 K2 K3', 'უძრავი ქონების AI', 'ურბანული დაგეგმარება', 'კადასტრის კოდი'],
-  alternates: { canonical: '/ka/projects/urbania' },
-  openGraph: { title: 'Urbania: AI საკადასტრო და ურბანული აუდიტი', description: 'ჭკვიანი სამუშაო სივრცე მიწის, ზონირების და უძრავი ქონების საინვესტიციო შეფასებისთვის.' },
-};
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  return localizedMetadata({ locale, path: '/projects/urbania', title: { ka: 'Urbania: AI საკადასტრო და ურბანული აუდიტი', en: 'Urbania: AI cadastral and urban audit' }, description: { ka: 'Urbania არის AI-ზე დაფუძნებული ურბანული და საკადასტრო აუდიტის სამუშაო სივრცე საქართველოში: მიწის ნაკვეთის, ზონირების, K1/K2/K3 და საინვესტიციო რისკების ანალიზი.', en: 'Urbania is an AI workspace for cadastral, zoning, and real-estate risk analysis in Georgia.' } });
+}
 
 const perspectives = [
   { icon: Building2, title: 'დეველოპერის ხედვა', text: 'განაშენიანების შესაძლებლობა, ფუნქციური ზონა, K1/K2/K3 კოეფიციენტები და პროექტის საწყისი შეზღუდვები ერთ სამუშაო კონტექსტში.' },

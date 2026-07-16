@@ -1,63 +1,74 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { ArrowUpRight, Cpu, Menu, Moon, Sun, X } from 'lucide-react';
+import { ArrowUpRight, Cpu, Menu, X } from 'lucide-react';
 import { useSelectedLayoutSegments } from 'next/navigation';
 import { useLocale } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import type { NavigationItem } from '@/lib/sanity/types';
+import ThemeToggle from './ThemeToggle';
 
 interface NavbarProps {
   navItems?: NavigationItem[] | null;
   siteName?: string;
 }
 
-const navigation = [
+const fallbackNavigation: NavigationItem[] = [
   ['/services', 'სერვისები', 'Services'], ['/use-cases', 'სფეროები', 'Use cases'],
   ['/projects', 'პროექტები', 'Projects'], ['/blog', 'ინსაითები', 'Insights'], ['/docs', 'დოკები', 'Docs'],
   ['/faq', 'კითხვები', 'FAQ'], ['/assistant', 'AI ასისტენტი', 'AI assistant'],
-].map(([href, ka, en], index) => ({ href, label: { ka, en }, marker: String(index + 1).padStart(2, '0') }));
+].map(([href, ka, en], order) => ({ href, label: { ka, en }, order }));
 
-export default function Navbar({ siteName = 'იმი.ჯი' }: NavbarProps) {
+export default function Navbar({ navItems, siteName = 'იმი.ჯი' }: NavbarProps) {
   const segments = useSelectedLayoutSegments();
   const locale = useLocale() as 'ka' | 'en';
   const pathname = segments.length ? `/${segments.join('/')}` : '/';
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  const navigation = (navItems?.length ? navItems : fallbackNavigation).map((item, index) => ({
+    ...item,
+    marker: String(index + 1).padStart(2, '0'),
+  }));
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') as 'dark' | 'light' | null;
-    const initialTheme = savedTheme ?? 'dark';
-    setTheme(initialTheme);
-    document.documentElement.classList.toggle('dark', initialTheme === 'dark');
     const onScroll = () => setScrolled(window.scrollY > 28);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const toggleTheme = () => {
-    const next = theme === 'dark' ? 'light' : 'dark';
-    setTheme(next);
-    localStorage.setItem('theme', next);
-    document.documentElement.classList.toggle('dark', next === 'dark');
-  };
+  const languagePath = segments.length ? `/${segments.join('/')}` : '';
 
-  return <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-6 sm:pt-5">
-    <nav className={`mx-auto flex max-w-7xl items-center justify-between rounded-[1.35rem] border px-3 py-2 transition-all duration-500 sm:px-4 ${scrolled ? 'border-slate-900/10 bg-white/85 shadow-[0_18px_45px_rgba(15,23,42,0.12)] backdrop-blur-2xl dark:border-white/10 dark:bg-[#070707]/85 dark:shadow-black/30' : 'border-transparent bg-white/45 backdrop-blur-md dark:bg-[#070707]/35'}`}>
-      <Link href="/" className="group flex items-center gap-3 rounded-xl px-2 py-1.5">
-        <span className="relative grid size-9 place-items-center overflow-hidden rounded-xl bg-slate-950 text-white dark:bg-white dark:text-slate-950"><Cpu size={19}/><i className="absolute -right-3 -top-3 size-6 rounded-full bg-secondary/70 blur-md"/></span>
-        <span><span className="font-heading block text-base font-bold leading-none tracking-[-.04em] text-slate-950 dark:text-white">{siteName}</span><span className="mt-1 block text-[9px] font-bold tracking-[.16em] text-slate-500 dark:text-slate-400">AI / OPERATING SYSTEMS</span></span>
+  return <header className={`site-header${scrolled ? ' site-header--scrolled' : ''}`}>
+    <nav className="site-nav" aria-label={locale === 'en' ? 'Main navigation' : 'მთავარი ნავიგაცია'}>
+      <Link href="/" className="site-brand">
+        <span className="site-brand__mark"><Cpu size={18} aria-hidden="true" /></span>
+        <span><strong>{siteName}</strong><small>AI / OPERATING SYSTEMS</small></span>
       </Link>
 
-      <div className="hidden items-center gap-0.5 xl:flex">{navigation.map((item) => {
-        const active = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
-        return <Link key={item.href} href={item.href as never} className={`font-heading group relative rounded-xl px-2.5 py-2 text-[11px] font-semibold transition ${active ? 'bg-slate-950 text-white dark:bg-white dark:text-slate-950' : 'text-slate-600 hover:bg-slate-900/5 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white'}`}><span className="mr-1 text-[8px] opacity-50">{item.marker}</span>{item.label[locale]}</Link>;
-      })}</div>
+      <div className="site-nav__links">
+        {navigation.map((item) => {
+          const active = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
+          return <Link key={item.href} href={item.href as never} className={`site-nav__link${active ? ' site-nav__link--active' : ''}`} aria-current={active ? 'page' : undefined}><span>{item.marker}</span>{item.label[locale]}</Link>;
+        })}
+      </div>
 
-      <div className="flex items-center gap-1.5"><div className="hidden items-center rounded-lg border border-slate-900/10 p-0.5 text-[10px] font-bold dark:border-white/15 sm:flex"><a href={`/ka${segments.length ? `/${segments.join('/')}` : ''}`} className={`rounded-md px-2 py-1 ${locale === 'ka' ? 'bg-black text-white dark:bg-white dark:text-black' : 'text-slate-500'}`}>KA</a><a href={`/en${segments.length ? `/${segments.join('/')}` : ''}`} className={`rounded-md px-2 py-1 ${locale === 'en' ? 'bg-black text-white dark:bg-white dark:text-black' : 'text-slate-500'}`}>EN</a></div><button type="button" onClick={toggleTheme} className="grid size-9 place-items-center rounded-xl text-slate-600 transition hover:bg-slate-900/5 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white" aria-label={theme === 'dark' ? 'ნათელ რეჟიმზე გადასვლა' : 'მუქ რეჟიმზე გადასვლა'}>{theme === 'dark' ? <Sun size={17}/> : <Moon size={17}/>}</button><Link href="/consultation" className="font-heading hidden items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-xs font-bold text-white shadow-[0_8px_24px_rgba(0,0,0,.2)] transition hover:-translate-y-0.5 hover:bg-slate-950 xl:inline-flex dark:bg-white dark:text-black dark:hover:bg-neutral-200">{locale === 'en' ? 'AI consultation' : 'AI კონსულტაცია'} <ArrowUpRight size={15}/></Link><button type="button" onClick={() => setOpen((value) => !value)} className="grid size-9 place-items-center rounded-xl bg-slate-950 text-white dark:bg-white dark:text-slate-950 xl:hidden" aria-label={open ? 'მენიუს დახურვა' : 'მენიუს გახსნა'}>{open ? <X size={19}/> : <Menu size={19}/>}</button></div>
+      <div className="site-nav__actions">
+        <div className="language-switcher" aria-label={locale === 'en' ? 'Language' : 'ენა'}>
+          <a href={`/ka${languagePath}`} className={locale === 'ka' ? 'language-switcher__active' : ''} aria-current={locale === 'ka' ? 'page' : undefined}>KA</a>
+          <a href={`/en${languagePath}`} className={locale === 'en' ? 'language-switcher__active' : ''} aria-current={locale === 'en' ? 'page' : undefined}>EN</a>
+        </div>
+        <ThemeToggle label={locale === 'en' ? 'Toggle theme' : 'თემის შეცვლა'} />
+        <Link href="/consultation" className="site-nav__cta">{locale === 'en' ? 'AI consultation' : 'AI კონსულტაცია'} <ArrowUpRight size={15} aria-hidden="true" /></Link>
+        <button type="button" onClick={() => setOpen((value) => !value)} className="site-nav__menu" aria-expanded={open} aria-controls="mobile-navigation" aria-label={open ? 'მენიუს დახურვა' : 'მენიუს გახსნა'}>{open ? <X size={19} aria-hidden="true" /> : <Menu size={19} aria-hidden="true" />}</button>
+      </div>
     </nav>
-    {open && <div className="mx-auto mt-2 max-w-7xl overflow-hidden rounded-[1.35rem] border border-slate-900/10 bg-white/95 p-2 shadow-2xl backdrop-blur-2xl dark:border-white/10 dark:bg-[#070707]/95 xl:hidden">{navigation.map((item) => <Link key={item.href} href={item.href as never} onClick={() => setOpen(false)} className="font-heading flex items-center justify-between rounded-xl px-4 py-3 text-sm font-bold text-slate-950 hover:bg-primary/10 dark:text-white dark:hover:bg-white/10"><span>{item.label[locale]}</span><span className="text-xs text-primary">{item.marker}</span></Link>)}<Link href="/consultation" onClick={() => setOpen(false)} className="font-heading mt-1 flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-bold text-white">{locale === 'en' ? 'AI consultation' : 'AI კონსულტაცია'} <ArrowUpRight size={16}/></Link></div>}
+    {open && <div id="mobile-navigation" className="site-nav__mobile">
+      <div className="site-nav__mobile-links">{navigation.map((item) => <Link key={item.href} href={item.href as never} onClick={() => setOpen(false)} className="site-nav__mobile-link"><span>{item.label[locale]}</span><small>{item.marker}</small></Link>)}</div>
+      <div className="site-nav__mobile-footer">
+        <div className="language-switcher" aria-label={locale === 'en' ? 'Language' : 'ენა'}><a href={`/ka${languagePath}`} className={locale === 'ka' ? 'language-switcher__active' : ''} aria-current={locale === 'ka' ? 'page' : undefined}>KA</a><a href={`/en${languagePath}`} className={locale === 'en' ? 'language-switcher__active' : ''} aria-current={locale === 'en' ? 'page' : undefined}>EN</a></div>
+        <Link href="/consultation" onClick={() => setOpen(false)} className="site-nav__cta">{locale === 'en' ? 'AI consultation' : 'AI კონსულტაცია'} <ArrowUpRight size={16} aria-hidden="true" /></Link>
+      </div>
+    </div>}
   </header>;
 }

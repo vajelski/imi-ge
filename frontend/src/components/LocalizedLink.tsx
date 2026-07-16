@@ -15,6 +15,6 @@ export function LocalizedLink({
   ...props
 }: Omit<ComponentProps<typeof NextLink>, 'href'> & { href: string }) {
   const locale = useLocale();
-  const resolvedHref = getLocalizedPath(locale as 'ka' | 'en' | 'ru', href);
+  const resolvedHref = getLocalizedPath(locale as 'ka' | 'en', href);
   return <NextLink href={resolvedHref} {...props} />;
 }

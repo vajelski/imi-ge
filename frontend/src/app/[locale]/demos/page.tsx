@@ -6,7 +6,7 @@ import { getRouteMetadata } from '@/lib/sanity/metadata';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
-    return getRouteMetadata('demos', '/demos', locale as 'ka' | 'en' | 'ru', {
+    return getRouteMetadata('demos', '/demos', locale as 'ka' | 'en', {
         title: 'Live Demos',
         description: 'Explore our interactive AI and web development demos.',
     });

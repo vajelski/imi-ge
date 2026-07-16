@@ -4,7 +4,6 @@ import { SITE_URL, SITE_NAME } from '@/lib/seo/constants';
 const WEBSITE_DESCRIPTION: Record<string, string> = {
   ka: 'AI ინტეგრაცია, ვებ-დეველოპმენტი და ტექნოლოგიური კონსულტაცია საქართველოში.',
   en: 'AI integration, web development and technology consulting in Georgia.',
-  ru: 'Интеграция AI, веб-разработка и технологический консалтинг в Грузии.',
 };
 
 interface WebSiteStructuredDataProps {
@@ -15,12 +14,12 @@ interface WebSiteStructuredDataProps {
  * WebSite schema for the Georgian public site.
  */
 const WebSiteStructuredData: React.FC<WebSiteStructuredDataProps> = ({ locale }) => {
-  const lang = locale === 'ka' ? 'ka' : locale === 'ru' ? 'ru' : 'en';
+  const lang = locale === 'ka' ? 'ka' : 'en';
   const data = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     '@id': `${SITE_URL}/#website`,
-    url: SITE_URL,
+    url: `${SITE_URL}/${lang}`,
     name: SITE_NAME,
     description: WEBSITE_DESCRIPTION[locale] ?? WEBSITE_DESCRIPTION.en,
     inLanguage: [lang],

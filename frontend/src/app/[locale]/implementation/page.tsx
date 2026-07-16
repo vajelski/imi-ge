@@ -3,8 +3,12 @@ import { ArrowUpRight, BadgeCheck, Code2, Eye, LockKeyhole, Rocket } from 'lucid
 import { setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/routing';
 import BreadcrumbStructuredData from '@/components/BreadcrumbStructuredData';
+import { localizedMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = { title: 'AI დანერგვის მოდელი', description: 'როგორ ვგეგმავთ, ვაშენებთ და ვუშვებთ უსაფრთხო AI სისტემებს: აღმოჩენა, არქიტექტურა, პილოტი, მონიტორინგი და მასშტაბირება.' };
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  return localizedMetadata({ locale, path: '/implementation', title: { ka: 'AI დანერგვის მოდელი', en: 'AI implementation model' }, description: { ka: 'როგორ ვგეგმავთ, ვაშენებთ და ვუშვებთ უსაფრთხო AI სისტემებს: აღმოჩენა, არქიტექტურა, პილოტი, მონიტორინგი და მასშტაბირება.', en: 'How we plan, build, and launch safe AI systems through discovery, architecture, pilots, monitoring, and scale.' } });
+}
 
 const phases = [[Eye,'აღმოჩენა','ვიკვლევთ პროცესს, მომხმარებლის გზას, მონაცემის წყაროსა და KPI-ს.'],[LockKeyhole,'არქიტექტურა','ვგეგმავთ ინტეგრაციებს, წვდომას, მონაცემის საზღვრებსა და დამტკიცების ეტაპებს.'],[Code2,'პილოტი','ვუშვებთ ვიწრო, გაზომვად სამუშაო პროცესს რეალურ მომხმარებელსა და რეალურ კონტექსტში.'],[Rocket,'მასშტაბირება','ვაფართოებთ გამოყენების შემთხვევას, ვამატებთ მონიტორინგს და პასუხისმგებლობას თქვენს გუნდს ვანიჭებთ.']];
 

@@ -1,5 +1,5 @@
 // Type definitions for Sanity content
-export type Locale = 'ka' | 'en' | 'ru'
+export type Locale = 'ka' | 'en'
 
 export interface LocalizedString {
     ka?: string

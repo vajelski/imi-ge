@@ -1,7 +1,6 @@
 import { MetadataRoute } from 'next';
 import { getSiteSettings } from '@/lib/sanity/queries';
 import { SITE_URL } from '@/lib/seo/constants';
-import { insights } from '@/data/insights';
 
 const LOCALES = ['ka', 'en'] as const;
 const STATIC_PATHS = [
@@ -25,9 +24,7 @@ const STATIC_PATHS = [
     { path: '/ai-readiness', priority: 0.8, changeFreq: 'monthly' as const, key: 'services' as const },
     { path: '/implementation', priority: 0.8, changeFreq: 'monthly' as const, key: 'services' as const },
     { path: '/faq', priority: 0.8, changeFreq: 'monthly' as const, key: 'services' as const },
-    { path: '/docs', priority: 0.8, changeFreq: 'monthly' as const, key: 'services' as const },
     { path: '/assistant', priority: 0.85, changeFreq: 'monthly' as const, key: 'services' as const },
-    { path: '/blog', priority: 0.85, changeFreq: 'daily' as const, key: 'blog' as const },
     { path: '/contact', priority: 0.85, changeFreq: 'monthly' as const, key: 'contact' as const },
     { path: '/privacy', priority: 0.4, changeFreq: 'yearly' as const, key: 'privacy' as const },
     { path: '/terms', priority: 0.4, changeFreq: 'yearly' as const, key: 'terms' as const },
@@ -51,36 +48,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const entries: MetadataRoute.Sitemap = [];
     const siteSettings = await getSiteSettings(false).catch(() => null);
     const pageToggles = siteSettings?.pageToggles;
-    const enableBlog = siteSettings?.toggles?.enableBlog !== false;
 
     for (const locale of LOCALES) {
         for (const { path, priority, changeFreq, key } of STATIC_PATHS) {
             const pageKey = PAGE_TOGGLE_KEYS[key];
             if (pageKey && pageToggles && (pageToggles as Record<string, boolean>)[pageKey] === false) continue;
-            if (key === 'blog' && !enableBlog) continue;
             entries.push({
                 url: `${SITE_URL}/${locale}${path}`,
                 changeFrequency: changeFreq,
                 priority,
                 alternates: {
                     languages: Object.fromEntries(
-                        LOCALES.map((l) => [l, `${SITE_URL}/${l}${path}`])
+                        [['x-default', `${SITE_URL}/ka${path}`], ...LOCALES.map((l) => [l, `${SITE_URL}/${l}${path}`])]
                     ) as Record<string, string>,
-                },
-            });
-        }
-    }
-
-    for (const locale of LOCALES) {
-        for (const insight of insights) {
-            const path = `/blog/${insight.slug}`;
-            entries.push({
-                url: `${SITE_URL}/${locale}${path}`,
-                lastModified: new Date(insight.date),
-                changeFrequency: 'monthly',
-                priority: 0.75,
-                alternates: {
-                    languages: Object.fromEntries(LOCALES.map((l) => [l, `${SITE_URL}/${l}${path}`])) as Record<string, string>,
                 },
             });
         }

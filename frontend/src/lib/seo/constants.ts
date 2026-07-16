@@ -13,7 +13,7 @@ export const OG_IMAGE_HEIGHT = 630;
 export const TITLE_MAX_LENGTH = 60;
 export const DESCRIPTION_MAX_LENGTH = 160;
 
-export const LOCALES = ['ka', 'en', 'ru'] as const;
+export const LOCALES = ['ka', 'en'] as const;
 export type Locale = (typeof LOCALES)[number];
 
 /** Keywords for Georgian tech/AI market */

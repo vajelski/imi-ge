@@ -3,8 +3,12 @@ import { ArrowUpRight, Check, Instagram, ShoppingBag, Workflow } from 'lucide-re
 import { setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/routing';
 import BreadcrumbStructuredData from '@/components/BreadcrumbStructuredData';
+import { localizedMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = { title: 'Social Commerce AI და ონლაინ გაყიდვების ავტომატიზაცია', description: 'AI სისტემა Instagram, TikTok და ვებგვერდის მოთხოვნებისთვის: პროდუქტის კითხვები, შეკვეთები, ლიდები და CRM კონტექსტი.' };
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  return localizedMetadata({ locale, path: '/solutions/social-commerce-ai', title: { ka: 'Social Commerce AI და ონლაინ გაყიდვების ავტომატიზაცია', en: 'Social Commerce AI and online sales automation' }, description: { ka: 'AI სისტემა Instagram, TikTok და ვებგვერდის მოთხოვნებისთვის: პროდუქტის კითხვები, შეკვეთები, ლიდები და CRM კონტექსტი.', en: 'An AI system for Instagram, TikTok, and web requests: product questions, orders, leads, and CRM context.' } });
+}
 
 const useCases = [['პროდუქტის კითხვა', 'AI პასუხობს ფასზე, მახასიათებელზე, ხელმისაწვდომობასა და მიწოდების წესზე დამტკიცებული ცოდნით.'], ['შეკვეთის მიღება', 'მოთხოვნა გადადის სამუშაო პროცესში და გუნდს რჩება საჭირო კონტექსტი.'], ['გაყიდვის გაგრძელება', 'მომხმარებლის განზრახვა და შემდეგი ნაბიჯი CRM-ში იწერება.']];
 

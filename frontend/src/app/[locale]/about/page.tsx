@@ -30,11 +30,13 @@ export async function generateMetadata({ params }: AboutPageProps): Promise<Meta
             alternates: {
                 canonical: `https://imi.ge/${locale}/about`,
                 languages: {
+                    'x-default': 'https://imi.ge/ka/about',
                     ka: 'https://imi.ge/ka/about',
                     en: 'https://imi.ge/en/about',
-                    ru: 'https://imi.ge/ru/about',
                 },
             },
+            openGraph: { type: 'website', url: `https://imi.ge/${locale}/about`, title: metaTitle, description: metaDescription },
+            twitter: { card: 'summary_large_image', title: metaTitle, description: metaDescription },
         };
     }
 
@@ -46,11 +48,13 @@ export async function generateMetadata({ params }: AboutPageProps): Promise<Meta
         alternates: {
             canonical: `https://imi.ge/${locale}/about`,
             languages: {
+                'x-default': 'https://imi.ge/ka/about',
                 ka: 'https://imi.ge/ka/about',
                 en: 'https://imi.ge/en/about',
-                ru: 'https://imi.ge/ru/about',
             },
         },
+        openGraph: { type: 'website', url: `https://imi.ge/${locale}/about`, title: `${t('badge')} — IMI.GE`, description: t('description') },
+        twitter: { card: 'summary_large_image', title: `${t('badge')} — IMI.GE`, description: t('description') },
     };
 }
 

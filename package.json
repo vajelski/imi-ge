@@ -12,12 +12,15 @@
     "migrate:about": "cd scripts && node migrate-about.js",
     "dev-cms": "npm run dev --prefix cms",
     "dev:full": "concurrently \"npm run dev-frontend\" \"npm run dev-backend\" \"npm run dev-cms\"",
-    "build:prod": "BACKEND_URL=http://localhost:3004 npm run build --prefix frontend",
+    "build:prod": "npm run build --prefix frontend",
     "start:prod": "concurrently \"npm run start:prod --prefix frontend\" \"npm run start:backend\"",
-    "start:backend": "API_BACKEND_PORT=3004 npm run start --prefix backend"
+    "start:backend": "npm run start --prefix backend",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui"
   },
   "devDependencies": {
     "@sanity/client": "^7.14.1",
+    "@playwright/test": "^1.51.1",
     "concurrently": "latest",
     "next-sanity": "^12.1.0",
     "sanity": "^5.9.0"

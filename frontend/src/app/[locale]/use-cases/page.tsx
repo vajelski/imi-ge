@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { ArrowUpRight, Building2, Headphones, Landmark, ShoppingBag, Stethoscope, Warehouse } from 'lucide-react';
 import { setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/routing';
+import { localizedMetadata } from '@/lib/seo/metadata';
 
 const useCases = [
   {
@@ -50,10 +51,10 @@ const englishUseCases = [
   { icon: Landmark, title: 'Finance and regulated industries', description: 'Secure RAG systems give staff controlled access to policies, contracts, and internal knowledge.', outcome: 'Auditable knowledge access with role-based controls' },
 ];
 
-export const metadata: Metadata = {
-  title: 'AI გამოყენების სფეროები',
-  description: 'კორპორაციული AI ინტეგრაციები გაყიდვებისთვის, მომსახურებისთვის, ოპერაციებისთვის და რეგულირებული ინდუსტრიებისთვის.',
-};
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  return localizedMetadata({ locale, path: '/use-cases', title: { ka: 'AI გამოყენების სფეროები', en: 'AI use cases for real business operations' }, description: { ka: 'კორპორაციული AI ინტეგრაციები გაყიდვებისთვის, მომსახურებისთვის, ოპერაციებისთვის და რეგულირებული ინდუსტრიებისთვის.', en: 'Corporate AI integrations for sales, service, operations, and regulated industries.' } });
+}
 
 export default async function UseCasesPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;

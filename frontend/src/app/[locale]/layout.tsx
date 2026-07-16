@@ -29,11 +29,6 @@ const DEFAULT_LAYOUT_META: Record<Locale, { title: string; description: string; 
         description: 'AI integration, web development and technology consulting in Georgia. IMI.GE — future technologies today.',
         keywords: ['IMI.GE', 'AI Georgia', 'artificial intelligence', 'web development', 'SEO', 'technology consulting'],
     },
-    ru: {
-        title: 'IMI.GE | AI и технологические решения в Грузии',
-        description: 'Интеграция AI, веб-разработка и технологический консалтинг в Грузии. IMI.GE — технологии будущего сегодня.',
-        keywords: ['IMI.GE', 'AI Грузия', 'искусственный интеллект', 'веб-разработка', 'SEO', 'технологический консалтинг'],
-    },
 };
 
 export function generateStaticParams() {
@@ -44,7 +39,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     const { locale } = await params;
     const loc = locale as Locale;
     const siteSettings = await getSiteSettings(false).catch(() => null);
-    const defaultSeo = siteSettings?.defaultSeo as { title?: { ka?: string; en?: string; ru?: string }; description?: { ka?: string; en?: string; ru?: string } } | undefined;
+    const defaultSeo = siteSettings?.defaultSeo as { title?: { ka?: string; en?: string }; description?: { ka?: string; en?: string } } | undefined;
     const fallback = DEFAULT_LAYOUT_META[loc] ?? DEFAULT_LAYOUT_META.en;
     const title = defaultSeo?.title ? (getLocalizedValue(defaultSeo.title, loc) as string) ?? fallback.title : fallback.title;
     const description = defaultSeo?.description ? (getLocalizedValue(defaultSeo.description, loc) as string) ?? fallback.description : fallback.description;
@@ -66,7 +61,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         openGraph: {
             type: 'website',
             siteName: SITE_NAME,
-            locale: locale === 'ka' ? 'ka_GE' : locale === 'ru' ? 'ru_GE' : 'en_US',
+            locale: locale === 'ka' ? 'ka_GE' : 'en_US',
             url: base,
             title,
             description,
@@ -77,7 +72,14 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
             title,
             description,
         },
-        alternates: { canonical: base },
+        alternates: {
+            canonical: base,
+            languages: {
+                'x-default': `${SITE_URL}/ka`,
+                ka: `${SITE_URL}/ka`,
+                en: `${SITE_URL}/en`,
+            },
+        },
         robots: {
             index: true,
             follow: true,
@@ -129,7 +131,7 @@ export default async function LocaleLayout(props: {
     const headerLinks = siteSettings?.navigation?.headerLinks?.filter((x) => x.enabled !== false);
     const navItems = headerLinks?.length
         ? headerLinks.map((item, i) => ({
-              label: item.label ?? { ka: item.href || 'Link', en: item.href || 'Link', ru: item.href || 'Link' },
+              label: item.label ?? { ka: item.href || 'Link', en: item.href || 'Link' },
               href: item.href || '#',
               order: i,
           }))
@@ -188,19 +190,20 @@ export default async function LocaleLayout(props: {
         '@id': `${SITE_URL}/#organization`,
         name: SITE_NAME,
         url: SITE_URL,
-        logo: `${SITE_URL}/favicon.svg`,
+        description: 'AI integration, web development, and technology consulting in Georgia.',
+        logo: `${SITE_URL}/og-image.png`,
         ...(telephone || email ? {
             contactPoint: {
                 '@type': 'ContactPoint',
                 ...(telephone && { telephone }),
                 ...(email && { email }),
                 contactType: 'customer service',
-                availableLanguage: ['Georgian']
+                availableLanguage: ['Georgian', 'English']
             }
         } : {}),
         areaServed: { '@type': 'Country', name: 'საქართველო' },
         knowsAbout: ['ხელოვნური ინტელექტი', 'AI CRM ინტეგრაცია', 'RAG სისტემები', 'ხმოვანი AI', 'ბიზნეს პროცესების ავტომატიზაცია'],
-        sameAs: sameAs.length > 0 ? sameAs : ['https://facebook.com/imi.ge', 'https://linkedin.com/company/imi-ge']
+        ...(sameAs.length > 0 ? { sameAs } : {})
     };
 
     const themeScript = `(function(){var t=localStorage.getItem('theme');var dark=t? t==='dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.classList.toggle('dark',dark);})();`;

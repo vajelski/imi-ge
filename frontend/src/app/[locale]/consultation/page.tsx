@@ -4,8 +4,12 @@ import { setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/routing';
 import ContactForm from '@/components/ContactForm';
 import BreadcrumbStructuredData from '@/components/BreadcrumbStructuredData';
+import { localizedMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = { title: 'AI სტრატეგიის კონსულტაცია', description: '60-წუთიანი AI strategy session: პროცესის, მონაცემების, ინტეგრაციების, რისკების და პირველი პილოტის შეფასება.' };
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  return localizedMetadata({ locale, path: '/consultation', title: { ka: 'AI სტრატეგიის კონსულტაცია', en: 'AI strategy consultation' }, description: { ka: '60-წუთიანი AI strategy session: პროცესის, მონაცემების, ინტეგრაციების, რისკების და პირველი პილოტის შეფასება.', en: 'A 60-minute AI strategy session to assess your process, data, integrations, risks, and first pilot.' } });
+}
 
 export default async function ConsultationPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
