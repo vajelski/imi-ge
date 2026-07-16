@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "@sanity/client": "^7.14.1",
-    "@playwright/test": "^1.51.1",
+    "@playwright/test": "^1.61.1",
     "concurrently": "latest",
     "next-sanity": "^12.1.0",
     "sanity": "^5.9.0"
