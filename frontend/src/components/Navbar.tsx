@@ -51,17 +51,16 @@ export default function Navbar({ navItems, siteName = 'იმი.ჯი' }: Navb
           const active = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
           return <Link key={item.href} href={item.href as never} className={`site-nav__link${active ? ' site-nav__link--active' : ''}`} aria-current={active ? 'page' : undefined}><span>{item.marker}</span>{item.label[locale]}</Link>;
         })}
-       </div>
+      </div>
 
-       <div className="site-nav__actions">
-         <span className="site-nav__signal"><i />{locale === 'en' ? 'SYSTEMS ONLINE' : 'სისტემები აქტიურია'}</span>
-         <div className="language-switcher" aria-label={locale === 'en' ? 'Language' : 'ენა'}>
+      <div className="site-nav__actions">
+        <div className="language-switcher" aria-label={locale === 'en' ? 'Language' : 'ენა'}>
           <a href={`/ka${languagePath}`} className={locale === 'ka' ? 'language-switcher__active' : ''} aria-current={locale === 'ka' ? 'page' : undefined}>KA</a>
           <a href={`/en${languagePath}`} className={locale === 'en' ? 'language-switcher__active' : ''} aria-current={locale === 'en' ? 'page' : undefined}>EN</a>
         </div>
         <ThemeToggle label={locale === 'en' ? 'Toggle theme' : 'თემის შეცვლა'} />
         <Link href="/consultation" className="site-nav__cta">{locale === 'en' ? 'AI consultation' : 'AI კონსულტაცია'} <ArrowUpRight size={15} aria-hidden="true" /></Link>
-         <button type="button" onClick={() => setOpen((value) => !value)} className="site-nav__menu" aria-expanded={open} aria-controls="mobile-navigation" aria-label={open ? (locale === 'en' ? 'Close menu' : 'მენიუს დახურვა') : (locale === 'en' ? 'Open menu' : 'მენიუს გახსნა')}>{open ? <X size={19} aria-hidden="true" /> : <Menu size={19} aria-hidden="true" />}</button>
+        <button type="button" onClick={() => setOpen((value) => !value)} className="site-nav__menu" aria-expanded={open} aria-controls="mobile-navigation" aria-label={open ? 'მენიუს დახურვა' : 'მენიუს გახსნა'}>{open ? <X size={19} aria-hidden="true" /> : <Menu size={19} aria-hidden="true" />}</button>
       </div>
     </nav>
     {open && <div id="mobile-navigation" className="site-nav__mobile">

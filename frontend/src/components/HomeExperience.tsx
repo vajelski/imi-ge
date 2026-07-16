@@ -1,4 +1,4 @@
-import { Activity, ArrowRight, ArrowUpRight, Bot, Check, CircleCheck, Database, Gauge, Headphones, ShieldCheck, Sparkles, Workflow } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Bot, Check, Database, Headphones, ShieldCheck, Workflow } from 'lucide-react';
 import { Link } from '@/i18n/routing';
 import WorkflowDiagram from './WorkflowDiagram';
 
@@ -18,14 +18,6 @@ const copy = {
     routed: 'სწორ გუნდთან გადამისამართდა',
     context: 'CRM + ზარები + ცოდნა',
     control: 'ადამიანის კონტროლი',
-    queue: 'შემომავალი რიგი / 03 აქტიური',
-    agents: ['მოთხოვნის ტრიაჟი', 'ცოდნის დამმუშავებელი', 'CRM კოორდინატორი'],
-    agentState: 'მუშაობს',
-    confidence: 'სანდოობის დონე',
-    response: 'პასუხის დრო',
-    responseValue: '01:24',
-    integrationsLabel: 'ინტეგრაციები',
-    integrations: ['CRM', 'Drive', 'Calls', 'Slack'],
     capabilityEyebrow: 'ერთი ოპერაციული ფენა',
     capabilityTitle: 'AI არ არის კიდევ ერთი აპლიკაცია.',
     capabilityText: 'ის არის ინტერფეისი, რომელიც თქვენს პროცესებს აკავშირებს და გუნდს შემდეგ სწორ ნაბიჯს აჩვენებს.',
@@ -61,14 +53,6 @@ const copy = {
     routed: 'Routed to the right team',
     context: 'CRM + calls + knowledge',
     control: 'Human control',
-    queue: 'INBOX / 03 ACTIVE',
-    agents: ['Request triage', 'Knowledge handler', 'CRM coordinator'],
-    agentState: 'Running',
-    confidence: 'Confidence',
-    response: 'Response time',
-    responseValue: '01:24',
-    integrationsLabel: 'Integrations',
-    integrations: ['CRM', 'Drive', 'Calls', 'Slack'],
     capabilityEyebrow: 'One operating layer',
     capabilityTitle: 'AI is not another application.',
     capabilityText: 'It is an interface that connects your processes and shows the team the next right action.',
@@ -106,18 +90,11 @@ export default function HomeExperience({ locale }: { locale: Locale }) {
           <div className="home-actions"><Link href="/consultation" className="home-button home-button--dark">{t.primary}<ArrowUpRight size={17} /></Link><Link href="/services" className="home-button home-button--outline">{t.secondary}<ArrowRight size={17} /></Link></div>
           <div className="home-proof"><span><Check size={14} /> {locale === 'ka' ? 'ქართული მხარდაჭერა' : 'Georgian-first'}</span><span><ShieldCheck size={14} /> {locale === 'ka' ? 'ადამიანის კონტროლი' : 'Human-controlled'}</span></div>
         </div>
-         <div className="home-console" aria-label={t.workspace}>
-           <div className="home-console__top"><span className="home-console__label"><Sparkles size={13} aria-hidden="true" />{t.workspace}</span><span className="home-console__status"><i />{t.live}</span></div>
-           <div className="home-console__screen">
-             <div className="home-console__screen-bar"><span>{t.queue}</span><span className="home-console__screen-dots"><i /><i /><i /></span></div>
-             <div className="home-console__flow" aria-hidden="true"><span className="home-console__flow-line home-console__flow-line--one" /><span className="home-console__flow-line home-console__flow-line--two" /><span className="home-console__flow-node home-console__flow-node--input"><Activity size={15} /></span><span className="home-console__flow-node home-console__flow-node--core"><Bot size={18} /></span><span className="home-console__flow-node home-console__flow-node--output"><CircleCheck size={15} /></span></div>
-             <div className="home-console__request"><div className="home-console__request-head"><span>{t.request}</span><span>09:42</span></div><p>{t.requestText}</p><div className="home-console__route"><span className="home-console__avatar">AI</span><span>{t.routed}</span><ArrowRight size={14} /></div></div>
-             <div className="home-console__agents"><p className="home-console__agents-label">{t.context}</p>{t.agents.map((agent, index) => <div className={`home-agent-card${index === 0 ? ' home-agent-card--active' : ''}`} key={agent}><span className="home-agent-card__icon">{index === 0 ? <Activity size={14} /> : index === 1 ? <Database size={14} /> : <Gauge size={14} />}</span><span className="home-agent-card__name"><strong>{agent}</strong><small>{index === 0 ? t.agentState : index === 1 ? t.confidence : t.control}</small></span><span className="home-agent-card__signal"><i />{index === 0 ? '98%' : index === 1 ? 'A+' : 'OK'}</span></div>)}</div>
-             <div className="home-console__metric-row"><span><small>{t.response}</small><strong>{t.responseValue}</strong></span><span><small>{t.confidence}</small><strong>98.4%</strong></span><span><small>{t.control}</small><strong><ShieldCheck size={13} /> ON</strong></span></div>
-             <div className="home-console__integrations"><small>{t.integrationsLabel}</small><div>{t.integrations.map((integration) => <span key={integration}>{integration}</span>)}</div></div>
-           </div>
-           <div className="home-console__footer"><span>{t.context}</span><span className="home-console__divider" /><span>{t.control}</span></div>
-         </div>
+        <div className="home-console">
+          <div className="home-console__top"><span className="home-console__label">{t.workspace}</span><span className="home-console__status"><i />{t.live}</span></div>
+           <div className="home-console__screen"><div className="home-console__screen-art" aria-hidden="true"><div className="home-console__signal"><span /><span /><span /><i /></div><div className="home-console__signal-label">{t.context}</div></div><div className="home-console__request"><div className="home-console__request-head"><span>{t.request}</span><span>09:42</span></div><p>{t.requestText}</p><div className="home-console__route"><span className="home-console__avatar">AI</span><span>{t.routed}</span><ArrowRight size={14} /></div></div></div>
+          <div className="home-console__footer"><span>{t.context}</span><span className="home-console__divider" /><span>{t.control}</span></div>
+        </div>
       </div>
     </section>
 
