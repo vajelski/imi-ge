@@ -22,7 +22,7 @@
             "description": "Full technical and SEO analysis using AI. Discover issues in seconds.",
             "icon": "Search",
             "price": "Details",
-            "path": "/services/audit"
+            "path": "/ai-readiness"
         },
         {
             "id": "2",
@@ -30,7 +30,7 @@
             "description": "From idea to code. Our AI writes clean React/Tailwind code based on your description.",
             "icon": "Hammer",
             "price": "Details",
-            "path": "/services/builder"
+            "path": "/services/ai-native-web"
         },
         {
             "id": "3",
@@ -38,7 +38,7 @@
             "description": "Chatbots tailored to your business that speak fluent Georgian and serve clients 24/7.",
             "icon": "MessageSquareCode",
             "price": "Details",
-            "path": "/demos"
+            "path": "/assistant"
         }
     ],
     "servicesSection": {
@@ -113,7 +113,7 @@
                     },
                     {
                         "label": "Portfolio",
-                        "url": "/portfolio"
+                        "url": "/projects"
                     },
                     {
                         "label": "Blog",
@@ -130,11 +130,11 @@
                     },
                     {
                         "label": "AI Integration",
-                        "url": "/demos"
+                        "url": "/assistant"
                     },
                     {
                         "label": "SEO Audit",
-                        "url": "/services/audit"
+                        "url": "/ai-readiness"
                     }
                 ]
             },
@@ -242,21 +242,21 @@
                         "title": "Web Development",
                         "desc": "Modern, fast, and SEO-optimized websites.",
                         "icon": "Layout",
-                        "link": "/contact",
+                        "link": "/consultation",
                         "price": "Details"
                     },
                     {
                         "title": "Mobile Apps",
                         "desc": "Creating iOS and Android apps (React Native / Flutter).",
                         "icon": "Smartphone",
-                        "link": "/contact",
+                        "link": "/consultation",
                         "price": "Details"
                     },
                     {
                         "title": "AI Web Builder",
                         "desc": "From idea to ready code with the help of our AI.",
                         "icon": "Hammer",
-                        "link": "/services/builder",
+                        "link": "/services/ai-native-web",
                         "price": "Details"
                     }
                 ]
@@ -268,21 +268,21 @@
                         "title": "Georgian AI Assistants",
                         "desc": "Chatbots that speak fluent Georgian.",
                         "icon": "MessageSquareCode",
-                        "link": "/demos",
+                        "link": "/assistant",
                         "price": "Details"
                     },
                     {
                         "title": "AI Automation",
                         "desc": "Automation of routine processes with AI.",
                         "icon": "Brain",
-                        "link": "/contact",
+                        "link": "/consultation",
                         "price": "Details"
                     },
                     {
                         "title": "Data Analytics",
                         "desc": "Big Data processing and predictive models.",
                         "icon": "BarChart3",
-                        "link": "/contact",
+                        "link": "/consultation",
                         "price": "Details"
                     }
                 ]
@@ -294,21 +294,21 @@
                         "title": "AI Site Audit",
                         "desc": "Full technical and SEO analysis using AI.",
                         "icon": "Search",
-                        "link": "/services/audit",
+                        "link": "/ai-readiness",
                         "price": "Details"
                     },
                     {
                         "title": "SEO & Marketing",
                         "desc": "Site promotion in Google and technical optimization.",
                         "icon": "Globe",
-                        "link": "/contact",
+                        "link": "/consultation",
                         "price": "Details"
                     },
                     {
                         "title": "Cybersecurity",
                         "desc": "System protection from attacks and security standards.",
                         "icon": "ShieldCheck",
-                        "link": "/contact",
+                        "link": "/consultation",
                         "price": "Details"
                     }
                 ]
@@ -461,13 +461,16 @@
         "sending": "Sending...",
         "success": "Sent",
         "error": "Error - try again",
-        "interests": [
-            "Web Development",
-            "AI Integration",
-            "Mobile App",
-            "Audit",
-            "Other"
-        ]
+            "interests": [
+            "AI voice assistants and chatbots",
+            "RAG and internal AI systems",
+            "Business process automation",
+            "AI-native web products",
+            "AI CRM integration and governance"
+        ],
+        "serverError": "The service is temporarily unavailable. Please try again later.",
+        "unknownError": "We could not understand the server response.",
+        "requestError": "We could not send your request. Please try again."
     },
     "audit": {
         "hero": {

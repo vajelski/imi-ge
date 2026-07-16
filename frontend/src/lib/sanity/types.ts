@@ -221,8 +221,8 @@ export interface BlogPost {
 export function getLocalizedValue<T>(
     obj: { ka?: T; en?: T; ru?: T } | undefined,
     locale: Locale,
-    fallbackLocale: Locale = 'ka'
+    fallbackLocale?: Locale
 ): T | undefined {
     if (!obj) return undefined
-    return obj[locale] || obj[fallbackLocale] || obj.en || obj.ka
+    return obj[locale] || (fallbackLocale ? obj[fallbackLocale] : undefined)
 }

@@ -37,7 +37,7 @@ const Founder: React.FC = () => {
               ჩემი მიზანია ტექნოლოგია გახდეს რეალური ძალა განვითარებისთვის, ოპტიმიზაციისთვის და ზრდისთვის.
             </p>
             <div className="flex flex-wrap justify-center md:justify-start gap-4">
-              <Link href="/contact" className="px-8 py-3 bg-primary hover:bg-indigo-700 text-white rounded-xl font-heading font-bold uppercase tracking-wider transition-all shadow-lg shadow-primary/30">
+              <Link href="/consultation" className="px-8 py-3 bg-primary hover:bg-indigo-700 text-white rounded-xl font-heading font-bold uppercase tracking-wider transition-all shadow-lg shadow-primary/30">
                 დაკავშირება
               </Link>
             </div>

@@ -16,23 +16,21 @@ import ThemeToggle from './ThemeToggle';
 
 interface FooterProps {
   siteSettings?: SiteSettings | null;
-  footerColumns?: { title: string; links: { url: string; label: string }[] }[];
-  footerBottomLinks?: { label: string; href: string }[];
   siteName?: string;
 }
 
 const fallbackColumns = {
   ka: [
-    { title: 'გზამკვლევი', links: [['სერვისები', '/services'], ['პროექტები', '/projects'], ['ინსაითები', '/blog']] },
-    { title: 'რესურსები', links: [['დოკუმენტაცია', '/docs'], ['კითხვები', '/faq'], ['ესაუბრეთ AI-ს', '/assistant']] },
+    { title: 'გზამკვლევი', links: [['სერვისები', '/services'], ['გამოყენების სფეროები', '/use-cases'], ['პროექტები', '/projects'], ['ინსაითები', '/blog']] },
+    { title: 'რესურსები', links: [['გზამკვლევები', '/docs'], ['კითხვები', '/faq'], ['ესაუბრეთ AI-ს', '/assistant'], ['კონსულტაცია', '/consultation']] },
   ],
   en: [
-    { title: 'Explore', links: [['Services', '/services'], ['Projects', '/projects'], ['Insights', '/blog']] },
-    { title: 'Resources', links: [['Documentation', '/docs'], ['FAQ', '/faq'], ['Talk to AI', '/assistant']] },
+    { title: 'Explore', links: [['Services', '/services'], ['Use cases', '/use-cases'], ['Projects', '/projects'], ['Insights', '/blog']] },
+    { title: 'Resources', links: [['Guides', '/docs'], ['FAQ', '/faq'], ['Talk to AI', '/assistant'], ['Consultation', '/consultation']] },
   ],
 };
 
-export default function Footer({ siteSettings, footerColumns, footerBottomLinks, siteName = 'იმი.ჯი' }: FooterProps) {
+export default function Footer({ siteSettings, siteName = 'იმი.ჯი' }: FooterProps) {
   const locale = useLocale() === 'en' ? 'en' : 'ka';
   const english = locale === 'en';
 
@@ -44,9 +42,8 @@ export default function Footer({ siteSettings, footerColumns, footerBottomLinks,
 
   const email = siteSettings?.contacts?.primaryEmail ?? siteSettings?.contact?.email ?? 'hello@imi.ge';
   const phone = siteSettings?.contacts?.primaryPhone ?? siteSettings?.contact?.phone ?? '555904011';
-  const columns = footerColumns?.length
-    ? footerColumns
-    : fallbackColumns[locale].map((column) => ({
+  // Keep the public IA stable while older CMS navigation documents are reconciled.
+  const columns = fallbackColumns[locale].map((column) => ({
         title: column.title,
         links: column.links.map(([label, url]) => ({ label, url })),
       }));
@@ -94,7 +91,7 @@ export default function Footer({ siteSettings, footerColumns, footerBottomLinks,
 
         <div className="footer-bottom">
           <span>© {new Date().getFullYear()} {siteName}. {english ? 'All rights reserved.' : 'ყველა უფლება დაცულია.'}</span>
-          <div className="flex flex-wrap gap-x-5 gap-y-2">{footerBottomLinks?.map((item) => renderLink(item.href, item.label))}<Link href="/privacy" className="footer-link">{english ? 'Privacy' : 'კონფიდენციალურობა'}</Link><Link href="/terms" className="footer-link">{english ? 'Terms' : 'წესები და პირობები'}</Link></div>
+          <div className="flex flex-wrap gap-x-5 gap-y-2"><Link href="/privacy" className="footer-link">{english ? 'Privacy' : 'კონფიდენციალურობა'}</Link><Link href="/terms" className="footer-link">{english ? 'Terms' : 'წესები და პირობები'}</Link><Link href="/cookies" className="footer-link">{english ? 'Cookies' : 'ქუქი-ფაილები'}</Link></div>
         </div>
       </div>
     </footer>

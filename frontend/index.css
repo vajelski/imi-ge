@@ -440,7 +440,7 @@ html:not(.dark) .urbania-page .text-cyan-200 {
 .footer-contacts { display: grid; gap: 0.7rem; margin-top: 1.2rem; font-size: 0.75rem; }
 .site-footer .footer-link:hover,
 .site-footer .footer-contact:hover { color: var(--page); }
-.site-footer .footer-contact { gap: 0.5rem; }
+.site-footer .footer-contact { max-width: 100%; min-width: 0; gap: 0.5rem; overflow-wrap: anywhere; }
 .footer-bottom { justify-content: space-between; gap: 1rem; padding-top: 1.25rem; font-size: 0.62rem; }
 .footer-bottom > div { display: flex; flex-wrap: wrap; gap: 1.25rem; }
 
@@ -772,6 +772,10 @@ html.dark .home-cta { background: #e7e7e7; }
   .workflow-diagram__stage { min-height: 0; padding: 0.85rem; }
   .workflow-diagram__stage strong { margin-top: 0.8rem; }
   .workflow-diagram__arrow { top: auto; right: auto; bottom: -0.75rem; left: 50%; transform: rotate(90deg); }
+  .site-footer__grid { grid-template-columns: 1fr; gap: 2.25rem; }
+  .footer-columns { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; }
+  .footer-contacts { min-width: 0; }
+  .footer-bottom { align-items: flex-start; flex-direction: column; }
 }
 
 @media (max-width: 900px) {

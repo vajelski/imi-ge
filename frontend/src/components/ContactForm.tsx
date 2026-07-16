@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Mail, Phone, MapPin, Send, Loader2, ArrowRight, CheckCircle, AlertCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { parseJsonResponse } from '@/lib/safeFetch';
@@ -18,7 +18,10 @@ const ContactForm = () => {
     });
     const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
     const [errorMessage, setErrorMessage] = useState('');
+    const [ready, setReady] = useState(false);
     const honeypotRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => setReady(true), []);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { id, value } = e.target;
@@ -50,10 +53,13 @@ const ContactForm = () => {
                 }),
             });
 
-            const data = await parseJsonResponse<{ error?: string }>(res);
+            const data = await parseJsonResponse<{ error?: string }>(res, {
+                serverError: t('serverError'),
+                unknownError: t('unknownError'),
+            });
 
             if (!res.ok) {
-                throw new Error(data.error || 'Failed to send message');
+                throw new Error(t('requestError'));
             }
 
             setStatus('success');
@@ -72,7 +78,7 @@ const ContactForm = () => {
     ];
 
     return (
-        <div className="bg-white dark:bg-white/5 p-10 md:p-12 rounded-[3rem] border border-gray-200 dark:border-white/10 shadow-xl relative overflow-hidden animate-in fade-in slide-in-from-right-8 duration-1000">
+        <div data-contact-form-ready={ready ? 'true' : 'false'} className="bg-white dark:bg-white/5 p-10 md:p-12 rounded-[3rem] border border-gray-200 dark:border-white/10 shadow-xl relative overflow-hidden animate-in fade-in slide-in-from-right-8 duration-1000">
             <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-bl-[3rem]"></div>
             <h3 className="text-2xl font-heading font-bold text-gray-900 dark:text-white mb-8 relative z-10">{t('formTitle')}</h3>
 

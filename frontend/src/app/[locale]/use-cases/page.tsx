@@ -94,7 +94,7 @@ export default async function UseCasesPage({ params }: { params: Promise<{ local
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">{english ? 'YOUR OPERATING MODEL' : 'თქვენი სამუშაო მოდელი'}</p>
             <h2 className="mt-4 text-2xl font-bold text-slate-950 dark:text-white">{english ? 'Plan your first AI workflow.' : 'დავგეგმოთ თქვენი პირველი AI workflow.'}</h2>
           </div>
-          <Link href="/contact" className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-bold text-[#090a12] transition hover:bg-cyan-100">
+          <Link href="/consultation" className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-bold text-[#090a12] transition hover:bg-cyan-100">
              {english ? 'Strategy consultation' : 'სტრატეგიული კონსულტაცია'} <ArrowUpRight size={18} />
           </Link>
         </div>

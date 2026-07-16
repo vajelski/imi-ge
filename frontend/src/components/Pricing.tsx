@@ -78,7 +78,7 @@ const Pricing = async () => {
               <p className="text-gray-700 dark:text-gray-300 mb-10 font-sans font-light text-lg tracking-wide">
                 {t('ctaDescription')}
               </p>
-              <Link href="/contact" className="inline-flex items-center justify-center w-full sm:w-auto px-10 py-5 text-sm font-heading font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-2xl transition-all duration-300 uppercase tracking-[0.2em] shadow-xl shadow-primary/25 hover:scale-105 active:scale-95">
+              <Link href="/consultation" className="inline-flex items-center justify-center w-full sm:w-auto px-10 py-5 text-sm font-heading font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-2xl transition-all duration-300 uppercase tracking-[0.2em] shadow-xl shadow-primary/25 hover:scale-105 active:scale-95">
                 {t('ctaButton')} <ArrowRight className="ml-3 w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>

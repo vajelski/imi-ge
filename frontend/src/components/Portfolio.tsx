@@ -129,7 +129,7 @@ const Portfolio: React.FC = () => {
               <p className="text-gray-600 dark:text-gray-300 mb-10 font-light text-lg tracking-wide font-sans">
                 მოდით განვიხილოთ თქვენი პროექტი და ვიპოვოთ საუკეთესო ტექნოლოგიური გადაწყვეტილება.
               </p>
-              <Link href="/contact" className="inline-flex items-center justify-center px-10 py-5 text-sm font-heading font-bold text-white bg-primary hover:bg-indigo-600 rounded-2xl transition-all uppercase tracking-[0.2em] shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:-translate-y-1">
+              <Link href="/consultation" className="inline-flex items-center justify-center px-10 py-5 text-sm font-heading font-bold text-white bg-primary hover:bg-indigo-600 rounded-2xl transition-all uppercase tracking-[0.2em] shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:-translate-y-1">
                 უფასო კონსულტაცია
               </Link>
             </div>

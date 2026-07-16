@@ -9,9 +9,9 @@ const Hero = async (props: { ctaPrimary?: CTA | null; ctaSecondary?: CTA | null 
   const t = await getTranslations('hero');
   const { ctaPrimary, ctaSecondary } = props;
   const primaryLabel = ctaPrimary?.label ?? t('ctaPrimary');
-  const primaryHref = ctaPrimary?.href ?? '/contact';
+  const primaryHref = ctaPrimary?.href ?? '/consultation';
   const secondaryLabel = ctaSecondary?.label ?? t('ctaSecondary');
-  const secondaryHref = ctaSecondary?.href ?? '/contact';
+  const secondaryHref = ctaSecondary?.href ?? '/consultation';
 
   return (
     <section className="relative min-h-screen flex flex-col justify-center overflow-hidden pt-48 pb-20 bg-gray-50 dark:bg-darker transition-colors duration-300">

@@ -167,7 +167,7 @@ export default HeroSection;`);
             <div className="text-center md:text-right">
               <div className="text-4xl font-heading font-bold text-white mb-2">შეთანხმებით</div>
               <div className="text-sm text-gray-500 font-sans mb-6">ერთჯერადი გადასახადი</div>
-              <Link href="/contact" className="inline-block bg-secondary hover:bg-fuchsia-600 text-white px-8 py-3 rounded-xl font-heading font-bold uppercase tracking-wider transition-all shadow-lg shadow-secondary/25">
+              <Link href="/consultation" className="inline-block bg-secondary hover:bg-fuchsia-600 text-white px-8 py-3 rounded-xl font-heading font-bold uppercase tracking-wider transition-all shadow-lg shadow-secondary/25">
                 შეკვეთა
               </Link>
             </div>

@@ -5,6 +5,7 @@ import { Metadata } from 'next';
 import { draftMode } from 'next/headers';
 import { getPageBySlug } from '@/lib/sanity/queries';
 import { getLocalizedValue, type Locale } from '@/lib/sanity/types';
+import { localizedMetadata } from '@/lib/seo/metadata';
 
 const IconMap: Record<string, React.FC<any>> = {
     Target, Lightbulb, Users, Award, TrendingUp, Zap, ShieldCheck, Trophy, Cpu
@@ -16,46 +17,8 @@ interface AboutPageProps {
 
 export async function generateMetadata({ params }: AboutPageProps): Promise<Metadata> {
     const { locale } = await params;
-
-    const { isEnabled: preview } = await draftMode();
-    const sanityPage = await getPageBySlug('about', preview);
-
-    if (sanityPage && sanityPage.seo) {
-        const metaTitle = getLocalizedValue(sanityPage.seo.metaTitle, locale as Locale) || 'About Us — IMI.GE';
-        const metaDescription = getLocalizedValue(sanityPage.seo.metaDescription, locale as Locale) || '';
-
-        return {
-            title: metaTitle,
-            description: metaDescription,
-            alternates: {
-                canonical: `https://imi.ge/${locale}/about`,
-                languages: {
-                    'x-default': 'https://imi.ge/ka/about',
-                    ka: 'https://imi.ge/ka/about',
-                    en: 'https://imi.ge/en/about',
-                },
-            },
-            openGraph: { type: 'website', url: `https://imi.ge/${locale}/about`, title: metaTitle, description: metaDescription },
-            twitter: { card: 'summary_large_image', title: metaTitle, description: metaDescription },
-        };
-    }
-
-    // Fallback to static content
     const t = await getTranslations({ locale, namespace: 'about' });
-    return {
-        title: `${t('badge')} — IMI.GE`,
-        description: t('description'),
-        alternates: {
-            canonical: `https://imi.ge/${locale}/about`,
-            languages: {
-                'x-default': 'https://imi.ge/ka/about',
-                ka: 'https://imi.ge/ka/about',
-                en: 'https://imi.ge/en/about',
-            },
-        },
-        openGraph: { type: 'website', url: `https://imi.ge/${locale}/about`, title: `${t('badge')} — IMI.GE`, description: t('description') },
-        twitter: { card: 'summary_large_image', title: `${t('badge')} — IMI.GE`, description: t('description') },
-    };
+    return localizedMetadata({ locale, path: '/about', title: { ka: 'ჩვენს შესახებ', en: 'About IMI.GE' }, description: { ka: t('description'), en: 'Learn how IMI.GE approaches AI systems, product engineering, and practical technology delivery.' } });
 }
 
 const AboutPage = async ({ params }: AboutPageProps) => {
@@ -66,7 +29,9 @@ const AboutPage = async ({ params }: AboutPageProps) => {
 
     const sanityPage = await getPageBySlug('about', preview);
 
-    if (sanityPage && sanityPage.sections) {
+    // Keep the public English page on the complete local dataset until the CMS
+    // record has an audited English translation for every section.
+    if (locale !== 'en' && sanityPage && sanityPage.sections) {
         return (
             <div className="pt-40 pb-24 min-h-screen transition-colors duration-300 bg-gray-50 dark:bg-darker">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

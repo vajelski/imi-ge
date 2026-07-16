@@ -22,7 +22,7 @@
             "description": "სრული ტექნიკური და SEO ანალიზი ხელოვნური ინტელექტის გამოყენებით. აღმოაჩინეთ ხარვეზები წამებში.",
             "icon": "Search",
             "price": "დეტალურად",
-            "path": "/services/audit"
+            "path": "/ai-readiness"
         },
         {
             "id": "2",
@@ -30,7 +30,7 @@
             "description": "თქვენი იდეიდან მზა კოდამდე. ჩვენი AI წერს სუფთა React/Tailwind კოდს თქვენი აღწერილობის მიხედვით.",
             "icon": "Hammer",
             "price": "დეტალურად",
-            "path": "/services/builder"
+            "path": "/services/ai-native-web"
         },
         {
             "id": "3",
@@ -38,7 +38,7 @@
             "description": "თქვენს ბიზნესზე მორგებული ჩატბოტები, რომლებიც საუბრობენ გამართული ქართულით და ემსახურებიან კლიენტებს 24/7.",
             "icon": "MessageSquareCode",
             "price": "დეტალურად",
-            "path": "/demos"
+            "path": "/assistant"
         }
     ],
     "servicesSection": {
@@ -113,7 +113,7 @@
                     },
                     {
                         "label": "პორტფოლიო",
-                        "url": "/portfolio"
+                        "url": "/projects"
                     },
                     {
                         "label": "ბლოგი",
@@ -130,11 +130,11 @@
                     },
                     {
                         "label": "AI ინტეგრაცია",
-                        "url": "/demos"
+                        "url": "/assistant"
                     },
                     {
                         "label": "SEO აუდიტი",
-                        "url": "/services/audit"
+                        "url": "/ai-readiness"
                     }
                 ]
             },
@@ -242,21 +242,21 @@
                         "title": "ვებ-გვერდების დამზადება",
                         "desc": "თანამედროვე, სწრაფი და SEO-ზე მორგებული ვებ-გვერდები.",
                         "icon": "Layout",
-                        "link": "/contact",
+                        "link": "/consultation",
                         "price": "დეტალურად"
                     },
                     {
                         "title": "მობილური აპლიკაციები",
                         "desc": "iOS და Android აპლიკაციების შექმნა (React Native / Flutter).",
                         "icon": "Smartphone",
-                        "link": "/contact",
+                        "link": "/consultation",
                         "price": "დეტალურად"
                     },
                     {
                         "title": "AI ვებ-მშენებელი",
                         "desc": "თქვენი იდეიდან მზა კოდამდე ჩვენი AI-ს დახმარებით.",
                         "icon": "Hammer",
-                        "link": "/services/builder",
+                        "link": "/services/ai-native-web",
                         "price": "დეტალურად"
                     }
                 ]
@@ -268,21 +268,21 @@
                         "title": "ქართული AI ასისტენტები",
                         "desc": "ჩატბოტები, რომლებიც საუბრობენ გამართული ქართულით.",
                         "icon": "MessageSquareCode",
-                        "link": "/demos",
+                        "link": "/assistant",
                         "price": "დეტალურად"
                     },
                     {
                         "title": "AI ავტომატიზაცია",
                         "desc": "რუტინული პროცესების ავტომატიზაცია ხელოვნური ინტელექტით.",
                         "icon": "Brain",
-                        "link": "/contact",
+                        "link": "/consultation",
                         "price": "დეტალურად"
                     },
                     {
                         "title": "მონაცემთა ანალიტიკა",
                         "desc": "დიდი მონაცემების დამუშავება და პროგნოზირებადი მოდელები.",
                         "icon": "BarChart3",
-                        "link": "/contact",
+                        "link": "/consultation",
                         "price": "დეტალურად"
                     }
                 ]
@@ -294,21 +294,21 @@
                         "title": "AI საიტის აუდიტი",
                         "desc": "სრული ტექნიკური და SEO ანალიზი AI-ს გამოყენებით.",
                         "icon": "Search",
-                        "link": "/services/audit",
+                        "link": "/ai-readiness",
                         "price": "დეტალურად"
                     },
                     {
                         "title": "SEO & მარკეტინგი",
                         "desc": "საიტის დაწინაურება Google-ში და ტექნიკური ოპტიმიზაცია.",
                         "icon": "Globe",
-                        "link": "/contact",
+                        "link": "/consultation",
                         "price": "დეტალურად"
                     },
                     {
                         "title": "კიბერუსაფრთხოება",
                         "desc": "სისტემების დაცვა შეტევებისგან და უსაფრთხოების სტანდარტები.",
                         "icon": "ShieldCheck",
-                        "link": "/contact",
+                        "link": "/consultation",
                         "price": "დეტალურად"
                     }
                 ]
@@ -461,13 +461,16 @@
         "sending": "იგზავნება...",
         "success": "გაგზავნილია",
         "error": "შეცდომა - სცადეთ კვლავ",
-        "interests": [
-            "ვებ-დეველოპმენტი",
-            "AI ინტეგრაცია",
-            "მობილური აპლიკაცია",
-            "აუდიტი",
-            "სხვა"
-        ]
+            "interests": [
+            "ხმოვანი AI ასისტენტები და ჩატბოტები",
+            "RAG და შიდა AI სისტემები",
+            "ბიზნეს პროცესების ავტომატიზაცია",
+            "AI-ზე დაფუძნებული ვებ-პროდუქტები",
+            "AI CRM ინტეგრაცია და უსაფრთხოება"
+        ],
+        "serverError": "სერვისი დროებით მიუწვდომელია. სცადეთ მოგვიანებით.",
+        "unknownError": "სერვერის პასუხი ვერ დამუშავდა.",
+        "requestError": "მოთხოვნა ვერ გაიგზავნა. სცადეთ კვლავ."
     },
     "audit": {
         "hero": {

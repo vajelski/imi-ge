@@ -18,30 +18,24 @@ const STATIC_PATHS = [
     { path: '/use-cases', priority: 0.85, changeFreq: 'monthly' as const, key: 'services' as const },
     { path: '/solutions/ai-operator', priority: 0.95, changeFreq: 'monthly' as const, key: 'services' as const },
     { path: '/solutions/social-commerce-ai', priority: 0.95, changeFreq: 'monthly' as const, key: 'services' as const },
-    { path: '/projects', priority: 0.85, changeFreq: 'monthly' as const, key: 'portfolio' as const },
-    { path: '/projects/urbania', priority: 0.85, changeFreq: 'monthly' as const, key: 'portfolio' as const },
-    { path: '/consultation', priority: 0.9, changeFreq: 'monthly' as const, key: 'contact' as const },
+    { path: '/projects', priority: 0.85, changeFreq: 'monthly' as const, key: 'projects' as const },
+    { path: '/projects/urbania', priority: 0.85, changeFreq: 'monthly' as const, key: 'projects' as const },
+    { path: '/consultation', priority: 0.9, changeFreq: 'monthly' as const, key: 'consultation' as const },
     { path: '/ai-readiness', priority: 0.8, changeFreq: 'monthly' as const, key: 'services' as const },
     { path: '/implementation', priority: 0.8, changeFreq: 'monthly' as const, key: 'services' as const },
     { path: '/faq', priority: 0.8, changeFreq: 'monthly' as const, key: 'services' as const },
     { path: '/assistant', priority: 0.85, changeFreq: 'monthly' as const, key: 'services' as const },
-    { path: '/contact', priority: 0.85, changeFreq: 'monthly' as const, key: 'contact' as const },
-    { path: '/privacy', priority: 0.4, changeFreq: 'yearly' as const, key: 'privacy' as const },
-    { path: '/terms', priority: 0.4, changeFreq: 'yearly' as const, key: 'terms' as const },
-    { path: '/cookies', priority: 0.4, changeFreq: 'yearly' as const, key: 'cookies' as const },
 ];
 
 const PAGE_TOGGLE_KEYS: Record<string, string> = {
     home: 'homeEnabled',
     about: 'aboutEnabled',
     services: 'servicesEnabled',
-    portfolio: 'portfolioEnabled',
+    projects: 'portfolioEnabled',
     blog: 'blogEnabled',
-    contact: 'contactEnabled',
+    consultation: 'contactEnabled',
+    docs: '',
     demos: 'demosEnabled',
-    privacy: 'privacyEnabled',
-    terms: 'termsEnabled',
-    cookies: 'cookiesEnabled',
 };
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

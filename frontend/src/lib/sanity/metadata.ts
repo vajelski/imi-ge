@@ -19,7 +19,7 @@ function buildMetadataFromSeo(
     const publicLocale = locale === 'ka' ? 'ka' : 'en'
     const metaTitle = seo?.metaTitle ? getLocalizedValue(seo.metaTitle, locale) : fallback.title
     const metaDescription = seo?.metaDescription ? getLocalizedValue(seo.metaDescription, locale) : fallback.description
-    const title = metaTitle?.includes('IMI.GE') ? metaTitle : `${metaTitle || fallback.title} — IMI.GE`
+    const title = metaTitle || fallback.title
 
     const ogImageUrl = seo?.ogImageUrl || DEFAULT_OG_IMAGE
     const desc = metaDescription || fallback.description
@@ -78,7 +78,7 @@ export async function getHomeMetadata(
           ? (getLocalizedValue(defaultSeo.description as any, locale) as string) ?? fallback.description
           : fallback.description
 
-    const title = typeof metaTitle === 'string' && metaTitle.includes('IMI.GE') ? metaTitle : `IMI.GE — ${metaTitle || fallback.title}`
+    const title = metaTitle || fallback.title
     const ogImage = seo?.ogImageUrl || defaultSeo?.ogImageUrl
 
     const ogImg = ogImage || DEFAULT_OG_IMAGE
@@ -127,7 +127,7 @@ export function buildLegalMetadata(
     const metaDescription: string = legal?.seo?.metaDescription
         ? (getLocalizedValue(legal.seo.metaDescription, locale) as string) ?? fallback.description
         : fallback.description
-    const title = metaTitle.includes('IMI.GE') ? metaTitle : `${metaTitle} — IMI.GE`
+    const title = metaTitle
     return buildMetadataFromSeo(
         legal?.seo ? { ...legal.seo, metaTitle: { [locale]: metaTitle }, metaDescription: { [locale]: metaDescription } } : { metaTitle: { [locale]: metaTitle }, metaDescription: { [locale]: metaDescription } },
         locale,

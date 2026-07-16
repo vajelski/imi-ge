@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
 import BlogExperience from '@/components/BlogExperience';
+import ItemListStructuredData from '@/components/ItemListStructuredData';
+import { insights } from '@/data/insights';
+import { getLocalizedInsight } from '@/data/localizedInsights';
 import { localizedMetadata } from '@/lib/seo/metadata';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -11,5 +14,6 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 export default async function BlogPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  return <BlogExperience locale={locale === 'en' ? 'en' : 'ka'} />;
+  const language = locale === 'en' ? 'en' : 'ka';
+  return <><ItemListStructuredData locale={language} items={insights.map((item) => ({ name: getLocalizedInsight(item.slug, language)!.title, path: `/blog/${item.slug}` }))} /><BlogExperience locale={language} /></>;
 }

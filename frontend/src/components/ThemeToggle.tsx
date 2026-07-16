@@ -14,9 +14,11 @@ const getTheme = (): Theme => (document.documentElement.classList.contains('dark
 
 export default function ThemeToggle({ label, className = '' }: ThemeToggleProps) {
   const [theme, setTheme] = useState<Theme>('dark');
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     setTheme(getTheme());
+    setReady(true);
 
     const syncTheme = () => setTheme(getTheme());
     const onStorage = (event: StorageEvent) => {
@@ -32,7 +34,9 @@ export default function ThemeToggle({ label, className = '' }: ThemeToggleProps)
   }, []);
 
   const toggleTheme = () => {
-    const next: Theme = theme === 'dark' ? 'light' : 'dark';
+    // Read the DOM source of truth so an early click cannot use the initial state
+    // before the hydration effect has synchronized the button.
+    const next: Theme = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
     document.documentElement.classList.toggle('dark', next === 'dark');
     localStorage.setItem('theme', next);
     setTheme(next);
@@ -44,6 +48,7 @@ export default function ThemeToggle({ label, className = '' }: ThemeToggleProps)
       type="button"
       onClick={toggleTheme}
       className={`theme-toggle ${className}`}
+      data-theme-toggle-ready={ready ? 'true' : 'false'}
       aria-label={label ?? (theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme')}
       title={label ?? (theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme')}
     >

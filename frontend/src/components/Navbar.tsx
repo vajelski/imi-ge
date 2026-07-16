@@ -13,9 +13,9 @@ interface NavbarProps {
   siteName?: string;
 }
 
-const fallbackNavigation: NavigationItem[] = [
+const currentNavigation: NavigationItem[] = [
   ['/services', 'სერვისები', 'Services'], ['/use-cases', 'სფეროები', 'Use cases'],
-  ['/projects', 'პროექტები', 'Projects'], ['/blog', 'ინსაითები', 'Insights'], ['/docs', 'დოკები', 'Docs'],
+  ['/projects', 'პროექტები', 'Projects'], ['/blog', 'ინსაითები', 'Insights'], ['/docs', 'გზამკვლევები', 'Guides'],
   ['/faq', 'კითხვები', 'FAQ'], ['/assistant', 'AI ასისტენტი', 'AI assistant'],
 ].map(([href, ka, en], order) => ({ href, label: { ka, en }, order }));
 
@@ -25,7 +25,9 @@ export default function Navbar({ navItems, siteName = 'იმი.ჯი' }: Navb
   const pathname = segments.length ? `/${segments.join('/')}` : '/';
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const navigation = (navItems?.length ? navItems : fallbackNavigation).map((item, index) => ({
+  const [ready, setReady] = useState(false);
+  // Keep the public IA stable while older CMS navigation documents are reconciled.
+  const navigation = currentNavigation.map((item, index) => ({
     ...item,
     marker: String(index + 1).padStart(2, '0'),
   }));
@@ -33,6 +35,7 @@ export default function Navbar({ navItems, siteName = 'იმი.ჯი' }: Navb
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 28);
     onScroll();
+    setReady(true);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
@@ -60,7 +63,7 @@ export default function Navbar({ navItems, siteName = 'იმი.ჯი' }: Navb
         </div>
         <ThemeToggle label={locale === 'en' ? 'Toggle theme' : 'თემის შეცვლა'} />
         <Link href="/consultation" className="site-nav__cta">{locale === 'en' ? 'AI consultation' : 'AI კონსულტაცია'} <ArrowUpRight size={15} aria-hidden="true" /></Link>
-        <button type="button" onClick={() => setOpen((value) => !value)} className="site-nav__menu" aria-expanded={open} aria-controls="mobile-navigation" aria-label={open ? 'მენიუს დახურვა' : 'მენიუს გახსნა'}>{open ? <X size={19} aria-hidden="true" /> : <Menu size={19} aria-hidden="true" />}</button>
+         <button type="button" onClick={() => setOpen((value) => !value)} className="site-nav__menu" data-navigation-ready={ready ? 'true' : 'false'} aria-expanded={open} aria-controls="mobile-navigation" aria-label={open ? 'მენიუს დახურვა' : 'მენიუს გახსნა'}>{open ? <X size={19} aria-hidden="true" /> : <Menu size={19} aria-hidden="true" />}</button>
       </div>
     </nav>
     {open && <div id="mobile-navigation" className="site-nav__mobile">

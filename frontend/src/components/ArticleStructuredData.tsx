@@ -48,7 +48,6 @@ const ArticleStructuredData: React.FC<ArticleStructuredDataProps> = ({
        },
     },
     datePublished: publishedAt || undefined,
-    dateModified: publishedAt || undefined,
     mainEntityOfPage: {
       '@type': 'WebPage',
       '@id': url,

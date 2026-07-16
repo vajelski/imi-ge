@@ -18,9 +18,9 @@ export const contentEN: Content = {
         trust4Desc: "iOS and Android app development"
     },
     services: [
-        { id: "1", title: "AI Site Audit", description: "Full technical and SEO analysis using AI. Discover issues in seconds.", icon: "Search", price: "Details", path: "/services/audit" },
-        { id: "2", title: "AI Web Builder", description: "From idea to code. Our AI writes clean React/Tailwind code based on your description.", icon: "Hammer", price: "Details", path: "/services/builder" },
-        { id: "3", title: "Georgian AI Assistants", description: "Chatbots tailored to your business that speak fluent Georgian and serve clients 24/7.", icon: "MessageSquareCode", price: "Details", path: "/demos" }
+        { id: "1", title: "AI readiness assessment", description: "Assess process, data, and ownership before starting the first AI pilot.", icon: "Search", price: "Details", path: "/ai-readiness" },
+        { id: "2", title: "AI-native web products", description: "Fast web products where AI, data, and conversion workflows work as one system.", icon: "Hammer", price: "Details", path: "/services/ai-native-web" },
+        { id: "3", title: "Georgian AI assistants", description: "Business-specific voice and text assistants for customer support and sales.", icon: "MessageSquareCode", price: "Details", path: "/assistant" }
     ],
     servicesSection: {
         badge: "Full Service",
@@ -78,8 +78,8 @@ export const contentEN: Content = {
     footer: {
         copyrightText: "IMI.GE", creditText: "Made by", creditName: "IMI.GE", creditUrl: "/",
         columns: [
-            { title: "Company", links: [{ label: "About Us", url: "/about" }, { label: "Services", url: "/all-services" }, { label: "Portfolio", url: "/portfolio" }, { label: "Blog", url: "/blog" }] },
-            { title: "Services", links: [{ label: "Web Development", url: "/services" }, { label: "AI Integration", url: "/demos" }, { label: "SEO Audit", url: "/services/audit" }] },
+            { title: "Explore", links: [{ label: "Services", url: "/services" }, { label: "Use cases", url: "/use-cases" }, { label: "Projects", url: "/projects" }, { label: "Insights", url: "/blog" }] },
+            { title: "Resources", links: [{ label: "Guides", url: "/docs" }, { label: "FAQ", url: "/faq" }, { label: "AI assistant", url: "/assistant" }, { label: "Consultation", url: "/consultation" }] },
             { title: "Contact", links: [{ label: "contact@imi.ge", url: "mailto:contact@imi.ge" }, { label: "+995 555 00 00 00", url: "tel:+995555000000" }] }
         ]
     },
@@ -122,23 +122,23 @@ export const contentEN: Content = {
         categories: [
             {
                 category: "Web & Mobile Development", items: [
-                    { title: "Website Development", description: "Modern, fast, SEO-optimized websites. E-commerce, corporate sites, and landing pages.", price: "Details", link: "/contact" },
-                    { title: "Mobile Applications", description: "iOS and Android app development (React Native / Flutter). Intuitive UI/UX design and high performance.", price: "Details", link: "/contact" },
-                    { title: "AI Web Builder", description: "From idea to ready-made code. Our AI writes clean React/Tailwind code based on your description.", price: "Details", link: "/services/builder" }
+                    { title: "Website Development", description: "Modern, fast, SEO-optimized websites. E-commerce, corporate sites, and landing pages.", price: "Details", link: "/consultation" },
+                    { title: "Mobile Applications", description: "iOS and Android app development (React Native / Flutter). Intuitive UI/UX design and high performance.", price: "Details", link: "/consultation" },
+                    { title: "AI-native web products", description: "Fast web products where AI, data, and conversion workflows work as one system.", price: "Details", link: "/services/ai-native-web" }
                 ]
             },
             {
                 category: "AI & Automation", items: [
-                    { title: "Georgian AI Assistants", description: "Chatbots tailored to your business that speak fluent Georgian and serve clients 24/7.", price: "Details", link: "/demos" },
-                    { title: "AI Automation", description: "Automation of routine processes using AI. CRM and ERP systems integration.", price: "Details", link: "/contact" },
-                    { title: "Data Analytics", description: "Big Data processing and predictive model creation for business.", price: "Details", link: "/contact" }
+                    { title: "Georgian AI assistants", description: "Business-specific voice and text assistants for customer support and sales.", price: "Details", link: "/assistant" },
+                    { title: "AI Automation", description: "Automation of routine processes using AI. CRM and ERP systems integration.", price: "Details", link: "/consultation" },
+                    { title: "Data Analytics", description: "Big Data processing and predictive model creation for business.", price: "Details", link: "/consultation" }
                 ]
             },
             {
                 category: "Audit & Optimization", items: [
-                    { title: "AI Site Audit", description: "Full technical and SEO analysis using AI. Discover issues in seconds.", price: "Details", link: "/services/audit" },
-                    { title: "SEO & Digital Marketing", description: "Website promotion in Google search and technical optimization (PageSpeed 100%).", price: "Details", link: "/contact" },
-                    { title: "Cybersecurity", description: "System protection from attacks, vulnerability detection, and security standards implementation.", price: "Details", link: "/contact" }
+                    { title: "AI readiness assessment", description: "Assess process, data, and ownership before starting the first AI pilot.", price: "Details", link: "/ai-readiness" },
+                    { title: "SEO & Digital Marketing", description: "Website promotion in Google search and technical optimization.", price: "Details", link: "/consultation" },
+                    { title: "Cybersecurity", description: "System protection from attacks, vulnerability detection, and security standards implementation.", price: "Details", link: "/consultation" }
                 ]
             }
         ]
@@ -215,7 +215,7 @@ export const contentEN: Content = {
         { path: '/', label: 'Home' },
         { path: '/about', label: 'About Us' },
         { path: '/services', label: 'Services' },
-        { path: '/portfolio', label: 'Portfolio' },
+        { path: '/projects', label: 'Projects' },
         { path: '/blog', label: 'Blog' },
     ]
 };

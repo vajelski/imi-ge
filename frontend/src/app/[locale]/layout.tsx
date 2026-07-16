@@ -11,10 +11,8 @@ import GoogleAnalytics from '@/components/GoogleAnalytics';
 import ScrollTracker from '@/components/ScrollTracker';
 import StructuredData from '@/components/StructuredData';
 import WebSiteStructuredData from '@/components/WebSiteStructuredData';
-import { getTranslations } from 'next-intl/server';
-import { getNavigation, getSiteSettings } from '@/lib/sanity/queries';
+import { getSiteSettings } from '@/lib/sanity/queries';
 import { getLocalizedValue, type Locale } from '@/lib/sanity/types';
-import { isDemosHref } from '@/lib/navigationFilters';
 import { SITE_URL, SITE_NAME } from '@/lib/seo/constants';
 
 /** Locale-specific default meta when Sanity defaultSeo is missing */
@@ -117,67 +115,11 @@ export default async function LocaleLayout(props: {
     setRequestLocale(locale);
 
     const messages = await getMessages();
-    const [navigation, siteSettings] = await Promise.all([
-        getNavigation(false).catch(() => null),
-        getSiteSettings(false).catch(() => null),
-    ]);
+    const siteSettings = await getSiteSettings(false).catch(() => null);
 
     const loc = locale as Locale;
-    const contact = siteSettings?.contacts ?? siteSettings?.contact;
-    const contactEmail = siteSettings?.contacts?.primaryEmail ?? siteSettings?.contact?.email ?? null;
-    const contactPhone = siteSettings?.contacts?.primaryPhone ?? siteSettings?.contact?.phone ?? null;
 
-    // Nav: prefer siteSettings.navigation.headerLinks (CMS) when present, else legacy navigation
-    const headerLinks = siteSettings?.navigation?.headerLinks?.filter((x) => x.enabled !== false);
-    const navItems = headerLinks?.length
-        ? headerLinks.map((item, i) => ({
-              label: item.label ?? { ka: item.href || 'Link', en: item.href || 'Link' },
-              href: item.href || '#',
-              order: i,
-          }))
-        : (navigation?.items ?? null);
-
-    // Footer columns: from CMS when present, else from messages; inject contact into mailto/tel column
-    const tFooter = await getTranslations({ locale, namespace: 'footer' });
-    const fallbackColumns = (tFooter.raw('columns') as { title: string; links: { label: string; url: string }[] }[]) ?? [];
-    const cmsColumns = siteSettings?.navigation?.footerColumns?.filter(Boolean);
-    const footerColumnsResolved: { title: string; links: { url: string; label: string }[] }[] =
-        cmsColumns?.length
-            ? cmsColumns.map((col) => {
-                  const title = (getLocalizedValue(col.title, loc) as string) ?? '';
-                  const links = (col.links ?? [])
-                      .filter((l) => l.enabled !== false)
-                      .map((l) => {
-                          const label = (getLocalizedValue(l.label, loc) as string) ?? '';
-                          const href = l.href ?? '#';
-                          if (href.startsWith('mailto:') && contactEmail) return { url: `mailto:${contactEmail}`, label: contactEmail };
-                          if (href.startsWith('tel:') && contactPhone) return { url: `tel:${contactPhone}`, label: contactPhone };
-                          return { url: href, label };
-                      })
-                      .filter((link) => !isDemosHref(link.url));
-                  return { title, links };
-              })
-            : fallbackColumns.map((col) => {
-                  const isContactColumn = (col.links || []).some(
-                      (l: { url?: string }) => (l?.url || '').startsWith('mailto:') || (l?.url || '').startsWith('tel:')
-                  );
-                  const links =
-                      isContactColumn && (contactEmail || contactPhone)
-                          ? [
-                              ...(contactEmail ? [{ url: `mailto:${contactEmail}`, label: contactEmail }] : []),
-                              ...(contactPhone ? [{ url: `tel:${contactPhone}`, label: contactPhone }] : []),
-                          ]
-                          : (col.links || [])
-                                .map((l: { url?: string; label?: string }) => ({ url: l?.url || '#', label: l?.label ?? '' }))
-                                .filter((link) => !isDemosHref(link.url));
-                  return { title: col.title ?? '', links };
-              });
-
-    const footerBottomLinksResolved = (siteSettings?.navigation?.footerBottomLinks ?? [])
-        .filter((l) => l.enabled !== false)
-        .map((l) => ({ label: (getLocalizedValue(l.label, loc) as string) ?? '', href: l.href ?? '#' }));
-
-    const siteNameResolved = (getLocalizedValue(siteSettings?.branding?.siteName, loc) as string) || 'იმი.ჯი';
+    const siteNameResolved = (getLocalizedValue(siteSettings?.branding?.siteName, loc) as string) || (loc === 'en' ? SITE_NAME : 'იმი.ჯი');
     const telephone = (siteSettings?.contacts?.primaryPhone ?? siteSettings?.contact?.phone) ?? null;
     const email = (siteSettings?.contacts?.primaryEmail ?? siteSettings?.contact?.email) ?? null;
     const sameAs = [
@@ -190,19 +132,18 @@ export default async function LocaleLayout(props: {
         '@id': `${SITE_URL}/#organization`,
         name: SITE_NAME,
         url: SITE_URL,
-        description: 'AI integration, web development, and technology consulting in Georgia.',
-        logo: `${SITE_URL}/og-image.png`,
-        ...(telephone || email ? {
-            contactPoint: {
-                '@type': 'ContactPoint',
-                ...(telephone && { telephone }),
-                ...(email && { email }),
-                contactType: 'customer service',
-                availableLanguage: ['Georgian', 'English']
-            }
-        } : {}),
-        areaServed: { '@type': 'Country', name: 'საქართველო' },
-        knowsAbout: ['ხელოვნური ინტელექტი', 'AI CRM ინტეგრაცია', 'RAG სისტემები', 'ხმოვანი AI', 'ბიზნეს პროცესების ავტომატიზაცია'],
+        legalName: SITE_NAME,
+        description: 'Georgian-first AI systems, implementation guidance, and technology consulting for business operations.',
+        logo: `${SITE_URL}/favicon.svg`,
+        contactPoint: {
+            '@type': 'ContactPoint',
+            telephone: telephone || '555904011',
+            email: email || 'hello@imi.ge',
+            contactType: 'customer service',
+            availableLanguage: ['Georgian', 'English'],
+        },
+        areaServed: { '@type': 'Country', name: 'Georgia' },
+        knowsAbout: ['AI systems', 'CRM integration', 'retrieval-augmented generation', 'voice AI', 'business process automation'],
         ...(sameAs.length > 0 ? { sameAs } : {})
     };
 
@@ -227,14 +168,12 @@ export default async function LocaleLayout(props: {
                 <StructuredData type="Organization" data={orgData} />
                 <WebSiteStructuredData locale={locale} />
                 <NextIntlClientProvider locale={locale} messages={messages}>
-                    <Navbar navItems={navItems} siteName={siteNameResolved} />
+                         <Navbar siteName={siteNameResolved} />
                     <main className="flex-grow">
                         {children}
                     </main>
                     <Footer
                         siteSettings={siteSettings}
-                        footerColumns={footerColumnsResolved}
-                        footerBottomLinks={footerBottomLinksResolved.length ? footerBottomLinksResolved : undefined}
                         siteName={siteNameResolved}
                     />
                     <LazyCookieConsent />

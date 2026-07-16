@@ -46,7 +46,7 @@ const SeoMarketing: React.FC = () => {
                     </p>
                     <div className="flex justify-center gap-6 animate-fade-in-up delay-300">
                         <Link
-                            href="/services/audit"
+                            href="/ai-readiness"
                             className="px-8 py-4 bg-primary hover:bg-indigo-600 text-white rounded-xl font-heading font-bold uppercase tracking-wider transition-all shadow-lg shadow-primary/25 flex items-center gap-2"
                         >
                             {seoData.hero.cta} <ArrowRight className="w-5 h-5" />
@@ -142,7 +142,7 @@ const SeoMarketing: React.FC = () => {
                         <div className="relative z-10">
                             <h2 className="text-4xl font-heading font-bold text-white mb-6">მზად ხართ წარმატებისთვის?</h2>
                             <p className="text-gray-400 font-sans mb-10 max-w-2xl mx-auto">დაგვიკავშირდით და მიიღეთ უფასო კონსულტაცია და პირველადი აუდიტი.</p>
-                            <Link href="/contact" className="inline-flex items-center gap-3 px-10 py-5 bg-white text-darker font-heading font-bold rounded-xl hover:bg-gray-200 transition-colors text-lg uppercase tracking-wider">
+                            <Link href="/consultation" className="inline-flex items-center gap-3 px-10 py-5 bg-white text-darker font-heading font-bold rounded-xl hover:bg-gray-200 transition-colors text-lg uppercase tracking-wider">
                                 დაგვიკავშირდით <TrendingUp className="w-5 h-5" />
                             </Link>
                         </div>

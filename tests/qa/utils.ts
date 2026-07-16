@@ -6,11 +6,26 @@ export const docSlug = 'ai-readiness';
 
 export const smokeRoutes = [
   '/',
+  '/about',
   '/blog',
   `/blog/${articleSlug}`,
   '/services',
+  '/services/ai-native-web',
+  '/use-cases',
+  '/projects',
+  '/projects/urbania',
+  '/solutions/ai-operator',
+  '/solutions/social-commerce-ai',
+  '/ai-readiness',
+  '/implementation',
+  '/consultation',
+  '/assistant',
+  '/faq',
   '/docs',
   `/docs/${docSlug}`,
+  '/privacy',
+  '/terms',
+  '/cookies',
 ] as const;
 
 export const routePath = (locale: (typeof locales)[number], path: string) => path === '/' ? `/${locale}` : `/${locale}${path}`;

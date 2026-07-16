@@ -35,6 +35,38 @@ test.describe('Wave 4 route and SEO smoke coverage', () => {
       expect(new URL(response.headers().location, baseURL ?? 'http://127.0.0.1:3003').pathname).toBe(to);
     }
   });
+
+  test('legacy commercial URLs redirect to the current taxonomy', async ({ request, baseURL }) => {
+    const redirects = [
+      ['/en/contact', '/en/consultation'],
+      ['/en/portfolio', '/en/projects'],
+      ['/en/services/audit', '/en/ai-readiness'],
+      ['/en/services/builder', '/en/services/ai-native-web'],
+      ['/en/services/seo', '/en/services/ai-native-web'],
+      ['/en/demos', '/en/assistant'],
+    ] as const;
+    for (const [from, to] of redirects) {
+      const response = await request.get(from, { maxRedirects: 0 });
+      expect(response.status(), from).toBe(308);
+      expect(new URL(response.headers().location, baseURL ?? 'http://127.0.0.1:3003').pathname).toBe(to);
+    }
+  });
+
+  test('English key routes contain no Georgian-script body text', async ({ page }) => {
+    const routes = ['/en', '/en/services/ai-native-web', '/en/projects/urbania', '/en/solutions/ai-operator', '/en/solutions/social-commerce-ai', '/en/ai-readiness', '/en/implementation', '/en/assistant', '/en/privacy', '/en/terms', '/en/cookies'];
+    for (const route of routes) {
+      await page.goto(route, { waitUntil: 'domcontentloaded' });
+      const bodyText = await page.locator('body').innerText();
+      expect(bodyText, `${route} contains Georgian body text`).not.toMatch(/[\u10A0-\u10FF]/);
+    }
+  });
+
+  test('canonical links remain self-referential for current routes', async ({ page }) => {
+    for (const route of ['/en/services/ai-native-web', '/en/projects/urbania', '/en/consultation', '/en/privacy']) {
+      await page.goto(route, { waitUntil: 'domcontentloaded' });
+      await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://imi.ge${route}`);
+    }
+  });
 });
 
 test.describe('Wave 4 visual and interaction checks', () => {
@@ -50,6 +82,7 @@ test.describe('Wave 4 visual and interaction checks', () => {
     await page.setViewportSize({ width: 375, height: 812 });
     await page.goto('/ka', { waitUntil: 'domcontentloaded' });
     const menuButton = page.locator('button[aria-controls="mobile-navigation"]');
+    await expect(page.locator('[data-navigation-ready="true"]')).toBeVisible();
     await menuButton.click();
     const mobileNavigation = page.locator('#mobile-navigation');
     await expect(mobileNavigation).toBeVisible();
@@ -65,6 +98,35 @@ test.describe('Wave 4 visual and interaction checks', () => {
       const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
       expect(overflow, `${path} horizontal overflow`).toBeLessThanOrEqual(1);
     }
+  });
+
+  test('mobile footer contact content stays within the viewport', async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 812 });
+    await page.goto('/en', { waitUntil: 'domcontentloaded' });
+    const bounds = await page.locator('.site-footer').evaluate((footer) => {
+      const rect = footer.getBoundingClientRect();
+      const contacts = [...footer.querySelectorAll('.footer-contact')].map((element) => element.getBoundingClientRect().right);
+      return { footerRight: rect.right, contactRight: Math.max(...contacts) };
+    });
+    expect(bounds.footerRight).toBeLessThanOrEqual(375);
+    expect(bounds.contactRight).toBeLessThanOrEqual(375);
+  });
+
+  test('localized child 404 uses the locale not-found page', async ({ page }) => {
+    const response = await page.goto('/en/does-not-exist/deeper', { waitUntil: 'domcontentloaded' });
+    expect(response?.status()).toBe(404);
+    await expect(page.getByRole('heading', { name: 'Page Not Found' })).toBeVisible();
+    await expect(page.locator('body')).not.toContainText('გვერდი ვერ მოიძებნა');
+  });
+
+  test('ROI output is deterministic and locale-independent', async ({ page }) => {
+    await page.goto('/en/solutions/ai-operator', { waitUntil: 'domcontentloaded' });
+    const first = await page.locator('output').first().innerText();
+    const result = await page.locator('text=1,452').first().innerText();
+    await page.reload({ waitUntil: 'domcontentloaded' });
+    expect(first).toBe('1,200');
+    expect(result).toContain('1,452');
+    await expect(page.locator('output').first()).toHaveText('1,200');
   });
 
   test('keyboard navigation exposes a visible focus ring', async ({ page }) => {
@@ -89,6 +151,7 @@ test.describe('Wave 4 visual and interaction checks', () => {
       document.documentElement.classList.add('dark');
       window.dispatchEvent(new Event('imi-theme-change'));
     });
+    await expect(page.locator('[data-theme-toggle-ready="true"]').first()).toBeVisible();
     await page.locator('.theme-toggle').first().click();
     await expect.poll(() => page.evaluate(() => localStorage.getItem('theme'))).toBe('light');
     await expect.poll(() => page.evaluate(() => document.documentElement.classList.contains('dark'))).toBe(false);
@@ -127,6 +190,7 @@ test.describe('Wave 4 safely mocked API contracts', () => {
       });
     });
     await page.goto('/en/consultation', { waitUntil: 'domcontentloaded' });
+    await expect(page.locator('[data-contact-form-ready="true"]')).toBeVisible();
     await page.locator('#contact-email').fill('qa@example.com');
     await page.locator('#contact-message').fill('A sufficiently detailed QA message.');
     await page.getByRole('button', { name: 'Send' }).click();
@@ -145,6 +209,7 @@ test.describe('Wave 4 safely mocked API contracts', () => {
       });
     });
     await page.goto('/en/assistant', { waitUntil: 'domcontentloaded' });
+    await expect(page.locator('[data-assistant-ready="true"]')).toBeVisible();
     const input = page.locator('textarea').last();
     await input.fill('Which service should we start with?');
     await input.press('Enter');

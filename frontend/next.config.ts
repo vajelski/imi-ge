@@ -5,6 +5,22 @@ const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:3004';
 
 const nextConfig: NextConfig = {
     trailingSlash: false, // Explicit URL policy: no trailing slashes
+    async redirects() {
+        return [
+            { source: '/:locale/contact', destination: '/:locale/consultation', permanent: true },
+            { source: '/:locale/portfolio', destination: '/:locale/projects', permanent: true },
+            { source: '/:locale/services/audit', destination: '/:locale/ai-readiness', permanent: true },
+            { source: '/:locale/services/builder', destination: '/:locale/services/ai-native-web', permanent: true },
+            { source: '/:locale/services/seo', destination: '/:locale/services/ai-native-web', permanent: true },
+            { source: '/:locale/demos', destination: '/:locale/assistant', permanent: true },
+            { source: '/contact', destination: '/ka/consultation', permanent: true },
+            { source: '/portfolio', destination: '/ka/projects', permanent: true },
+            { source: '/services/audit', destination: '/ka/ai-readiness', permanent: true },
+            { source: '/services/builder', destination: '/ka/services/ai-native-web', permanent: true },
+            { source: '/services/seo', destination: '/ka/services/ai-native-web', permanent: true },
+            { source: '/demos', destination: '/ka/assistant', permanent: true },
+        ];
+    },
     async rewrites() {
         return [
             { source: '/api/:path*', destination: `${BACKEND_URL}/api/:path*` },

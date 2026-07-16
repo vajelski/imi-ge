@@ -12,21 +12,21 @@ const allServices = [
         description: 'თანამედროვე, სწრაფი და SEO-ზე მორგებული ვებ-გვერდები. E-commerce, კორპორატიული საიტები და ლენდინგები.',
         icon: Layout,
         price: 'დეტალურად',
-        link: '/contact'
+        link: '/consultation'
       },
       {
         title: 'მობილური აპლიკაციები',
         description: 'iOS და Android აპლიკაციების შექმნა (React Native / Flutter). ინტუიციური UI/UX დიზაინი და მაღალი წარმადობა.',
         icon: Smartphone,
         price: 'დეტალურად',
-        link: '/contact'
+        link: '/consultation'
       },
       {
         title: 'AI ვებ-მშენებელი',
         description: 'თქვენი იდეიდან მზა კოდამდე. ჩვენი AI წერს სუფთა React/Tailwind კოდს თქვენი აღწერილობის მიხედვით.',
         icon: Hammer,
         price: 'დეტალურად',
-        link: '/services/builder'
+        link: '/services/ai-native-web'
       }
     ]
   },
@@ -38,21 +38,21 @@ const allServices = [
         description: 'თქვენს ბიზნესზე მორგებული ჩატბოტები, რომლებიც საუბრობენ გამართული ქართულით და ემსახურებიან კლიენტებს 24/7.',
         icon: MessageSquareCode,
         price: 'დეტალურად',
-        link: '/demos'
+        link: '/assistant'
       },
       {
         title: 'AI ავტომატიზაცია',
         description: 'რუტინული პროცესების ავტომატიზაცია ხელოვნური ინტელექტის გამოყენებით. CRM და ERP სისტემების ინტეგრაცია.',
         icon: Brain,
         price: 'დეტალურად',
-        link: '/contact'
+        link: '/consultation'
       },
       {
         title: 'მონაცემთა ანალიტიკა',
         description: 'დიდი მონაცემების (Big Data) დამუშავება და პროგნოზირებადი მოდელების შექმნა ბიზნესისთვის.',
         icon: BarChart3,
         price: 'დეტალურად',
-        link: '/contact'
+        link: '/consultation'
       }
     ]
   },
@@ -64,21 +64,21 @@ const allServices = [
         description: 'სრული ტექნიკური და SEO ანალიზი ხელოვნური ინტელექტის გამოყენებით. აღმოაჩინეთ ხარვეზები წამებში.',
         icon: Search,
         price: 'დეტალურად',
-        link: '/services/audit'
+        link: '/ai-readiness'
       },
       {
         title: 'SEO & ციფრული მარკეტინგი',
         description: 'საიტის დაწინაურება Google-ის საძიებო სისტემაში და ტექნიკური ოპტიმიზაცია (PageSpeed 100%).',
         icon: Globe,
         price: 'დეტალურად',
-        link: '/contact'
+        link: '/consultation'
       },
       {
         title: 'კიბერუსაფრთხოება',
         description: 'სისტემების დაცვა შეტევებისგან, სისუსტეების აღმოჩენა და უსაფრთხოების სტანდარტების დანერგვა.',
         icon: ShieldCheck,
         price: 'დეტალურად',
-        link: '/contact'
+        link: '/consultation'
       }
     ]
   }

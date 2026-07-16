@@ -18,9 +18,9 @@ export const contentKA: Content = {
         trust4Desc: "iOS და Android აპლიკაციების დამზადება"
     },
     services: [
-        { id: "1", title: "AI საიტის აუდიტი", description: "სრული ტექნიკური და SEO ანალიზი ხელოვნური ინტელექტის გამოყენებით. აღმოაჩინეთ ხარვეზები წამებში.", icon: "Search", price: "დეტალურად", path: "/services/audit" },
-        { id: "2", title: "AI ვებ-მშენებელი", description: "თქვენი იდეიდან მზა კოდამდე. ჩვენი AI წერს სუფთა React/Tailwind კოდს თქვენი აღწერილობის მიხედვით.", icon: "Hammer", price: "დეტალურად", path: "/services/builder" },
-        { id: "3", title: "ქართული AI ასისტენტები", description: "თქვენს ბიზნესზე მორგებული ჩატბოტები, რომლებიც საუბრობენ გამართული ქართულით და ემსახურებიან კლიენტებს 24/7.", icon: "MessageSquareCode", price: "დეტალურად", path: "/demos" }
+        { id: "1", title: "AI მზადყოფნის შეფასება", description: "შეაფასეთ პროცესი, მონაცემები და პასუხისმგებლობა პირველი AI პილოტის დაწყებამდე.", icon: "Search", price: "დეტალურად", path: "/ai-readiness" },
+        { id: "2", title: "AI-ზე დაფუძნებული ვებ-პროდუქტი", description: "სწრაფი ვებ-პროდუქტი, სადაც AI, მონაცემები და კონვერსიის სამუშაო პროცესი ერთ სისტემაში მუშაობს.", icon: "Hammer", price: "დეტალურად", path: "/services/ai-native-web" },
+        { id: "3", title: "ქართული AI ასისტენტები", description: "თქვენს ბიზნესზე მორგებული ხმოვანი და ტექსტური ასისტენტები მომხმარებლის მხარდაჭერისა და გაყიდვებისთვის.", icon: "MessageSquareCode", price: "დეტალურად", path: "/assistant" }
     ],
     servicesSection: {
         badge: "სრული სერვისი",
@@ -78,8 +78,8 @@ export const contentKA: Content = {
     footer: {
         copyrightText: "IMI.GE", creditText: "დამზადებულია", creditName: "IMI.GE", creditUrl: "/",
         columns: [
-            { title: "კომპანია", links: [{ label: "ჩვენს შესახებ", url: "/about" }, { label: "სერვისები", url: "/all-services" }, { label: "პორტფოლიო", url: "/portfolio" }, { label: "ბლოგი", url: "/blog" }] },
-            { title: "სერვისები", links: [{ label: "ვებ დეველოპმენტი", url: "/services" }, { label: "AI ინტეგრაცია", url: "/demos" }, { label: "SEO აუდიტი", url: "/services/audit" }] },
+            { title: "გზამკვლევი", links: [{ label: "სერვისები", url: "/services" }, { label: "გამოყენების სფეროები", url: "/use-cases" }, { label: "პროექტები", url: "/projects" }, { label: "ინსაითები", url: "/blog" }] },
+            { title: "რესურსები", links: [{ label: "გზამკვლევები", url: "/docs" }, { label: "კითხვები", url: "/faq" }, { label: "AI ასისტენტი", url: "/assistant" }, { label: "კონსულტაცია", url: "/consultation" }] },
             { title: "კონტაქტი", links: [{ label: "contact@imi.ge", url: "mailto:contact@imi.ge" }, { label: "+995 555 00 00 00", url: "tel:+995555000000" }] }
         ]
     },
@@ -122,23 +122,23 @@ export const contentKA: Content = {
         categories: [
             {
                 category: "ვებ & მობაილ დეველოპმენტი", items: [
-                    { title: "ვებ-გვერდების დამზადება", description: "თანამედროვე, სწრაფი და SEO-ზე მორგებული ვებ-გვერდები. E-commerce, კორპორატიული საიტები და ლენდინგები.", price: "დეტალურად", link: "/contact" },
-                    { title: "მობილური აპლიკაციები", description: "iOS და Android აპლიკაციების შექმნა (React Native / Flutter). ინტუიციური UI/UX დიზაინი და მაღალი წარმადობა.", price: "დეტალურად", link: "/contact" },
-                    { title: "AI ვებ-მშენებელი", description: "თქვენი იდეიდან მზა კოდამდე. ჩვენი AI წერს სუფთა React/Tailwind კოდს თქვენი აღწერილობის მიხედვით.", price: "დეტალურად", link: "/services/builder" }
+                    { title: "ვებ-გვერდების დამზადება", description: "თანამედროვე, სწრაფი და SEO-ზე მორგებული ვებ-გვერდები. E-commerce, კორპორატიული საიტები და ლენდინგები.", price: "დეტალურად", link: "/consultation" },
+                    { title: "მობილური აპლიკაციები", description: "iOS და Android აპლიკაციების შექმნა (React Native / Flutter). ინტუიციური UI/UX დიზაინი და მაღალი წარმადობა.", price: "დეტალურად", link: "/consultation" },
+                    { title: "AI-ზე დაფუძნებული ვებ-პროდუქტი", description: "სწრაფი ვებ-პროდუქტი, სადაც AI, მონაცემები და კონვერსიის სამუშაო პროცესი ერთ სისტემაში მუშაობს.", price: "დეტალურად", link: "/services/ai-native-web" }
                 ]
             },
             {
                 category: "AI & ავტომატიზაცია", items: [
-                    { title: "ქართული AI ასისტენტები", description: "თქვენს ბიზნესზე მორგებული ჩატბოტები, რომლებიც საუბრობენ გამართული ქართულით და ემსახურებიან კლიენტებს 24/7.", price: "დეტალურად", link: "/demos" },
-                    { title: "AI ავტომატიზაცია", description: "რუტინული პროცესების ავტომატიზაცია ხელოვნური ინტელექტის გამოყენებით. CRM და ERP სისტემების ინტეგრაცია.", price: "დეტალურად", link: "/contact" },
-                    { title: "მონაცემთა ანალიტიკა", description: "დიდი მონაცემების (Big Data) დამუშავება და პროგნოზირებადი მოდელების შექმნა ბიზნესისთვის.", price: "დეტალურად", link: "/contact" }
+                    { title: "ქართული AI ასისტენტები", description: "თქვენს ბიზნესზე მორგებული ხმოვანი და ტექსტური ასისტენტები მომხმარებლის მხარდაჭერისა და გაყიდვებისთვის.", price: "დეტალურად", link: "/assistant" },
+                    { title: "AI ავტომატიზაცია", description: "რუტინული პროცესების ავტომატიზაცია ხელოვნური ინტელექტის გამოყენებით. CRM და ERP სისტემების ინტეგრაცია.", price: "დეტალურად", link: "/consultation" },
+                    { title: "მონაცემთა ანალიტიკა", description: "დიდი მონაცემების (Big Data) დამუშავება და პროგნოზირებადი მოდელების შექმნა ბიზნესისთვის.", price: "დეტალურად", link: "/consultation" }
                 ]
             },
             {
                 category: "აუდიტი & ოპტიმიზაცია", items: [
-                    { title: "AI საიტის აუდიტი", description: "სრული ტექნიკური და SEO ანალიზი ხელოვნური ინტელექტის გამოყენებით. აღმოაჩინეთ ხარვეზები წამებში.", price: "დეტალურად", link: "/services/audit" },
-                    { title: "SEO & ციფრული მარკეტინგი", description: "საიტის დაწინაურება Google-ის საძიებო სისტემაში და ტექნიკური ოპტიმიზაცია (PageSpeed 100%).", price: "დეტალურად", link: "/contact" },
-                    { title: "კიბერუსაფრთხოება", description: "სისტემების დაცვა შეტევებისგან, სისუსტეების აღმოჩენა და უსაფრთხოების სტანდარტების დანერგვა.", price: "დეტალურად", link: "/contact" }
+                    { title: "AI მზადყოფნის შეფასება", description: "შეაფასეთ პროცესი, მონაცემები და პასუხისმგებლობა პირველი AI პილოტის დაწყებამდე.", price: "დეტალურად", link: "/ai-readiness" },
+                    { title: "SEO & ციფრული მარკეტინგი", description: "საიტის დაწინაურება Google-ის საძიებო სისტემაში და ტექნიკური ოპტიმიზაცია.", price: "დეტალურად", link: "/consultation" },
+                    { title: "კიბერუსაფრთხოება", description: "სისტემების დაცვა შეტევებისგან, სისუსტეების აღმოჩენა და უსაფრთხოების სტანდარტების დანერგვა.", price: "დეტალურად", link: "/consultation" }
                 ]
             }
         ]
@@ -215,7 +215,7 @@ export const contentKA: Content = {
         { path: '/', label: 'მთავარი' },
         { path: '/about', label: 'ჩვენს შესახებ' },
         { path: '/services', label: 'სერვისები' },
-        { path: '/portfolio', label: 'პორტფოლიო' },
+        { path: '/projects', label: 'პროექტები' },
         { path: '/blog', label: 'ბლოგი' },
     ]
 };
