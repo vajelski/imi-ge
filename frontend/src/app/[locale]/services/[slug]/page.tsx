@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { ArrowUpRight, Check, LockKeyhole, MessageSquareText, Network, Sparkles } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Check, LockKeyhole, MessageSquareText, Network, Sparkles } from 'lucide-react';
 import { setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/routing';
 import { localizedMetadata } from '@/lib/seo/metadata';
+import WorkflowDiagram from '@/components/WorkflowDiagram';
 
 const services = {
   'ai-voice-agents': { eyebrow: 'ხმოვანი AI', title: 'თქვენი ბრენდის ხმა, რომელიც ნებისმიერ დროს პასუხობს.', description: 'ვქმნით ქართულ და მრავალენოვან ხმოვან AI ასისტენტებსა და ჩატბოტებს, რომლებიც საუბრობენ ბუნებრივად, მართავენ დიალოგს და საჭირო კონტექსტს სწორ გუნდამდე მიჰყავთ.', outcomes: ['24/7 პასუხი და კვალიფიკაცია', 'გაყიდვებისა და CRM ინტეგრაცია', 'ხარისხის კონტროლი და ანალიტიკა'] },
@@ -18,23 +19,23 @@ const services = {
 
 type ServiceSlug = keyof typeof services;
 
-const englishServiceTitles: Record<ServiceSlug, string> = {
-  'ai-voice-agents': 'AI voice assistants and chatbots',
-  'rag-internal-ai': 'RAG and internal AI systems',
-  'business-automation': 'Business process automation',
-  'ai-native-web': 'AI-native web products',
-  'ai-crm-integration': 'AI CRM integration and optimization',
-  'ai-first-crm': 'Move your company to an AI-first CRM model',
-  'sales-intelligence': 'AI sales intelligence and forecasting',
-  'ai-governance': 'AI governance and safe deployment',
+const englishServiceCopy: Record<ServiceSlug, { eyebrow: string; title: string; description: string; outcomes: string[] }> = {
+  'ai-voice-agents': { eyebrow: 'VOICE AI', title: 'A brand voice that answers when your team cannot.', description: 'We build Georgian and multilingual voice agents that manage the conversation, qualify intent, and deliver the right context to the right team.', outcomes: ['24/7 response and qualification', 'Sales and CRM integration', 'Quality control and analytics'] },
+  'rag-internal-ai': { eyebrow: 'KNOWLEDGE AI / RAG', title: 'Company knowledge your team can use in real time.', description: 'A secure internal assistant connects policies, contracts, operating documents, and CRM context into one source-grounded experience.', outcomes: ['Document-grounded answers', 'Role-based access', 'Secure knowledge retrieval'] },
+  'business-automation': { eyebrow: 'OPERATIONS AI', title: 'Hand repeatable operations to AI agents.', description: 'We design workflows that validate data, create records, send updates, process documents, and return exceptions to a human.', outcomes: ['Lead routing and sales ops', 'Document and request processing', 'SLA and exception control'] },
+  'ai-native-web': { eyebrow: 'AI-NATIVE PRODUCT', title: 'Digital products where AI belongs in the architecture.', description: 'We build fast web experiences and applications that bring AI, data, and conversion workflows into one production system.', outcomes: ['Product strategy and UX', 'AI-ready backend architecture', 'Core Web Vitals and analytics'] },
+  'ai-crm-integration': { eyebrow: 'AI CRM INTEGRATION', title: 'Turn your existing CRM into a sales intelligence system.', description: 'We connect AI to your CRM and communication channels so lead scoring, context capture, follow-up, and next actions become transparent and automatic.', outcomes: ['AI lead scoring', 'Next-action recommendations', 'Automatic CRM enrichment'] },
+  'ai-first-crm': { eyebrow: 'CRM TRANSFORMATION', title: 'Move your company to an AI-first CRM operating model.', description: 'We plan the full transition from process discovery and data migration to integrations and agents, without interrupting sales or service operations.', outcomes: ['CRM architecture plan', 'Safe data migration', 'AI workflows from day one'] },
+  'sales-intelligence': { eyebrow: 'SALES INTELLIGENCE', title: 'Give sales teams better signals for better decisions.', description: 'AI reads lead, communication, and CRM signals so teams can focus on deals where real potential or risk is visible.', outcomes: ['Deal risk signals', 'Sales forecasting', 'Next-best-action guidance'] },
+  'ai-governance': { eyebrow: 'AI SAFETY', title: 'AI deployment your company can govern.', description: 'Trust starts with rules: who has access, which data is used, how quality is measured, and when a person enters the decision.', outcomes: ['Data and access policy', 'Quality and risk controls', 'Human approval rules'] },
 };
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }): Promise<Metadata> {
   const { locale, slug } = await params;
   const service = services[slug as ServiceSlug];
   if (!service) return { title: 'Service not found', robots: { index: false, follow: false } };
-  const englishTitle = englishServiceTitles[slug as ServiceSlug];
-  return localizedMetadata({ locale, path: `/services/${slug}`, title: { ka: service.title, en: englishTitle }, description: { ka: service.description, en: `${englishTitle}. A practical, measurable, and secure service from IMI.GE.` } });
+  const english = englishServiceCopy[slug as ServiceSlug];
+  return localizedMetadata({ locale, path: `/services/${slug}`, title: { ka: service.title, en: english.title }, description: { ka: service.description, en: english.description } });
 }
 
 export default async function ServiceDetailPage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
@@ -42,5 +43,16 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
   setRequestLocale(locale);
   const service = services[slug as ServiceSlug];
   if (!service) notFound();
-  return <div className="relative overflow-hidden pt-32 pb-24"><div className="ai-grid pointer-events-none absolute inset-0 -z-10 opacity-40"/><section className="mx-auto max-w-5xl px-6 lg:px-8"><p className="text-xs font-bold tracking-[.2em] text-cyan-700 dark:text-cyan-300">{service.eyebrow}</p><h1 className="mt-5 max-w-4xl text-4xl font-bold leading-tight text-slate-950 dark:text-white sm:text-6xl">{service.title}</h1><p className="mt-7 max-w-3xl text-lg leading-8 text-slate-600 dark:text-slate-300">{service.description}</p><div className="mt-10 flex flex-wrap gap-3"><Link href="/contact" className="inline-flex items-center gap-2 rounded-xl bg-slate-950 px-6 py-4 text-sm font-bold text-white dark:bg-white dark:text-slate-950">დაიწყეთ კონსულტაციით <ArrowUpRight size={18}/></Link><Link href="/projects" className="inline-flex items-center gap-2 rounded-xl border border-slate-900/15 px-6 py-4 text-sm font-bold text-slate-950 dark:border-white/15 dark:text-white">ნახეთ ჩვენი პროდუქტები</Link></div></section><section className="mx-auto mt-20 grid max-w-5xl gap-5 px-6 md:grid-cols-3 lg:px-8">{service.outcomes.map((outcome, index) => { const Icon = [MessageSquareText, Network, LockKeyhole][index]; return <div key={outcome} className="glass-panel rounded-3xl p-6"><Icon size={23} className="text-cyan-700 dark:text-cyan-200"/><h2 className="mt-8 text-lg font-bold text-slate-950 dark:text-white">{outcome}</h2><p className="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">გამოსავალი ერგება თქვენს არსებულ პროცესებს, მონაცემთა წესებსა და გუნდის მუშაობის მოდელს.</p></div>})}</section><section className="mx-auto mt-20 max-w-5xl px-6 lg:px-8"><div className="glass-panel rounded-[2rem] p-8 sm:p-10"><Sparkles className="text-primary"/><h2 className="mt-5 text-2xl font-bold text-slate-950 dark:text-white">დანერგვა იწყება მკაფიო საზომით.</h2><div className="mt-7 grid gap-4 md:grid-cols-3">{['პროცესის აღმოჩენა', 'უსაფრთხო არქიტექტურა', 'პილოტი და მასშტაბირება'].map((step) => <div key={step} className="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300"><Check size={17} className="text-cyan-700 dark:text-cyan-200"/>{step}</div>)}</div></div></section></div>;
+  const english = locale === 'en';
+  const content = english ? englishServiceCopy[slug as ServiceSlug] : service;
+  const steps = english ? ['Map the current workflow', 'Design the control layer', 'Pilot, measure, and scale'] : ['არსებული workflow-ის რუკა', 'კონტროლის ფენის დიზაინი', 'პილოტი, გაზომვა და მასშტაბირება'];
+  const stepDetails = english ? ['Identify the signal, owner, data, and expensive handoffs.', 'Set permissions, agent boundaries, integrations, and human approval points.', 'Ship a focused first version with a baseline and clear operating metrics.'] : ['ვადგენთ სიგნალს, მფლობელს, მონაცემსა და ძვირადღირებულ გადაცემის წერტილებს.', 'ვაწყობთ წვდომებს, აგენტის საზღვრებს, ინტეგრაციებსა და ადამიანის დამტკიცების ეტაპებს.', 'ვუშვებთ პირველ ვერსიას საბაზისო მაჩვენებლითა და მკაფიო ოპერაციული მეტრიკებით.'];
+  const outcomeIcons = [MessageSquareText, Network, LockKeyhole];
+
+  return <main className="service-detail">
+    <section className="service-detail__hero"><div className="service-detail__hero-inner"><div className="service-detail__copy"><Link href="/services" className="detail-back"><ArrowRight size={15} className="detail-back__icon" />{english ? 'All capabilities' : 'ყველა შესაძლებლობა'}</Link><div className="page-kicker"><span className="signal-dot" />{content.eyebrow}</div><h1>{content.title}</h1><p>{content.description}</p><div className="service-detail__actions"><Link href="/consultation" className="signal-button signal-button--solid">{english ? 'Start with a signal' : 'დაიწყეთ სიგნალით'} <ArrowUpRight size={16} /></Link><Link href="/projects" className="signal-button signal-button--quiet">{english ? 'See IMI products' : 'ნახეთ IMI პროდუქტები'} <ArrowRight size={16} /></Link></div></div><div className="service-detail__status-board"><div className="status-board__head"><span>{english ? 'WORKFLOW SPEC / READY' : 'WORKFLOW SPEC / მზადაა'}</span><span className="board-status"><i />{english ? 'Human-led' : 'ადამიანის კონტროლი'}</span></div><div className="status-board__signal"><span className="status-board__signal-number">01</span><div><strong>{english ? 'One operating signal' : 'ერთი ოპერაციული სიგნალი'}</strong><p>{english ? 'The smallest useful unit to automate.' : 'ავტომატიზაციისთვის საჭირო უმცირესი ერთეული.'}</p></div></div><div className="status-board__meters"><span><small>{english ? 'Scope' : 'მასშტაბი'}</small><b>01 / 03</b></span><span><small>{english ? 'Guardrails' : 'საზღვრები'}</small><b><Check size={13} /> ON</b></span><span><small>{english ? 'Status' : 'სტატუსი'}</small><b className="meter-live">LIVE</b></span></div></div></div></section>
+    <section className="service-detail__outcomes service-detail__container"><div className="detail-section-heading"><p className="page-kicker">{english ? 'WHAT CHANGES' : 'რას ცვლის სისტემა'}</p><h2>{english ? 'A capability becomes useful when the next action is visible.' : 'შესაძლებლობა მაშინ არის სასარგებლო, როცა შემდეგი მოქმედება ხილულია.'}</h2></div><div className="outcome-grid">{content.outcomes.map((outcome, index) => { const Icon = outcomeIcons[index]; return <article className="outcome-card" key={outcome}><div className="outcome-card__top"><span>0{index + 1}</span><Icon size={20} /></div><h3>{outcome}</h3><p>{english ? 'Designed around your existing people, permissions, data boundaries, and operating rhythm.' : 'ერგება თქვენს გუნდს, წვდომებს, მონაცემთა საზღვრებსა და ყოველდღიურ სამუშაო რიტმს.'}</p></article>; })}</div></section>
+    <section className="service-detail__workflow service-detail__container"><WorkflowDiagram locale={english ? 'en' : 'ka'} /><div className="implementation-panel"><div><p className="page-kicker">{english ? 'IMPLEMENTATION LOOP' : 'დანერგვის ციკლი'}</p><h2>{english ? 'Small enough to prove. Structured enough to own.' : 'საკმარისად მცირე დასამტკიცებლად. საკმარისად მკაფიო სამართავად.'}</h2></div><div className="implementation-steps">{steps.map((step, index) => <div className="implementation-step" key={step}><span>{String(index + 1).padStart(2, '0')}</span><div><h3>{step}</h3><p>{stepDetails[index]}</p></div></div>)}</div></div></section>
+    <section className="service-detail__cta service-detail__container"><div className="service-detail__cta-copy"><Sparkles size={20} /><p className="page-kicker">{english ? 'NEXT DECISION' : 'შემდეგი გადაწყვეტილება'}</p><h2>{english ? 'Bring the workflow. We will make the control visible.' : 'მოიტანეთ workflow. ჩვენ კონტროლს ხილულს გავხდით.'}</h2></div><Link href="/consultation" className="signal-button signal-button--light">{english ? 'Plan the first pilot' : 'დაგეგმეთ პირველი პილოტი'} <ArrowUpRight size={16} /></Link></section>
+  </main>;
 }

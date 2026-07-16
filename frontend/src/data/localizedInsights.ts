@@ -1,9 +1,9 @@
 import { insights } from './insights';
 
 export const insightVisuals: Record<string, { src: string; alt: { ka: string; en: string } }> = {
-  'rag-system-before-chatbot': { src: 'https://cdn.undraw.co/illustration/guidelines_p5r7.svg', alt: { ka: 'ცოდნის არქიტექტურის ილუსტრაცია', en: 'Knowledge architecture illustration' } },
-  'voice-ai-that-represents-your-brand': { src: 'https://cdn.undraw.co/illustration/chatting_29rn.svg', alt: { ka: 'ხმოვანი კომუნიკაციის ილუსტრაცია', en: 'Voice communication illustration' } },
-  'ai-automation-roi-first-workflow': { src: 'https://cdn.undraw.co/illustration/growth-analytics_vzjz.svg', alt: { ka: 'AI ავტომატიზაციის ანალიტიკის ილუსტრაცია', en: 'AI automation analytics illustration' } },
+  'rag-system-before-chatbot': { src: '/vectors/insight-rag.svg', alt: { ka: 'ცოდნის არქიტექტურის ილუსტრაცია', en: 'Knowledge architecture illustration' } },
+  'voice-ai-that-represents-your-brand': { src: '/vectors/insight-voice.svg', alt: { ka: 'ხმოვანი კომუნიკაციის ილუსტრაცია', en: 'Voice communication illustration' } },
+  'ai-automation-roi-first-workflow': { src: '/vectors/insight-automation.svg', alt: { ka: 'AI ავტომატიზაციის ანალიტიკის ილუსტრაცია', en: 'AI automation analytics illustration' } },
 };
 
 const english: Record<string, { category: string; title: string; excerpt: string; sections: readonly [string, string][] }> = {

@@ -70,9 +70,10 @@ export default function Footer({ siteSettings, footerColumns, footerBottomLinks,
                 <strong>{siteName}</strong>
                 <small>{english ? 'AI SYSTEMS / REAL OPERATIONS' : 'AI სისტემები / რეალური ოპერაციები'}</small>
               </span>
-            </Link>
-            <p className="footer-description">{english ? 'We connect customers, data, and teams around one operational goal.' : 'ვაერთიანებთ მომხმარებლებს, მონაცემებსა და გუნდებს ერთი ოპერაციული მიზნის გარშემო.'}</p>
-            <div className="footer-socials">
+             </Link>
+             <p className="footer-description">{english ? 'We connect customers, data, and teams around one operational goal.' : 'ვაერთიანებთ მომხმარებლებს, მონაცემებსა და გუნდებს ერთი ოპერაციული მიზნის გარშემო.'}</p>
+             <div className="footer-pulse"><span><i />{english ? 'IMI SIGNAL' : 'IMI სიგნალი'}</span><strong>{english ? 'READY FOR THE NEXT WORKFLOW' : 'შემდეგი workflow მზადაა'}</strong></div>
+             <div className="footer-socials">
               {socials.map(({ Icon, href, label }) => <a key={label} href={href} target="_blank" rel="noreferrer" aria-label={label}><Icon size={16} aria-hidden="true" /></a>)}
               <ThemeToggle label={english ? 'Toggle theme' : 'თემის შეცვლა'} />
             </div>

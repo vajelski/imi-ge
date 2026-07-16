@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
-import { ArrowUpRight, AudioLines, Building2, Map, PawPrint, ShieldCheck, Volume2 } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, AudioLines, Building2, Map, PawPrint, ShieldCheck, Volume2 } from 'lucide-react';
 import { setRequestLocale } from 'next-intl/server';
-import EnglishProjects from '@/components/EnglishProjects';
+import { Link } from '@/i18n/routing';
 import { localizedMetadata } from '@/lib/seo/metadata';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -10,55 +10,17 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 }
 
 const projects = [
-  {
-    name: 'Ertaoza',
-    url: 'https://ertaoza.ge',
-    icon: AudioLines,
-    category: 'ქართული ენის AI',
-    accent: 'from-neutral-300/35 to-transparent',
-    description: 'ქართული ენის AI ინფრასტრუქტურა, რომელიც ერთ ეკოსისტემაში აერთიანებს Text-to-Speech-ს, Speech-to-Text-ს, ქართულ LLM-სა და ხმოვან ავტომატიზაციას.',
-    capabilities: ['ქართული TTS და ASR', 'ხმოვანი ასისტენტი', 'ქოლ-ცენტრის ავტომატიზაცია', 'ქართული NLP და LLM'],
-    impact: 'ქართული ენისთვის შექმნილი voice და dialogue layer რეალური ბიზნეს-სცენარებისთვის.',
-  },
-  {
-    name: 'CORD.GE',
-    url: 'https://cord.ge',
-    icon: Volume2,
-    category: 'ხმოვანი პლატფორმა',
-    accent: 'from-neutral-300/35 to-transparent',
-    description: 'Georgian-first AI voice workspace, სადაც ტექსტი გარდაიქმნება ბუნებრივ აუდიოდ, ბრენდული ხმა კი ინტეგრირდება პროდუქტში API-ის საშუალებით.',
-    capabilities: ['Text-to-Speech', 'Voice cloning', 'SSML კონტროლი', 'MP3/WAV და JSON API'],
-    impact: 'ხმის გენერაციიდან API ინტეგრაციამდე, ერთი production-ready workflow.',
-  },
-  {
-    name: 'Urbania',
-    url: '/projects/urbania',
-    icon: Map,
-    category: 'ურბანული ინტელექტი',
-    accent: 'from-neutral-300/35 to-transparent',
-    description: 'AI-ზე დაფუძნებული ურბანული და საკადასტრო აუდიტის workspace, რომელიც რუკას, ჩატს, ზონირებასა და უძრავი ქონების რისკების ანალიზს ერთ პროცესში აერთიანებს.',
-    capabilities: ['საკადასტრო და იურიდიული აუდიტი', 'K1/K2/K3 და ზონირების ანალიზი', 'Developer / Architect / Investor View', 'რუკა და AI chat ერთ workspace-ში'],
-    impact: 'ნაკვეთის რისკები და შესაძლებლობები გადაწყვეტილებამდე ხდება ხილული და სტრუქტურირებული.',
-  },
-  {
-    name: 'Breeding.ge',
-    url: 'http://breeding.ge',
-    icon: PawPrint,
-    category: 'სანდო ციფრული ბაზარი',
-    accent: 'from-neutral-300/35 to-transparent',
-    description: 'ცხოველების შეჯვარების პლატფორმა, რომელიც აერთიანებს breed catalog-ს, breeder profile-ს, compatibility scoring-სა და უსაფრთხო ორმხრივ request flow-ს.',
-    capabilities: ['952+ ჯიშის კატალოგი', '0-100 compatibility score', 'Health და pedigree სიგნალები', 'ორმხრივი approval პროცესი'],
-    impact: 'წყვილის მოძებნა ეფუძნება გამჭვირვალე, შემოწმებად მონაცემებს და არა შემთხვევითობას.',
-  },
-];
+  { name: 'Ertaoza', url: 'https://ertaoza.ge', icon: AudioLines, category: { ka: 'ქართული ენის AI', en: 'GEORGIAN LANGUAGE AI' }, description: { ka: 'ქართული ენის AI ინფრასტრუქტურა, რომელიც ერთ ეკოსისტემაში აერთიანებს Text-to-Speech-ს, Speech-to-Text-ს, ქართულ LLM-სა და ხმოვან ავტომატიზაციას.', en: 'Georgian language AI infrastructure connecting text-to-speech, speech-to-text, language models, and voice automation in one ecosystem.' }, capabilities: { ka: ['ქართული TTS და ASR', 'ხმოვანი ასისტენტი', 'ქოლ-ცენტრის ავტომატიზაცია', 'ქართული NLP და LLM'], en: ['Georgian TTS and ASR', 'Voice assistant layer', 'Call-center automation', 'Georgian NLP and LLM'] }, impact: { ka: 'ქართული ენისთვის შექმნილი voice და dialogue layer რეალური ბიზნეს-სცენარებისთვის.', en: 'A voice and dialogue layer built for Georgian business scenarios.' } },
+  { name: 'CORD.GE', url: 'https://cord.ge', icon: Volume2, category: { ka: 'ხმოვანი პლატფორმა', en: 'VOICE PLATFORM' }, description: { ka: 'Georgian-first AI voice workspace, სადაც ტექსტი გარდაიქმნება ბუნებრივ აუდიოდ, ბრენდული ხმა კი ინტეგრირდება პროდუქტში API-ის საშუალებით.', en: 'A Georgian-first voice workspace that turns text into natural audio and brings a brand voice into products through an API.' }, capabilities: { ka: ['Text-to-Speech', 'Voice cloning', 'SSML კონტროლი', 'MP3/WAV და JSON API'], en: ['Text-to-speech', 'Voice cloning', 'SSML controls', 'MP3/WAV and JSON API'] }, impact: { ka: 'ხმის გენერაციიდან API ინტეგრაციამდე, ერთი production-ready workflow.', en: 'One production-ready workflow from voice generation to API integration.' } },
+  { name: 'Urbania', url: '/projects/urbania', icon: Map, category: { ka: 'ურბანული ინტელექტი', en: 'URBAN INTELLIGENCE' }, description: { ka: 'AI-ზე დაფუძნებული ურბანული და საკადასტრო აუდიტის workspace, რომელიც რუკას, ჩატს, ზონირებასა და უძრავი ქონების რისკების ანალიზს ერთ პროცესში აერთიანებს.', en: 'An AI workspace for cadastral and urban audit that joins maps, chat, zoning, and property risk analysis in one process.' }, capabilities: { ka: ['საკადასტრო და იურიდიული აუდიტი', 'K1/K2/K3 და ზონირების ანალიზი', 'Developer / Architect / Investor View', 'რუკა და AI chat ერთ workspace-ში'], en: ['Cadastral and legal audit', 'K1/K2/K3 and zoning analysis', 'Developer / architect / investor views', 'Map and AI chat in one workspace'] }, impact: { ka: 'ნაკვეთის რისკები და შესაძლებლობები გადაწყვეტილებამდე ხდება ხილული და სტრუქტურირებული.', en: 'Parcel risks and opportunities become visible before the decision is made.' } },
+  { name: 'Breeding.ge', url: 'http://breeding.ge', icon: PawPrint, category: { ka: 'სანდო ციფრული ბაზარი', en: 'TRUSTED DIGITAL MARKETPLACE' }, description: { ka: 'ცხოველების შეჯვარების პლატფორმა, რომელიც აერთიანებს breed catalog-ს, breeder profile-ს, compatibility scoring-სა და უსაფრთხო ორმხრივ request flow-ს.', en: 'A breeding marketplace combining a breed catalog, breeder profiles, compatibility scoring, and a safe two-sided request flow.' }, capabilities: { ka: ['952+ ჯიშის კატალოგი', '0-100 compatibility score', 'Health და pedigree სიგნალები', 'ორმხრივი approval პროცესი'], en: ['952+ breed catalog', '0-100 compatibility score', 'Health and pedigree signals', 'Two-sided approval flow'] }, impact: { ka: 'წყვილის მოძებნა ეფუძნება გამჭვირვალე, შემოწმებად მონაცემებს და არა შემთხვევითობას.', en: 'Matching is based on transparent, verifiable signals rather than chance.' } },
+] as const;
 
 export default async function ProjectsPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  if (locale === 'en') return <EnglishProjects />;
-  return <div className="project-page relative overflow-hidden pt-32 pb-24"><div className="ai-grid pointer-events-none absolute inset-0 -z-10 opacity-50" />
-    <section className="mx-auto max-w-7xl px-6 lg:px-8"><p className="text-xs font-bold tracking-[.22em] text-cyan-300">SELECTED PRODUCTS / IMI.GE ECOSYSTEM</p><h1 className="mt-5 max-w-4xl text-4xl font-bold leading-tight text-white sm:text-6xl">ვქმნით პროდუქტებს, სადაც ტექნოლოგია რეალურ საჭიროებას პასუხობს.</h1><p className="mt-7 max-w-3xl text-lg leading-8 text-slate-300">AI, voice, data და marketplace გამოცდილება ჩვენი გუნდისთვის მხოლოდ სერვისების ჩამონათვალი არ არის. ეს უკვე მოქმედი პროდუქტებია, რომლებიც სპეციფიკური პრობლემის გადასაჭრელად შევქმენით.</p></section>
-    <section className="mx-auto mt-16 grid max-w-7xl gap-6 px-6 lg:px-8">{projects.map(({ name, url, icon: Icon, category, accent, description, capabilities, impact }) => <article key={name} className="glass-panel relative overflow-hidden rounded-[2rem] p-7 sm:p-10"><div className={`absolute inset-0 -z-10 bg-gradient-to-br ${accent}`} /><div className="flex flex-col justify-between gap-8 md:flex-row"><div className="max-w-2xl"><div className="flex items-center gap-4"><div className="flex size-12 items-center justify-center rounded-2xl border border-white/15 bg-black/20 text-cyan-100"><Icon size={24} /></div><div><p className="text-xs font-bold tracking-[.18em] text-cyan-200">{category}</p><h2 className="mt-1 text-2xl font-bold text-white">{name}</h2></div></div><p className="mt-7 text-base leading-8 text-slate-200">{description}</p><p className="mt-7 border-l-2 border-cyan-200/60 pl-4 text-sm font-semibold leading-7 text-white">{impact}</p></div><a href={url} target="_blank" rel="noreferrer" className="inline-flex h-fit items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-5 py-3 text-sm font-bold text-white transition hover:border-cyan-200 hover:bg-white/20">ვებგვერდის ნახვა <ArrowUpRight size={17} /></a></div><div className="mt-9 grid gap-3 sm:grid-cols-2">{capabilities.map((capability) => <div key={capability} className="flex items-center gap-3 rounded-xl border border-white/10 bg-black/15 px-4 py-3 text-sm text-slate-200"><ShieldCheck size={17} className="shrink-0 text-cyan-200" />{capability}</div>)}</div></article>)}</section>
-    <section className="mx-auto mt-16 max-w-7xl px-6 lg:px-8"><div className="rounded-3xl border border-white/10 bg-white/[.04] p-8 sm:p-10"><Building2 className="text-cyan-200" /><h2 className="mt-5 text-2xl font-bold text-white">თქვენი იდეაც შეიძლება შემდეგი პროდუქტი იყოს.</h2><p className="mt-3 max-w-2xl text-slate-300">თუ თქვენს ბიზნესს სჭირდება AI, მონაცემები, ხმოვანი ინტერფეისი ან სრულფასოვანი ციფრული პლატფორმა, დავიწყოთ კონკრეტული ამოცანით.</p><a href={`/${locale}/contact`} className="mt-7 inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-bold text-[#080914] transition hover:bg-cyan-100">დაგვიკავშირდით <ArrowUpRight size={17} /></a></div></section>
-  </div>;
+  const english = locale === 'en';
+  const text = (value: { ka: string; en: string }) => value[english ? 'en' : 'ka'];
+
+  return <main className="project-experience"><section className="project-hero"><div className="project-container project-hero__grid"><div><div className="page-kicker"><span className="signal-dot" />{english ? 'IMI.GE / PRODUCTS IN THE FIELD' : 'IMI.GE / მოქმედი პროდუქტები'}</div><h1>{english ? <>Products that turn a hard <em>signal</em> into a useful system.</> : <>პროდუქტები, რომლებიც რთულ <em>სიგნალს</em> სასარგებლო სისტემად აქცევს.</>}</h1><p>{english ? 'Our ecosystem is a set of working experiments in Georgian voice AI, urban intelligence, and data-informed marketplaces.' : 'ჩვენი ეკოსისტემა არის მოქმედი პროდუქტების ერთობლიობა ქართული voice AI-ს, ურბანული ინტელექტისა და მონაცემებზე დაფუძნებული marketplace-ებისთვის.'}</p><div className="project-hero__actions"><Link href="/consultation" className="signal-button signal-button--solid">{english ? 'Build the next system' : 'შექმენით შემდეგი სისტემა'} <ArrowUpRight size={16} /></Link><Link href="/services" className="signal-button signal-button--quiet">{english ? 'Explore capabilities' : 'ნახეთ შესაძლებლობები'} <ArrowRight size={16} /></Link></div></div><div className="project-hero__board" aria-label={english ? 'IMI.GE product portfolio summary' : 'IMI.GE პროდუქტების პორტფოლიოს შეჯამება'}><div className="project-hero__board-top"><span>{english ? 'PORTFOLIO PULSE' : 'პორტფოლიოს პულსი'}</span><span className="board-status"><i />{english ? '4 live surfaces' : '4 მოქმედი ზედაპირი'}</span></div><div className="project-hero__board-main"><div className="portfolio-radar"><span /><span /><span /><i /></div><div><strong>04</strong><p>{english ? 'products / one operating idea' : 'პროდუქტი / ერთი ოპერაციული იდეა'}</p></div></div><div className="project-hero__board-footer"><span><Building2 size={13} /> GEO-FIRST</span><span><ShieldCheck size={13} /> HUMAN-LED</span></div></div></div></section><section className="project-catalog project-container"><div className="project-catalog__head"><div><p className="page-kicker">{english ? 'SELECTED SYSTEMS' : 'შერჩეული სისტემები'}</p><h2>{english ? 'Different domains. Same discipline.' : 'განსხვავებული სფეროები. ერთი დისციპლინა.'}</h2></div><p>{english ? 'Each product starts with a specific decision, then gives its users a clearer path through data, language, and action.' : 'თითოეული პროდუქტი იწყება კონკრეტული გადაწყვეტილებით და მომხმარებელს მონაცემებში, ენასა და მოქმედებაში უფრო მკაფიო გზას აძლევს.'}</p></div><div className="project-grid">{projects.map((project, index) => { const Icon = project.icon; const actionLabel = english ? 'Open product' : 'ვებგვერდის ნახვა'; const action = project.url.startsWith('http') ? <a href={project.url} target="_blank" rel="noreferrer" className="project-card__action">{actionLabel} <ArrowUpRight size={16} /></a> : <Link href={project.url} className="project-card__action">{actionLabel} <ArrowUpRight size={16} /></Link>; return <article className={`project-card project-card--${index + 1}`} key={project.name}><div className="project-card__top"><span className="project-card__number">{String(index + 1).padStart(2, '0')}</span><span className="project-card__icon"><Icon size={21} /></span><span className="project-card__category">{text(project.category)}</span></div><div className="project-card__content"><h3>{project.name}</h3><p>{text(project.description)}</p><p className="project-card__impact">{text(project.impact)}</p></div><div className="project-card__capabilities">{project.capabilities[english ? 'en' : 'ka'].map((capability) => <span key={capability}><span className="output-check" />{capability}</span>)}</div>{action}</article>; })}</div></section><section className="project-cta project-container"><div><p className="page-kicker">{english ? 'NEXT PRODUCT SIGNAL' : 'შემდეგი პროდუქტის სიგნალი'}</p><h2>{english ? 'Your difficult workflow can become a product surface.' : 'თქვენი რთული workflow შეიძლება პროდუქტის ზედაპირად იქცეს.'}</h2><p>{english ? 'Bring the domain knowledge. IMI.GE brings the system map, product layer, and measured path to production.' : 'მოიტანეთ დარგობრივი ცოდნა. IMI.GE მოიტანს სისტემის რუკას, პროდუქტის ფენასა და production-მდე გაზომვად გზას.'}</p></div><Link href="/consultation" className="signal-button signal-button--light">{english ? 'Start a product brief' : 'დაიწყეთ product brief'} <ArrowUpRight size={16} /></Link></section></main>;
 }
